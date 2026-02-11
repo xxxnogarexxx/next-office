@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { notFound } from "next/navigation";
 import { getCityBySlug, getListingsByCity, listings as allListings } from "@/lib/mock-data";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
@@ -17,6 +16,15 @@ export default function CitySearchPage() {
   const cityListings = getListingsByCity(citySlug);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   // If city not found, show all listings (could be an invalid slug)
   const displayListings = cityListings.length > 0 ? cityListings : allListings;
@@ -54,18 +62,20 @@ export default function CitySearchPage() {
           </div>
         </div>
 
-        {/* Map */}
-        <div
-          className={`${
-            showMap ? "flex" : "hidden lg:flex"
-          } w-full flex-1 lg:w-1/2 lg:max-w-[50%]`}
-        >
-          <SearchMap
-            listings={displayListings}
-            hoveredId={hoveredId}
-            center={city ? { lat: city.latitude, lng: city.longitude } : undefined}
-          />
-        </div>
+        {/* Map — only mount when visible to prevent Leaflet 0-dimension crash */}
+        {(showMap || isDesktop) && (
+          <div
+            className={`${
+              showMap ? "flex" : "hidden lg:flex"
+            } w-full flex-1 lg:w-1/2 lg:max-w-[50%]`}
+          >
+            <SearchMap
+              listings={displayListings}
+              hoveredId={hoveredId}
+              center={city ? { lat: city.latitude, lng: city.longitude } : undefined}
+            />
+          </div>
+        )}
 
         {/* Mobile map toggle */}
         <div className="fixed bottom-6 left-1/2 z-10 -translate-x-1/2 lg:hidden">
