@@ -81,10 +81,10 @@ export function ListingPageClient({
           )}
 
           <div className="mt-4 flex flex-col gap-2">
-            <Button onClick={openContact} className="w-full">
+            <Button onClick={openContact} className="w-full h-12 text-base">
               Vermieter kontaktieren
             </Button>
-            <Button variant="outline" onClick={openTour} className="w-full">
+            <Button variant="outline" onClick={openTour} className="w-full h-12 text-base">
               Besuch planen
             </Button>
           </div>
