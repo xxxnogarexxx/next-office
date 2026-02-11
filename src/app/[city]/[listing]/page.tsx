@@ -177,7 +177,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
         </div>
 
         {/* Content + Sidebar */}
-        <div className="mt-6 flex gap-8">
+        <div className="mt-6 flex gap-12 lg:gap-16">
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {/* Key facts */}
@@ -270,7 +270,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
           </div>
 
           {/* Sticky sidebar — desktop (lower position) */}
-          <div className="hidden w-72 shrink-0 lg:block">
+          <div className="hidden w-[370px] shrink-0 lg:block">
             <div className="sticky top-24">
               <ListingPageClient
                 listing={listing}
