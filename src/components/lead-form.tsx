@@ -56,7 +56,8 @@ export function LeadForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`flex flex-col gap-4 ${
+      autoComplete="off"
+      className={`flex flex-col gap-4 transform-gpu ${
         variant === "contact"
           ? ""
           : variant === "sidebar"
@@ -76,7 +77,7 @@ export function LeadForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">Name *</Label>
-          <Input id="name" name="name" placeholder="Max Mustermann" required />
+          <Input id="name" name="name" placeholder="Max Mustermann" autoComplete="off" required />
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">E-Mail *</Label>
@@ -85,6 +86,7 @@ export function LeadForm({
             name="email"
             type="email"
             placeholder="max@firma.de"
+            autoComplete="off"
             required
           />
         </div>
@@ -98,6 +100,7 @@ export function LeadForm({
             name="phone"
             type="tel"
             placeholder="+49 123 456789"
+            autoComplete="off"
           />
         </div>
         <div className="space-y-2">
