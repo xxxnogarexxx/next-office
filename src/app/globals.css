@@ -92,24 +92,49 @@
 }
 
 @layer base {
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
   * {
     @apply border-border;
   }
   *:focus {
     outline: none;
   }
-  *:focus-visible {
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
     outline: 2px solid var(--foreground);
     outline-offset: 2px;
-  }
-  input:focus-visible,
-  textarea:focus-visible,
-  select:focus-visible {
-    outline: none;
   }
   body {
     @apply bg-background text-foreground;
     overflow-anchor: none;
+  }
+  /* Contain form field layout — prevents password manager extensions
+     from causing layout shifts when they inject overlay elements */
+  form .space-y-2 {
+    contain: layout style;
+    position: relative;
+  }
+  form input,
+  form textarea,
+  form select,
+  form [data-slot="select-trigger"] {
+    contain: layout style;
+  }
+  /* Hide all elements injected by password manager extensions */
+  form > :not([data-slot]):not(.space-y-2):not(.grid):not(.mb-2):not(button):not(p):not(input[type="hidden"]),
+  form [data-lastpass-icon-root],
+  form [data-np-uid],
+  form iframe:not([title]) {
+    display: none !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
   }
   /* Prevent autofill from causing layout shifts */
   input:-webkit-autofill,

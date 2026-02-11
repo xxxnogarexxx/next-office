@@ -87,6 +87,9 @@ export function SearchBar({ className, size = "default" }: SearchBarProps) {
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
         placeholder="Stadt eingeben..."
+        autoComplete="off"
+        data-form-type="other"
+        suppressHydrationWarning
         className={`pl-10 bg-white ${inputHeight}`}
       />
 

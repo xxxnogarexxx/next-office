@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,12 +29,62 @@ export function LeadForm({
   variant = "inline",
 }: LeadFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const showCityField = !citySlug && !listingId;
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Render form only on client to prevent hydration mismatch
+  useEffect(() => setMounted(true), []);
+
+  // Remove any elements/attributes injected by password manager extensions
+  // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    function cleanExtensionJunk(root: Element) {
+      // Remove injected child elements that aren't ours
+      root.querySelectorAll("[data-np-uid], [data-lastpass-icon-root], [class^='np-'], iframe:not([title])").forEach(
+        (el) => el.remove()
+      );
+      // Remove extension attributes from the form
+      for (const attr of Array.from(root.attributes)) {
+        if (attr.name.startsWith("data-np") || attr.name.startsWith("data-lp") || attr.name.startsWith("data-dashlane")) {
+          root.removeAttribute(attr.name);
+        }
+      }
+    }
+
+    cleanExtensionJunk(form);
+
+    const observer = new MutationObserver(() => {
+      cleanExtensionJunk(form);
+    });
+
+    observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-np-autofill-form-type", "data-np-watching", "data-np-checked"] });
+    return () => observer.disconnect();
+  }, [mounted]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     // TODO: send to Supabase
     setSubmitted(true);
+  }
+
+  if (!mounted) {
+    return (
+      <div
+        className={`flex flex-col gap-4 ${
+          variant === "contact"
+            ? ""
+            : variant === "sidebar"
+              ? "rounded-lg border bg-white p-6"
+              : "mx-auto max-w-md rounded-lg border bg-white p-6"
+        }`}
+        style={{ minHeight: 380 }}
+      />
+    );
   }
 
   if (submitted) {
@@ -55,6 +105,7 @@ export function LeadForm({
 
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
       autoComplete="off"
       className={`flex flex-col gap-4 transform-gpu ${
@@ -76,17 +127,18 @@ export function LeadForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Name *</Label>
-          <Input id="name" name="name" placeholder="Max Mustermann" autoComplete="off" required />
+          <Label htmlFor="lead_fullname">Name *</Label>
+          <Input id="lead_fullname" name="lead_fullname" placeholder="Max Mustermann" autoComplete="one-time-code" required />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">E-Mail *</Label>
+          <Label htmlFor="lead_mail">E-Mail *</Label>
           <Input
-            id="email"
-            name="email"
-            type="email"
+            id="lead_mail"
+            name="lead_mail"
+            type="text"
+            inputMode="email"
             placeholder="max@firma.de"
-            autoComplete="off"
+            autoComplete="one-time-code"
             required
           />
         </div>
@@ -94,13 +146,14 @@ export function LeadForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Telefon</Label>
+          <Label htmlFor="lead_tel">Telefon</Label>
           <Input
-            id="phone"
-            name="phone"
-            type="tel"
+            id="lead_tel"
+            name="lead_tel"
+            type="text"
+            inputMode="tel"
             placeholder="+49 123 456789"
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
         </div>
         <div className="space-y-2">
