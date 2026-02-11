@@ -67,21 +67,21 @@ export function AvailableOffers({
                 </div>
               </div>
 
-              <div className="mt-3 flex items-center justify-end gap-3">
-                {!offer.price && (
-                  <button
-                    onClick={() => onRequestQuote(offer)}
-                    className="text-sm text-body underline hover:text-foreground transition-colors"
-                  >
-                    Angebot anfragen
-                  </button>
-                )}
+              <div className="mt-3 flex items-center gap-3">
                 <Button
                   size="sm"
                   onClick={() => onSelectOffer(offer)}
                 >
                   Angebot wählen
                 </Button>
+                {!offer.price && (
+                  <button
+                    onClick={() => onRequestQuote(offer)}
+                    className="hidden sm:inline text-sm text-body underline hover:text-foreground transition-colors"
+                  >
+                    Angebot anfragen
+                  </button>
+                )}
               </div>
             </div>
           );
