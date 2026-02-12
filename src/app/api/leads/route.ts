@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     resend.emails
       .send({
-        from: "NextOffice <onboarding@resend.dev>",
+        from: "NextOffice <noreply@next-office.io>",
         to: process.env.NOTIFICATION_EMAIL!,
         subject: `[NextOffice] Neue Anfrage: ${body.name}${body.listing_name ? ` – ${body.listing_name}` : ""}`,
         html: `
