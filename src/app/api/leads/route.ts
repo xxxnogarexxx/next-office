@@ -60,7 +60,7 @@ export async function POST(request: Request) {
               <tr><td style="padding:4px 12px 4px 0;color:#64748b">E-Mail</td><td style="padding:4px 0"><a href="mailto:${body.email}">${body.email}</a></td></tr>
               ${body.phone ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Telefon</td><td style="padding:4px 0"><a href="tel:${body.phone}">${body.phone}</a></td></tr>` : ""}
               ${body.team_size ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Teamgröße</td><td style="padding:4px 0">${body.team_size} Personen</td></tr>` : ""}
-              ${body.start_date ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Einzugsdatum</td><td style="padding:4px 0">${body.start_date}</td></tr>` : ""}
+              ${body.start_date ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Einzugsdatum</td><td style="padding:4px 0">${new Date(body.start_date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" })}</td></tr>` : ""}
               ${body.city ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Stadt</td><td style="padding:4px 0">${body.city}</td></tr>` : ""}
               ${listing}
             </table>
