@@ -87,7 +87,7 @@ export default function HomePage() {
               </p>
               <SearchBar
                 variant="hero"
-                className="[&>div]:bg-transparent [&>div]:p-0 [&>div]:shadow-none [&>div]:rounded-none"
+                className="[&>div:first-child]:bg-transparent [&>div:first-child]:p-0 [&>div:first-child]:shadow-none [&>div:first-child]:rounded-none"
               />
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
