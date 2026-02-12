@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import Map, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
+import { useState, useCallback, useRef, useEffect } from "react";
+import MapGL, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
+import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapRef } from "react-map-gl/mapbox";
 import {
@@ -47,78 +48,123 @@ function haversineDistance(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-async function fetchNearbyPOIs(
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+function getCached(key: string): Record<string, POI[]> | null {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function setCache(key: string, data: Record<string, POI[]>) {
+  try {
+    localStorage.setItem(key, JSON.stringify({ data, ts: Date.now() }));
+  } catch { /* quota exceeded — ignore */ }
+}
+
+// Single Overpass call fetches all transit at once, then categorizes by tags
+async function fetchAllTransitPOIs(
+  lng: number,
+  lat: number
+): Promise<Record<string, POI[]>> {
+  const overpassQuery = `[out:json][timeout:15];(node["station"="subway"](around:1500,${lat},${lng});node["railway"="station"]["station"="light_rail"](around:2000,${lat},${lng});node["highway"="bus_stop"](around:800,${lat},${lng}););out body;`;
+
+  const res = await fetch(`/api/transit?query=${encodeURIComponent(overpassQuery)}`);
+  const data = await res.json();
+
+  const buckets: Record<string, Map<string, POI>> = {
+    ubahn: new Map(),
+    sbahn: new Map(),
+    bus: new Map(),
+  };
+
+  for (const el of data.elements || []) {
+    const tags = el.tags || {};
+    let category: PoiCategory;
+    if (tags.station === "subway") category = "ubahn";
+    else if (tags.station === "light_rail") category = "sbahn";
+    else if (tags.highway === "bus_stop") category = "bus";
+    else continue;
+
+    const name: string = tags.name || category;
+    const distance = haversineDistance(lat, lng, el.lat, el.lon);
+    const existing = buckets[category].get(name);
+    if (!existing || distance < existing.distance) {
+      buckets[category].set(name, {
+        id: `${category}-${el.id}`,
+        name,
+        category,
+        latitude: el.lat,
+        longitude: el.lon,
+        distance: Math.round(distance),
+      });
+    }
+  }
+
+  const result: Record<string, POI[]> = {};
+  for (const [cat, seen] of Object.entries(buckets)) {
+    result[cat] = [...seen.values()]
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 10);
+  }
+  return result;
+}
+
+async function fetchMapboxPOIs(
   lng: number,
   lat: number,
   category: PoiCategory
 ): Promise<POI[]> {
-  const queryMap: Record<PoiCategory, string> = {
-    ubahn: "u-bahn station",
-    sbahn: "s-bahn station",
-    bus: "bushaltestelle bus stop",
+  const categoryMap: Record<string, string> = {
     restaurant: "restaurant",
-    cafe: "café kaffee coffee",
-    parking: "parking parkhaus parkplatz",
+    cafe: "cafe",
+    parking: "parking",
   };
 
-  const query = queryMap[category];
-  const url = new URL("https://api.mapbox.com/search/geocode/v6/forward");
-  url.searchParams.set("q", query);
-  url.searchParams.set("proximity", `${lng},${lat}`);
-  url.searchParams.set("limit", "10");
-  url.searchParams.set("types", "poi");
-  url.searchParams.set("language", "de");
-  url.searchParams.set(
-    "bbox",
-    `${lng - 0.015},${lat - 0.01},${lng + 0.015},${lat + 0.01}`
-  );
-  url.searchParams.set("access_token", MAPBOX_TOKEN);
+  const mbCategory = categoryMap[category];
+  const url = `https://api.mapbox.com/search/searchbox/v1/category/${mbCategory}?proximity=${lng},${lat}&limit=10&language=de&access_token=${MAPBOX_TOKEN}`;
 
-  const res = await fetch(url.toString());
+  const res = await fetch(url);
   const data = await res.json();
 
-  return (data.features || []).map((f: Record<string, unknown>, i: number) => {
-    const geom = f.geometry as { coordinates: [number, number] };
-    const props = f.properties as { name?: string; full_address?: string };
-    const [poiLng, poiLat] = geom.coordinates;
-    const distance = haversineDistance(lat, lng, poiLat, poiLng);
-    return {
-      id: `${category}-${i}`,
-      name: props.name || props.full_address || category,
-      category,
-      latitude: poiLat,
-      longitude: poiLng,
-      distance: Math.round(distance),
-    };
-  });
+  return (data.features || []).map(
+    (f: Record<string, unknown>, i: number) => {
+      const geom = f.geometry as { coordinates: [number, number] };
+      const props = f.properties as { name?: string; full_address?: string };
+      const [poiLng, poiLat] = geom.coordinates;
+      const distance = haversineDistance(lat, lng, poiLat, poiLng);
+      return {
+        id: `${category}-${i}`,
+        name: props.name || props.full_address || category,
+        category,
+        latitude: poiLat,
+        longitude: poiLng,
+        distance: Math.round(distance),
+      };
+    }
+  );
 }
+
 
 function formatDistance(meters: number): string {
   if (meters < 1000) return `${meters} m`;
   return `${(meters / 1000).toFixed(1)} km`;
 }
 
-function PoiMarker({ category }: { category: PoiCategory }) {
-  const cat = POI_CATEGORIES.find((c) => c.id === category)!;
-  return (
-    <div
-      style={{
-        width: 28,
-        height: 28,
-        background: cat.color,
-        border: "2px solid white",
-        borderRadius: "50%",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 14,
-        cursor: "pointer",
-      }}
-    >
-      {cat.icon}
-    </div>
-  );
+// All state in one object to avoid stale closure issues
+interface MapState {
+  active: Set<PoiCategory>;
+  pois: Record<string, POI[]>;
+  loading: Set<PoiCategory>;
 }
 
 export default function ListingMapInner({
@@ -128,50 +174,154 @@ export default function ListingMapInner({
   address,
 }: ListingMapInnerProps) {
   const mapRef = useRef<MapRef>(null);
-  const [activeCategories, setActiveCategories] = useState<Set<PoiCategory>>(
-    new Set()
-  );
-  const [pois, setPois] = useState<Record<string, POI[]>>({});
-  const [loading, setLoading] = useState<Set<PoiCategory>>(new Set());
+  const [state, setState] = useState<MapState>({
+    active: new Set<PoiCategory>(["ubahn", "sbahn", "bus"]),
+    pois: {},
+    loading: new Set(),
+  });
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
-  const toggleCategory = useCallback(
-    async (cat: PoiCategory) => {
-      setActiveCategories((prev) => {
-        const next = new Set(prev);
-        if (next.has(cat)) {
-          next.delete(cat);
-        } else {
-          next.add(cat);
-        }
-        return next;
+  // Prefetch all POI data on mount so checkboxes toggle instantly
+  useEffect(() => {
+    let cancelled = false;
+    const allCategories: PoiCategory[] = POI_CATEGORIES.map((c) => c.id);
+    const mapboxCategories = ["restaurant", "cafe", "parking"] as const;
+    const cacheKey = `poi-${latitude.toFixed(4)}-${longitude.toFixed(4)}`;
+
+    // Check localStorage cache first
+    const cached = getCached(cacheKey);
+    if (cached) {
+      setState((prev) => ({
+        ...prev,
+        pois: cached,
+        loading: new Set(),
+      }));
+      return;
+    }
+
+    setState((prev) => ({
+      ...prev,
+      loading: new Set(allCategories),
+    }));
+
+    // Collect all results to cache when done
+    const allPois: Record<string, POI[]> = {};
+    let pending = 4; // 1 transit + 3 mapbox
+    const maybeCache = () => {
+      pending--;
+      if (pending === 0 && !cancelled) {
+        setCache(cacheKey, allPois);
+      }
+    };
+
+    // Single Overpass call for all transit (fast, no rate limiting)
+    fetchAllTransitPOIs(longitude, latitude)
+      .then((transitPois) => {
+        if (cancelled) return;
+        Object.assign(allPois, transitPois);
+        maybeCache();
+        setState((prev) => {
+          const nextLoading = new Set(prev.loading);
+          nextLoading.delete("ubahn");
+          nextLoading.delete("sbahn");
+          nextLoading.delete("bus");
+          return {
+            ...prev,
+            pois: { ...prev.pois, ...transitPois },
+            loading: nextLoading,
+          };
+        });
+      })
+      .catch(() => {
+        if (cancelled) return;
+        Object.assign(allPois, { ubahn: [], sbahn: [], bus: [] });
+        maybeCache();
+        setState((prev) => {
+          const nextLoading = new Set(prev.loading);
+          nextLoading.delete("ubahn");
+          nextLoading.delete("sbahn");
+          nextLoading.delete("bus");
+          return {
+            ...prev,
+            pois: { ...prev.pois, ubahn: [], sbahn: [], bus: [] },
+            loading: nextLoading,
+          };
+        });
       });
 
-      // Fetch if not cached
-      if (!pois[cat]) {
-        setLoading((prev) => new Set(prev).add(cat));
-        const results = await fetchNearbyPOIs(longitude, latitude, cat);
-        setPois((prev) => ({ ...prev, [cat]: results }));
-        setLoading((prev) => {
-          const next = new Set(prev);
-          next.delete(cat);
-          return next;
+    // Mapbox calls for restaurants/cafés/parking (parallel)
+    for (const cat of mapboxCategories) {
+      fetchMapboxPOIs(longitude, latitude, cat)
+        .then((results) => {
+          if (cancelled) return;
+          allPois[cat] = results;
+          maybeCache();
+          setState((prev) => {
+            const nextLoading = new Set(prev.loading);
+            nextLoading.delete(cat);
+            return {
+              ...prev,
+              pois: { ...prev.pois, [cat]: results },
+              loading: nextLoading,
+            };
+          });
+        })
+        .catch(() => {
+          if (cancelled) return;
+          allPois[cat] = [];
+          maybeCache();
+          setState((prev) => {
+            const nextLoading = new Set(prev.loading);
+            nextLoading.delete(cat);
+            return { ...prev, pois: { ...prev.pois, [cat]: [] }, loading: nextLoading };
+          });
         });
+    }
+
+    return () => { cancelled = true; };
+  }, [latitude, longitude]);
+
+  const toggleCategory = useCallback(
+    (cat: PoiCategory) => {
+      setState((prev) => {
+        const nextActive = new Set(prev.active);
+        if (nextActive.has(cat)) {
+          nextActive.delete(cat);
+        } else {
+          nextActive.add(cat);
+        }
+        return { ...prev, active: nextActive };
+      });
+
+      // Zoom to fit POIs
+      const catPois = state.pois[cat];
+      if (catPois && catPois.length > 0 && !state.active.has(cat) && mapRef.current) {
+        const allLngs = [longitude, ...catPois.map((p) => p.longitude)];
+        const allLats = [latitude, ...catPois.map((p) => p.latitude)];
+        mapRef.current.fitBounds(
+          [
+            [Math.min(...allLngs), Math.min(...allLats)],
+            [Math.max(...allLngs), Math.max(...allLats)],
+          ],
+          { padding: 60, maxZoom: 15, pitch: 45, duration: 600 }
+        );
       }
     },
-    [pois, latitude, longitude]
+    [state.active, state.pois, latitude, longitude]
   );
 
-  // Enable 3D buildings on map load
+  // 3D buildings on load
   const handleLoad = useCallback(() => {
+    setMapLoaded(true);
     const map = mapRef.current?.getMap();
     if (!map) return;
 
-    // Add 3D building layer
     const layers = map.getStyle().layers;
     const labelLayerId = layers?.find(
       (layer) =>
-        layer.type === "symbol" && (layer.layout as Record<string, unknown>)?.["text-field"]
+        layer.type === "symbol" &&
+        (layer.layout as Record<string, unknown>)?.["text-field"]
     )?.id;
 
     if (!map.getLayer("3d-buildings")) {
@@ -211,86 +361,142 @@ export default function ListingMapInner({
     }
   }, []);
 
-  // Collect all visible POIs
-  const visiblePois = Array.from(activeCategories).flatMap(
-    (cat) => pois[cat] || []
-  );
+  // Compute visible POIs from state
+  const visiblePois: POI[] = [];
+  for (const cat of state.active) {
+    const catPois = state.pois[cat];
+    if (catPois) visiblePois.push(...catPois);
+  }
 
-  // Group POIs by transport vs other for the sidebar
+  // Native mapbox-gl markers for POIs (bypasses react-map-gl overlay issues)
+  const poiMarkersRef = useRef<mapboxgl.Marker[]>([]);
+  useEffect(() => {
+    if (!mapLoaded) return;
+    const map = mapRef.current?.getMap();
+    if (!map) return;
+
+    const markers: mapboxgl.Marker[] = [];
+
+    for (const catId of state.active) {
+      const catPois = state.pois[catId];
+      if (!catPois) continue;
+      const catConfig = POI_CATEGORIES.find((c) => c.id === catId)!;
+
+      catPois.forEach((poi) => {
+        const el = document.createElement("div");
+        el.style.cssText = `
+          width: 32px; height: 32px;
+          background: ${catConfig.color};
+          border: 2.5px solid white;
+          border-radius: 50%;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 16px; cursor: pointer; line-height: 1;
+        `;
+        el.textContent = catConfig.icon;
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          setSelectedPoi(poi);
+        });
+
+        const marker = new mapboxgl.Marker({ element: el })
+          .setLngLat([poi.longitude, poi.latitude])
+          .addTo(map);
+        markers.push(marker);
+      });
+    }
+
+    poiMarkersRef.current = markers;
+    return () => {
+      markers.forEach((m) => m.remove());
+    };
+  }, [state.active, state.pois, mapLoaded]);
+
   const transportCategories = ["ubahn", "sbahn", "bus"] as const;
   const otherCategories = ["restaurant", "cafe", "parking"] as const;
 
   return (
-    <div className="flex overflow-hidden rounded-lg border" style={{ height: 420 }}>
+    <div className="flex rounded-lg border" style={{ height: 560 }}>
       {/* Sidebar */}
-      <div className="w-[220px] shrink-0 overflow-y-auto border-r bg-white p-4">
-        <p className="mb-1 text-sm font-semibold">{name}</p>
-        <p className="mb-4 text-xs text-muted-text">{address}</p>
+      <div className="flex w-[260px] shrink-0 flex-col border-r bg-white">
+        <div className="flex-1 overflow-y-auto p-5">
+          <p className="text-sm font-semibold">{name}</p>
+          <p className="mt-0.5 text-xs text-muted-text">{address}</p>
 
-        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-text">
-          Transport
-        </p>
-        {transportCategories.map((catId) => {
-          const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
-          const isActive = activeCategories.has(catId);
-          const count = pois[catId]?.length;
-          const isLoading = loading.has(catId);
-          return (
-            <label
-              key={catId}
-              className="mb-1.5 flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 text-sm hover:bg-slate-50"
-            >
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={() => toggleCategory(catId)}
-                className="h-4 w-4 rounded border-slate-300 accent-blue-600"
-              />
-              <span style={{ fontSize: 14 }}>{cat.icon}</span>
-              <span className="flex-1">{cat.label}</span>
-              <span className="text-xs text-muted-text">
-                {isLoading ? "…" : count !== undefined ? count : ""}
-              </span>
-            </label>
-          );
-        })}
+          <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+            Transport
+          </p>
+          {transportCategories.map((catId) => {
+            const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
+            const isActive = state.active.has(catId);
+            const count = state.pois[catId]?.length;
+            const isLoading = state.loading.has(catId);
+            return (
+              <label
+                key={catId}
+                className="mb-1 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50"
+              >
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => toggleCategory(catId)}
+                  className="h-4 w-4 rounded border-slate-300 accent-blue-600"
+                />
+                <span style={{ fontSize: 15 }}>{cat.icon}</span>
+                <span className="flex-1">{cat.label}</span>
+                <span className="min-w-[20px] text-right text-xs text-muted-text">
+                  {isLoading ? "…" : count !== undefined ? count : ""}
+                </span>
+              </label>
+            );
+          })}
 
-        <p className="mb-2 mt-4 text-xs font-medium uppercase tracking-wide text-muted-text">
-          In der Nähe
-        </p>
-        {otherCategories.map((catId) => {
-          const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
-          const isActive = activeCategories.has(catId);
-          const count = pois[catId]?.length;
-          const isLoading = loading.has(catId);
-          return (
-            <label
-              key={catId}
-              className="mb-1.5 flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 text-sm hover:bg-slate-50"
-            >
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={() => toggleCategory(catId)}
-                className="h-4 w-4 rounded border-slate-300 accent-blue-600"
-              />
-              <span style={{ fontSize: 14 }}>{cat.icon}</span>
-              <span className="flex-1">{cat.label}</span>
-              <span className="text-xs text-muted-text">
-                {isLoading ? "…" : count !== undefined ? count : ""}
-              </span>
-            </label>
-          );
-        })}
+          <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+            In der Nähe
+          </p>
+          {otherCategories.map((catId) => {
+            const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
+            const isActive = state.active.has(catId);
+            const count = state.pois[catId]?.length;
+            const isLoading = state.loading.has(catId);
+            return (
+              <label
+                key={catId}
+                className="mb-1 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50"
+              >
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => toggleCategory(catId)}
+                  className="h-4 w-4 rounded border-slate-300 accent-blue-600"
+                />
+                <span style={{ fontSize: 15 }}>{cat.icon}</span>
+                <span className="flex-1">{cat.label}</span>
+                <span className="min-w-[20px] text-right text-xs text-muted-text">
+                  {isLoading ? "…" : count !== undefined ? count : ""}
+                </span>
+              </label>
+            );
+          })}
 
-        <p className="mt-4 text-[11px] text-muted-text">
-          Klicken Sie auf Markierungen für Details.
-        </p>
+          {visiblePois.length > 0 && (
+            <p className="mt-4 text-[11px] text-muted-text">
+              {visiblePois.length} Ergebnisse auf der Karte
+            </p>
+          )}
+        </div>
+
+        <div className="border-t px-5 py-4">
+          <div className="flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-500">
+            <span className="mt-px shrink-0">&#9432;</span>
+            <span>Klicke auf die Markierungen, um Details zu sehen</span>
+          </div>
+        </div>
       </div>
 
       {/* Map */}
-      <div className="relative flex-1">
-        <Map
+      <div className="relative flex-1" style={{ overflow: "visible" }}>
+        <MapGL
           ref={mapRef}
           initialViewState={{
             latitude,
@@ -311,6 +517,7 @@ export default function ListingMapInner({
             latitude={latitude}
             longitude={longitude}
             anchor="bottom"
+            style={{ zIndex: 0 }}
           >
             <div
               style={{
@@ -325,22 +532,6 @@ export default function ListingMapInner({
             />
           </Marker>
 
-          {/* POI markers */}
-          {visiblePois.map((poi) => (
-            <Marker
-              key={poi.id}
-              latitude={poi.latitude}
-              longitude={poi.longitude}
-              anchor="center"
-              onClick={(e) => {
-                e.originalEvent.stopPropagation();
-                setSelectedPoi(poi);
-              }}
-            >
-              <PoiMarker category={poi.category} />
-            </Marker>
-          ))}
-
           {/* POI popup */}
           {selectedPoi && (
             <Popup
@@ -348,8 +539,8 @@ export default function ListingMapInner({
               longitude={selectedPoi.longitude}
               onClose={() => setSelectedPoi(null)}
               closeOnClick={false}
-              offset={[0, -14]}
-              maxWidth="200px"
+              offset={[0, -18]}
+              maxWidth="220px"
             >
               <p style={{ fontWeight: 600, fontSize: 13, margin: 0 }}>
                 {selectedPoi.name}
@@ -365,7 +556,7 @@ export default function ListingMapInner({
               </p>
             </Popup>
           )}
-        </Map>
+        </MapGL>
       </div>
     </div>
   );

@@ -70,7 +70,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
         <Header />
         <main suppressHydrationWarning>{children}</main>
         <Footer />

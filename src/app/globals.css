@@ -93,8 +93,13 @@
 
 @layer base {
   html {
-    overflow-y: scroll;
-    scrollbar-gutter: stable;
+    overflow-x: hidden;
+  }
+  @media (min-width: 1024px) {
+    html {
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
   }
   * {
     @apply border-border;
@@ -161,4 +166,22 @@
   font-size: 16px;
   padding: 4px 8px;
   color: #64748b;
+}
+/* Transit line hover tooltip — minimal chrome */
+.transit-line-tooltip .mapboxgl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.transit-line-tooltip .mapboxgl-popup-tip {
+  display: none;
+}
+
+/* Hide scrollbar but keep scroll */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

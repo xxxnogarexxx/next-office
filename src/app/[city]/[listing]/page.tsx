@@ -250,23 +250,6 @@ export default async function ListingDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            <Separator className="my-8" />
-
-            {/* Location */}
-            <div>
-              <h2 className="text-xl font-semibold">Standort</h2>
-              <p className="mt-2 text-body">
-                {listing.address}, {listing.postalCode} {listing.city}
-              </p>
-              <div className="mt-4">
-                <ListingMap
-                  latitude={listing.latitude}
-                  longitude={listing.longitude}
-                  name={listing.name}
-                  address={`${listing.address}, ${listing.postalCode} ${listing.city}`}
-                />
-              </div>
-            </div>
           </div>
 
           {/* Sticky sidebar — desktop (lower position) */}
@@ -278,6 +261,24 @@ export default async function ListingDetailPage({ params }: PageProps) {
                 sidebarOnly
               />
             </div>
+          </div>
+        </div>
+
+        <Separator className="my-8" />
+
+        {/* Location — full width */}
+        <div>
+          <h2 className="text-xl font-semibold">Standort</h2>
+          <p className="mt-2 text-body">
+            {listing.address}, {listing.postalCode} {listing.city}
+          </p>
+          <div className="mt-4">
+            <ListingMap
+              latitude={listing.latitude}
+              longitude={listing.longitude}
+              name={listing.name}
+              address={`${listing.address}, ${listing.postalCode} ${listing.city}`}
+            />
           </div>
         </div>
 

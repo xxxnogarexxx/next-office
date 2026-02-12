@@ -1,6 +1,6 @@
 export const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
 
-export const MAP_STYLE = "mapbox://styles/mapbox/light-v11";
+export const MAP_STYLE = "mapbox://styles/mapbox/streets-v12";
 
 // Default views
 export const GERMANY_CENTER = { latitude: 51.1657, longitude: 10.4515 };
