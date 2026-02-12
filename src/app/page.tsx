@@ -80,11 +80,8 @@ export default function HomePage() {
           </div>
 
           {/* Mobile search bar — overlaps bottom of image */}
-          <div className="relative z-10 mx-5 -mt-7 pb-6 sm:mx-8 lg:hidden">
-            <p className="mb-2 text-sm font-medium text-foreground">
-              Büro finden
-            </p>
-            <SearchBar variant="hero" />
+          <div className="relative z-10 mx-5 -mt-8 pb-6 sm:mx-8 lg:hidden">
+            <SearchBar variant="hero" className="[&>div]:shadow-lg [&>div]:rounded-2xl" />
             <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
               <span>Beliebte Städte:</span>
               {cities.map((city) => (
