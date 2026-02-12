@@ -1,9 +1,30 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Shield, Clock, TrendingUp } from "lucide-react";
+import { ArrowRight, Shield, Clock, TrendingUp, Star, Phone, Mail } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { SearchBar } from "@/components/search-bar";
 import { cities } from "@/lib/mock-data";
+
+const testimonials = [
+  {
+    text: "Der Service war beeindruckend, von der Auswahl der Spaces, die Kommunikation bis hin zu den Besichtigungen war alles top geplant und stets mega freundlich. Ich empfehle den Service definitiv weiter.",
+    name: "Melissa Blume",
+    role: "Head of HR",
+    company: "Salesfive Consulting GmbH",
+  },
+  {
+    text: "NextOffice hat uns dabei unterstützt, das für uns optimal passende Büro zu finden und uns bis zum Vertragsabschluss betreut. Der Service war immer kompetent und freundlich!",
+    name: "Dr. Ralf Heublein",
+    role: "Geschäftsführer",
+    company: "Mediapool Content Services GmbH",
+  },
+  {
+    text: "NextOffice hat uns dabei geholfen, ein geeignetes Büro zu finden. Uns hat die schnelle, professionelle und freundliche Beratung überzeugt und wir können den Service wärmstens empfehlen.",
+    name: "Thomas Urban",
+    role: "Geschäftsführer",
+    company: "KUMAVISION GmbH",
+  },
+];
 
 export default function HomePage() {
   return (
@@ -35,7 +56,7 @@ export default function HomePage() {
               {/* Quick city links — desktop only */}
               <div className="mt-5 hidden flex-wrap items-center gap-2 text-sm text-body lg:flex">
                 <span>Beliebte Städte:</span>
-                {cities.map((city) => (
+                {cities.slice(0, 4).map((city) => (
                   <Link
                     key={city.slug}
                     href={`/${city.slug}`}
@@ -92,7 +113,7 @@ export default function HomePage() {
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
               <span>Beliebte Städte:</span>
-              {cities.map((city) => (
+              {cities.slice(0, 4).map((city) => (
                 <Link
                   key={city.slug}
                   href={`/${city.slug}`}
@@ -126,7 +147,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cities.map((city) => (
             <Link
               key={city.slug}
@@ -139,7 +160,7 @@ export default function HomePage() {
                   alt={`Büros in ${city.name}`}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-0 p-4 text-white">
@@ -197,18 +218,128 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Lead form CTA */}
+      {/* Testimonials */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">
-            Kostenlose Beratung anfragen
-          </h2>
-          <p className="mx-auto mt-2 max-w-xl text-body">
-            Sagen Sie uns, was Sie suchen — wir finden das passende Büro für Sie.
-          </p>
+        <h2 className="text-center text-2xl font-bold sm:text-3xl">
+          Das sagen unsere Kunden
+        </h2>
+        <p className="mx-auto mt-2 max-w-xl text-center text-body">
+          Über 500 Unternehmen haben mit uns ihr neues Büro gefunden.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {testimonials.map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col rounded-xl border bg-white p-6"
+            >
+              <div className="mb-4 flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-4 w-4 fill-amber-400 text-amber-400"
+                  />
+                ))}
+              </div>
+              <p className="flex-1 text-sm leading-relaxed text-body">
+                &ldquo;{t.text}&rdquo;
+              </p>
+              <div className="mt-6 border-t pt-4">
+                <p className="font-semibold text-foreground">{t.name}</p>
+                <p className="text-sm text-muted-text">
+                  {t.role}, {t.company}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="mt-8">
-          <LeadForm variant="inline" />
+      </section>
+
+      {/* Contact CTA */}
+      <section className="bg-surface">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid items-start gap-12 lg:grid-cols-5">
+            {/* Left — form */}
+            <div className="lg:col-span-3">
+              <h2 className="text-2xl font-bold sm:text-3xl">
+                Kontaktieren Sie uns und finden das
+                <br className="hidden sm:block" />
+                richtige Büro für Ihr Business.
+              </h2>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "100% kostenlos: Es entstehen Ihnen niemals Kosten.",
+                  "Bestpreis-Garantie: Sie bekommen die niedrigsten Preise.",
+                  "Service aus einer Hand: Sie müssen sich um nichts kümmern.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-body">
+                    <svg
+                      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8">
+                <LeadForm variant="inline" />
+              </div>
+            </div>
+
+            {/* Right — contact card */}
+            <div className="lg:col-span-2">
+              <div className="rounded-2xl border bg-white p-6 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src="/team-benjamin.jpg"
+                    alt="Benjamin Plass"
+                    width={64}
+                    height={64}
+                    className="rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-foreground">
+                      Ihr Ansprechpartner
+                    </p>
+                    <p className="text-sm text-body">Benjamin Plass</p>
+                  </div>
+                </div>
+
+                <hr className="my-5" />
+
+                <p className="text-sm text-body">
+                  Wir sind von Mo. - Fr. von 09:00-18:00 Uhr telefonisch für
+                  Sie erreichbar!
+                </p>
+
+                <div className="mt-5 space-y-4">
+                  <a
+                    href="tel:+4930200042000"
+                    className="flex items-center gap-3 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    <Phone className="h-5 w-5 text-muted-text" />
+                    +49 30 200042000
+                  </a>
+                  <a
+                    href="mailto:info@next-office.io"
+                    className="flex items-center gap-3 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    <Mail className="h-5 w-5 text-muted-text" />
+                    info@next-office.io
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

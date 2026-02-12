@@ -72,6 +72,24 @@ export const cities: City[] = [
     latitude: 50.1109,
     longitude: 8.6821,
   },
+  {
+    name: "Köln",
+    slug: "koeln",
+    country: "Deutschland",
+    listingCount: 18,
+    image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop",
+    latitude: 50.9375,
+    longitude: 6.9603,
+  },
+  {
+    name: "Düsseldorf",
+    slug: "duesseldorf",
+    country: "Deutschland",
+    listingCount: 15,
+    image: "https://images.unsplash.com/photo-1623789246819-3e02a4dfe3d2?w=600&h=400&fit=crop",
+    latitude: 51.2277,
+    longitude: 6.7735,
+  },
 ];
 
 export const listings: Listing[] = [
