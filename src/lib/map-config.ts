@@ -10,7 +10,7 @@ export const LISTING_ZOOM = 15;
 
 // Pin colors
 export const PIN_COLOR = "#2563EB";
-export const PIN_COLOR_ACTIVE = "#1E40AF";
+export const PIN_COLOR_ACTIVE = "#0f172a";
 export const PIN_BORDER_COLOR = "#FFFFFF";
 
 // POI categories

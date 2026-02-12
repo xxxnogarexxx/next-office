@@ -334,6 +334,7 @@ export default function SearchMapInner({
             latitude={listing.latitude}
             longitude={listing.longitude}
             anchor="bottom"
+            style={{ zIndex: isActive ? 10 : 1 }}
             onClick={(e) => { e.originalEvent.stopPropagation(); setActiveId(listing.id); }}
           >
             <PinMarker isActive={isActive} />
