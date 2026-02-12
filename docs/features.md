@@ -11,9 +11,9 @@
 
 | # | Task | Bereich |
 |---|------|---------|
-| 1 | Supabase Backend aufsetzen (PostgreSQL) | Infrastruktur |
-| 2 | Formulare live schalten — Leads in DB speichern | Lead-Formulare |
-| 3 | E-Mail-Benachrichtigung bei neuer Anfrage | Lead-Formulare |
+| ~~1~~ | ~~Supabase Backend aufsetzen (PostgreSQL)~~ ✅ | Infrastruktur |
+| ~~2~~ | ~~Formulare live schalten — Leads in DB speichern~~ ✅ | Lead-Formulare |
+| ~~3~~ | ~~E-Mail-Benachrichtigung bei neuer Anfrage (Resend)~~ ✅ | Lead-Formulare |
 | 4 | Cookie Consent Banner (DSGVO-Pflicht) | Infrastruktur |
 | 5 | Analytics einbinden (Google Analytics / Plausible) | Infrastruktur |
 | 6 | Google Search Console — Indexierung prüfen | SEO |
@@ -84,9 +84,8 @@
 - [x] Felder: Name, E-Mail, Telefon, Teamgröße, Einzugsdatum, Stadt, Nachricht
 - [x] Erfolgs-Bestätigung nach Absenden
 - [x] MutationObserver gegen Passwort-Manager-Shaking
-- [~] "Anfrage gesendet" — Daten werden NICHT gespeichert
-- [ ] Backend-Anbindung (Supabase)
-- [ ] E-Mail-Benachrichtigung bei neuer Anfrage
+- [x] Backend-Anbindung (Supabase) — Leads in DB gespeichert
+- [x] E-Mail-Benachrichtigung bei neuer Anfrage (Resend)
 - [ ] Lead-Daten an CRM weiterleiten
 
 ### SEO
@@ -119,7 +118,8 @@
 - [x] Vercel Deployment (Auto-Deploy via GitHub)
 - [x] Custom Domain (next-office.io)
 - [x] SSL/HTTPS
-- [ ] Supabase Backend (PostgreSQL)
+- [x] Supabase Backend (PostgreSQL)
+- [ ] Google Workspace Domain-Alias — @next-office.io als Alias in Google Workspace einrichten (E-Mails in bestehendem Postfach empfangen)
 - [ ] Analytics (Google Analytics / Plausible)
 - [ ] Cookie Consent Banner (DSGVO)
 - [ ] Error Monitoring (Sentry)
