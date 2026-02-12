@@ -258,7 +258,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
               <p className="mt-2 text-body">
                 {listing.address}, {listing.postalCode} {listing.city}
               </p>
-              <div className="mt-4 h-72 rounded-lg overflow-hidden">
+              <div className="mt-4">
                 <ListingMap
                   latitude={listing.latitude}
                   longitude={listing.longitude}

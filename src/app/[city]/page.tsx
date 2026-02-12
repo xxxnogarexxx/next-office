@@ -62,7 +62,7 @@ export default function CitySearchPage() {
           </div>
         </div>
 
-        {/* Map — only mount when visible to prevent Leaflet 0-dimension crash */}
+        {/* Map — only mount when visible to prevent 0-dimension rendering issues */}
         {(showMap || isDesktop) && (
           <div
             className={`${
