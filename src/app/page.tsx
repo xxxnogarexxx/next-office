@@ -79,9 +79,17 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Mobile search bar — overlaps bottom of image */}
-          <div className="relative z-10 mx-5 -mt-8 pb-6 sm:mx-8 lg:hidden">
-            <SearchBar variant="hero" className="[&>div]:shadow-lg [&>div]:rounded-2xl" />
+          {/* Mobile search bar — card overlapping bottom of image */}
+          <div className="relative z-10 mx-auto -mt-12 w-[85%] max-w-sm pb-6 lg:hidden">
+            <div className="rounded-2xl bg-white px-4 pb-3 pt-4 shadow-lg">
+              <p className="mb-2 text-sm font-medium text-foreground">
+                Büro finden
+              </p>
+              <SearchBar
+                variant="hero"
+                className="[&>div]:bg-transparent [&>div]:p-0 [&>div]:shadow-none [&>div]:rounded-none"
+              />
+            </div>
             <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
               <span>Beliebte Städte:</span>
               {cities.map((city) => (
