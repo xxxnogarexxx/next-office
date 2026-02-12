@@ -12,8 +12,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 pt-6 pb-2 sm:px-6 lg:px-8">
         <div className="relative rounded-2xl bg-surface lg:rounded-3xl">
           <div className="grid lg:grid-cols-2">
-            {/* Left — text + search */}
-            <div className="flex flex-col justify-center px-6 py-12 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+            {/* Text — centered on mobile, left-aligned on desktop */}
+            <div className="flex flex-col items-center px-6 pt-10 pb-2 text-center sm:px-10 sm:pt-14 lg:items-start lg:justify-center lg:px-14 lg:py-20 lg:text-left">
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                 Bürosuche war noch
                 <br />
@@ -24,16 +24,16 @@ export default function HomePage() {
                 Spaces — kostenlose Beratung, beste Konditionen.
               </p>
 
-              {/* Search bar */}
-              <div className="mt-8 max-w-lg">
+              {/* Search bar — desktop only */}
+              <div className="mt-8 hidden w-full max-w-lg lg:block">
                 <p className="mb-2 text-sm font-medium text-foreground">
                   Büro finden
                 </p>
                 <SearchBar variant="hero" />
               </div>
 
-              {/* Quick city links */}
-              <div className="mt-5 flex flex-wrap items-center gap-2 text-sm text-body">
+              {/* Quick city links — desktop only */}
+              <div className="mt-5 hidden flex-wrap items-center gap-2 text-sm text-body lg:flex">
                 <span>Beliebte Städte:</span>
                 {cities.map((city) => (
                   <Link
@@ -47,7 +47,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — hero image with fade */}
+            {/* Right — hero image with fade (desktop) */}
             <div className="relative hidden min-h-[400px] overflow-hidden rounded-r-2xl lg:block lg:rounded-r-3xl">
               <Image
                 src="/hero-office.jpg"
@@ -57,7 +57,6 @@ export default function HomePage() {
                 className="object-cover"
                 sizes="50vw"
               />
-              {/* Gradient fade from bg-surface into image */}
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
@@ -68,22 +67,36 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mobile hero image with top fade */}
-          <div className="relative aspect-[16/9] overflow-hidden rounded-b-2xl lg:hidden">
+          {/* Mobile hero image */}
+          <div className="relative mx-4 mt-6 aspect-[16/10] overflow-hidden rounded-xl lg:hidden">
             <Image
               src="/hero-office.jpg"
               alt="Modernes Open-Space-Büro mit Personen an Holztischen"
               fill
+              priority
               className="object-cover"
               sizes="100vw"
             />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(to bottom, #F8FAFC 0%, rgba(248,250,252,0.4) 20%, rgba(248,250,252,0) 50%)",
-              }}
-            />
+          </div>
+
+          {/* Mobile search bar — overlaps bottom of image */}
+          <div className="relative z-10 mx-5 -mt-7 pb-6 sm:mx-8 lg:hidden">
+            <p className="mb-2 text-sm font-medium text-foreground">
+              Büro finden
+            </p>
+            <SearchBar variant="hero" />
+            <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
+              <span>Beliebte Städte:</span>
+              {cities.map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}`}
+                  className="font-medium text-foreground underline underline-offset-2 hover:text-body transition-colors"
+                >
+                  {city.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
