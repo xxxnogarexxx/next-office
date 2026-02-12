@@ -385,13 +385,14 @@ export default function ListingMapInner({
       catPois.forEach((poi) => {
         const el = document.createElement("div");
         el.style.cssText = `
-          width: 32px; height: 32px;
+          width: 30px; height: 30px;
           background: ${catConfig.color};
           border: 2.5px solid white;
           border-radius: 50%;
           box-shadow: 0 2px 6px rgba(0,0,0,0.35);
           display: flex; align-items: center; justify-content: center;
-          font-size: 16px; cursor: pointer; line-height: 1;
+          font-size: 15px; cursor: pointer; line-height: 1;
+          z-index: 1;
         `;
         el.textContent = catConfig.icon;
         el.addEventListener("click", (e) => {
@@ -512,22 +513,22 @@ export default function ListingMapInner({
         >
           <NavigationControl position="top-right" />
 
-          {/* Main listing pin */}
+          {/* Main listing pin — always on top of POI markers */}
           <Marker
             latitude={latitude}
             longitude={longitude}
             anchor="bottom"
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 10 }}
           >
             <div
               style={{
-                width: 36,
-                height: 36,
+                width: 44,
+                height: 44,
                 background: PIN_COLOR,
-                border: `3px solid ${PIN_BORDER_COLOR}`,
+                border: `3.5px solid ${PIN_BORDER_COLOR}`,
                 borderRadius: "50% 50% 50% 0",
                 transform: "rotate(-45deg)",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
+                boxShadow: "0 3px 10px rgba(0,0,0,0.4)",
               }}
             />
           </Marker>

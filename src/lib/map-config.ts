@@ -15,7 +15,7 @@ export const PIN_BORDER_COLOR = "#FFFFFF";
 
 // POI categories
 export const POI_CATEGORIES = [
-  { id: "ubahn", label: "U-Bahn", icon: "🚇", color: "#2563EB" },
+  { id: "ubahn", label: "U-Bahn", icon: "🚇", color: "#D97706" },
   { id: "sbahn", label: "S-Bahn", icon: "🚈", color: "#16A34A" },
   { id: "bus", label: "Bus", icon: "🚌", color: "#9333EA" },
   { id: "restaurant", label: "Restaurants", icon: "🍽️", color: "#F97316" },

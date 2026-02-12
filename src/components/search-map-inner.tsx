@@ -343,21 +343,37 @@ export default function SearchMapInner({
           onClose={() => setActiveId(null)}
           closeOnClick={false}
           offset={[0, -36]}
-          maxWidth="240px"
+          maxWidth="320px"
         >
           <a
             href={`/${activeListing.citySlug}/${activeListing.slug}`}
-            style={{ textDecoration: "none", color: "inherit", display: "block", minWidth: 180 }}
+            style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 10, minWidth: 260 }}
           >
-            <p style={{ fontWeight: 600, fontSize: 14, margin: 0, color: "#0f172a" }}>
-              {activeListing.name}
-            </p>
-            <p style={{ fontSize: 12, color: "#64748b", margin: "4px 0 0" }}>
-              {activeListing.address}, {activeListing.city}
-            </p>
-            <p style={{ fontSize: 13, fontWeight: 600, margin: "6px 0 0", color: "#2563EB" }}>
-              ab {activeListing.priceFrom} €/Monat →
-            </p>
+            <img
+              src={activeListing.coverPhoto}
+              alt={activeListing.name}
+              style={{
+                width: 90,
+                height: 90,
+                objectFit: "cover",
+                borderRadius: 8,
+                flexShrink: 0,
+              }}
+            />
+            <div style={{ minWidth: 0, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3 }}>
+              <p style={{ fontWeight: 600, fontSize: 14, margin: 0, color: "#0f172a", lineHeight: 1.3 }}>
+                {activeListing.name}
+              </p>
+              <p style={{ fontSize: 12, color: "#64748b", margin: 0 }}>
+                {activeListing.address}, {activeListing.city}
+              </p>
+              <div style={{ display: "flex", gap: 10, fontSize: 12, color: "#64748b", margin: 0 }}>
+                <span>{activeListing.capacityMin}–{activeListing.capacityMax} Pers.</span>
+                <span style={{ fontWeight: 600, color: "#2563EB" }}>
+                  ab {activeListing.priceFrom} €/Mo.
+                </span>
+              </div>
+            </div>
           </a>
         </Popup>
       )}
