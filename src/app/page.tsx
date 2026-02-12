@@ -11,18 +11,21 @@ const testimonials = [
     name: "Melissa Blume",
     role: "Head of HR",
     company: "Salesfive Consulting GmbH",
+    image: "/testimonial-melissa.jpg",
   },
   {
     text: "NextOffice hat uns dabei unterstützt, das für uns optimal passende Büro zu finden und uns bis zum Vertragsabschluss betreut. Der Service war immer kompetent und freundlich!",
     name: "Dr. Ralf Heublein",
     role: "Geschäftsführer",
     company: "Mediapool Content Services GmbH",
+    image: "/testimonial-ralf.jpg",
   },
   {
     text: "NextOffice hat uns dabei geholfen, ein geeignetes Büro zu finden. Uns hat die schnelle, professionelle und freundliche Beratung überzeugt und wir können den Service wärmstens empfehlen.",
     name: "Thomas Urban",
     role: "Geschäftsführer",
     company: "KUMAVISION GmbH",
+    image: "/testimonial-thomas.jpg",
   },
 ];
 
@@ -244,11 +247,20 @@ export default function HomePage() {
               <p className="flex-1 text-sm leading-relaxed text-body">
                 &ldquo;{t.text}&rdquo;
               </p>
-              <div className="mt-6 border-t pt-4">
-                <p className="font-semibold text-foreground">{t.name}</p>
-                <p className="text-sm text-muted-text">
-                  {t.role}, {t.company}
-                </p>
+              <div className="mt-6 flex items-center gap-3 border-t pt-4">
+                <Image
+                  src={t.image}
+                  alt={t.name}
+                  width={44}
+                  height={44}
+                  className="rounded-full object-cover"
+                />
+                <div>
+                  <p className="font-semibold text-foreground">{t.name}</p>
+                  <p className="text-sm text-muted-text">
+                    {t.role}, {t.company}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -256,87 +268,56 @@ export default function HomePage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid items-start gap-12 lg:grid-cols-5">
-            {/* Left — form */}
-            <div className="lg:col-span-3">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-2xl bg-surface lg:rounded-3xl">
+          <div className="grid lg:grid-cols-5">
+            {/* Left — text + form */}
+            <div className="px-6 py-10 sm:px-10 sm:py-14 lg:col-span-3 lg:px-14 lg:py-16">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Kontaktieren Sie uns und finden das
-                <br className="hidden sm:block" />
-                richtige Büro für Ihr Business.
+                Kostenlose Beratung anfragen
               </h2>
-              <ul className="mt-6 space-y-3">
-                {[
-                  "100% kostenlos: Es entstehen Ihnen niemals Kosten.",
-                  "Bestpreis-Garantie: Sie bekommen die niedrigsten Preise.",
-                  "Service aus einer Hand: Sie müssen sich um nichts kümmern.",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-body">
-                    <svg
-                      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-3 max-w-lg text-body">
+                Sagen Sie uns, was Sie suchen — wir finden das passende Büro für
+                Sie. 100% kostenlos, unverbindlich und persönlich.
+              </p>
+
               <div className="mt-8">
                 <LeadForm variant="inline" />
               </div>
             </div>
 
-            {/* Right — contact card */}
-            <div className="lg:col-span-2">
-              <div className="rounded-2xl border bg-white p-6 shadow-sm">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src="/team-benjamin.jpg"
-                    alt="Benjamin Plass"
-                    width={64}
-                    height={64}
-                    className="rounded-full object-cover"
-                  />
-                  <div>
-                    <p className="font-bold text-foreground">
-                      Ihr Ansprechpartner
-                    </p>
-                    <p className="text-sm text-body">Benjamin Plass</p>
-                  </div>
-                </div>
+            {/* Right — contact person */}
+            <div className="flex flex-col items-center justify-center bg-white px-6 py-10 text-center sm:px-10 lg:col-span-2 lg:py-16">
+              <Image
+                src="/team-benjamin.jpg"
+                alt="Benjamin Plass"
+                width={96}
+                height={96}
+                className="rounded-full object-cover"
+              />
+              <p className="mt-4 text-lg font-bold text-foreground">
+                Benjamin Plass
+              </p>
+              <p className="text-sm text-body">Ihr Ansprechpartner</p>
 
-                <hr className="my-5" />
-
-                <p className="text-sm text-body">
-                  Wir sind von Mo. - Fr. von 09:00-18:00 Uhr telefonisch für
-                  Sie erreichbar!
+              <div className="mt-6 w-full max-w-xs space-y-3">
+                <p className="text-sm text-muted-text">
+                  Mo. - Fr. 09:00-18:00 Uhr
                 </p>
-
-                <div className="mt-5 space-y-4">
-                  <a
-                    href="tel:+4930200042000"
-                    className="flex items-center gap-3 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                  >
-                    <Phone className="h-5 w-5 text-muted-text" />
-                    +49 30 200042000
-                  </a>
-                  <a
-                    href="mailto:info@next-office.io"
-                    className="flex items-center gap-3 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                  >
-                    <Mail className="h-5 w-5 text-muted-text" />
-                    info@next-office.io
-                  </a>
-                </div>
+                <a
+                  href="tel:+4930200042000"
+                  className="flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+                >
+                  <Phone className="h-4 w-4" />
+                  +49 30 200042000
+                </a>
+                <a
+                  href="mailto:info@next-office.io"
+                  className="flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+                >
+                  <Mail className="h-4 w-4" />
+                  info@next-office.io
+                </a>
               </div>
             </div>
           </div>
