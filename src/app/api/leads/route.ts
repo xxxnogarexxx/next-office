@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       .send({
         from: "NextOffice <noreply@next-office.io>",
         to: process.env.NOTIFICATION_EMAIL!,
-        subject: `[NextOffice] ${body.team_size ? `${body.team_size} AP` : "? AP"} – ${body.start_date || "?"} – ${body.city || "?"}`,
+        subject: `[NextOffice] ${body.team_size ? `${body.team_size} AP` : "? AP"} – ${body.start_date ? new Date(body.start_date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" }) : "?"} – ${body.city || "?"}`,
         html: `
           <div style="font-family:sans-serif;max-width:500px">
             <h2 style="margin:0 0 16px">Neue Lead-Anfrage</h2>
