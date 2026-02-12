@@ -199,9 +199,9 @@ export default async function ListingDetailPage({ params }: PageProps) {
                   value: `ab ${listing.priceFrom} €/Monat`,
                 },
                 {
-                  icon: Building2,
-                  label: "Fläche",
-                  value: `${listing.areaSqm} m²`,
+                  icon: Clock,
+                  label: "Kündigungsfrist",
+                  value: listing.noticePeriod,
                 },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="rounded-lg border p-3">

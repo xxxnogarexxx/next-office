@@ -16,7 +16,6 @@ export interface OfficeOffer {
 interface AvailableOffersProps {
   offers: OfficeOffer[];
   onSelectOffer: (offer: OfficeOffer) => void;
-  onRequestQuote: (offer: OfficeOffer) => void;
 }
 
 const typeIcons = {
@@ -27,7 +26,6 @@ const typeIcons = {
 export function AvailableOffers({
   offers,
   onSelectOffer,
-  onRequestQuote,
 }: AvailableOffersProps) {
   return (
     <div>
@@ -46,14 +44,7 @@ export function AvailableOffers({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="font-semibold text-foreground">{offer.label}</p>
-                    {offer.price && (
-                      <span className="text-sm font-semibold shrink-0">
-                        €{offer.price}/Mon.
-                      </span>
-                    )}
-                  </div>
+                  <p className="font-semibold text-foreground">{offer.label}</p>
                   <div className="mt-0.5 flex items-center gap-3 text-sm text-body">
                     <span className="flex items-center gap-1">
                       <Users className="h-3.5 w-3.5" />
@@ -65,23 +56,14 @@ export function AvailableOffers({
                     </span>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-3 flex items-center gap-3">
                 <Button
                   size="sm"
+                  className="shrink-0"
                   onClick={() => onSelectOffer(offer)}
                 >
-                  Angebot wählen
+                  Angebot erhalten
                 </Button>
-                {!offer.price && (
-                  <button
-                    onClick={() => onRequestQuote(offer)}
-                    className="hidden sm:inline text-sm text-body underline hover:text-foreground transition-colors"
-                  >
-                    Angebot anfragen
-                  </button>
-                )}
               </div>
             </div>
           );

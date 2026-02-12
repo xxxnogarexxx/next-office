@@ -3,16 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { LeadForm } from "@/components/lead-form";
 import { AvailableOffers } from "@/components/available-offers";
-import { Send } from "lucide-react";
+import { Shield, CheckCircle, Users } from "lucide-react";
 import type { Listing } from "@/lib/mock-data";
 import type { OfficeOffer } from "@/components/available-offers";
 
@@ -30,15 +23,8 @@ export function ListingPageClient({
   mobileBarOnly,
 }: ListingPageClientProps) {
   const [formOpen, setFormOpen] = useState(false);
-  const [formType, setFormType] = useState<"contact" | "tour">("contact");
 
   function openContact() {
-    setFormType("contact");
-    setFormOpen(true);
-  }
-
-  function openTour() {
-    setFormType("tour");
     setFormOpen(true);
   }
 
@@ -46,57 +32,49 @@ export function ListingPageClient({
   if (sidebarOnly) {
     return (
       <>
-        <div className="rounded-lg border bg-white p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-sm font-bold text-foreground">
-              {listing.providerName.charAt(0)}
-            </div>
-            <div>
-              <p className="font-semibold text-sm">{listing.providerName}</p>
-              <p className="text-xs text-muted-text">Vermieter</p>
-            </div>
-          </div>
-
-          <p className="mt-3 text-sm text-body">
-            Treten Sie in Kontakt mit dem Vermieter und erhalten Sie die
-            Kontaktadressen direkt via E-Mail zugesandt.
+        <div className="rounded-xl border bg-white p-6 shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
+          {/* Price anchor */}
+          <p className="text-2xl font-bold">
+            ab {listing.priceFrom} €
+            <span className="text-base font-normal text-body"> /Monat</span>
           </p>
 
-          {offers.length > 0 && (
-            <div className="mt-4">
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Angebot auswählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  {offers.map((offer, i) => (
-                    <SelectItem key={i} value={`offer-${i}`}>
-                      {offer.label} ({offer.capacityMin}–{offer.capacityMax}{" "}
-                      Pers.)
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
+          {/* Capacity info */}
+          <p className="mt-1 text-sm text-body">
+            {listing.capacityMin}–{listing.capacityMax} Personen · {listing.noticePeriod} Kündigungsfrist
+          </p>
 
-          <div className="mt-4 flex flex-col gap-2">
-            <Button onClick={openContact} className="w-full h-12 text-base">
-              Vermieter kontaktieren
-            </Button>
-            <Button variant="outline" onClick={openTour} className="w-full h-12 text-base">
-              Besuch planen
-            </Button>
+          {/* CTA Button */}
+          <Button onClick={openContact} className="mt-5 w-full h-12 text-base font-semibold">
+            Angebot erhalten
+          </Button>
+
+          {/* Trust signals */}
+          <div className="mt-5 flex flex-col gap-2.5">
+            <div className="flex items-center gap-2.5 text-sm text-body">
+              <Shield className="h-4 w-4 shrink-0 text-muted-text" />
+              <span>100% kostenlos</span>
+            </div>
+            <div className="flex items-center gap-2.5 text-sm text-body">
+              <CheckCircle className="h-4 w-4 shrink-0 text-muted-text" />
+              <span>Keine versteckten Kosten</span>
+            </div>
+            <div className="flex items-center gap-2.5 text-sm text-body">
+              <Users className="h-4 w-4 shrink-0 text-muted-text" />
+              <span>Über 2.000 Unternehmen vertrauen uns</span>
+            </div>
           </div>
+        </div>
+
+        {/* Urgency badge — separate box */}
+        <div className="mt-3 flex items-center justify-center gap-2 rounded-xl border bg-white px-4 py-3 shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
+          <span className="text-lg">⚡</span>
+          <span className="text-sm font-semibold">Antwort in 30 Minuten</span>
         </div>
 
         <Dialog open={formOpen} onOpenChange={setFormOpen}>
           <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
-            <DialogTitle>
-              {formType === "contact"
-                ? "Vermieter kontaktieren"
-                : "Besuch planen"}
-            </DialogTitle>
+            <DialogTitle>Angebot erhalten</DialogTitle>
             <LeadForm
               variant="sidebar"
               listingId={listing.id}
@@ -113,24 +91,24 @@ export function ListingPageClient({
   if (mobileBarOnly) {
     return (
       <>
-        <div className="fixed bottom-0 left-0 right-0 z-40 border-t bg-white p-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
+        <div className="fixed bottom-0 left-0 right-0 z-40 border-t bg-white p-3 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] lg:hidden">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-base font-bold">
                 ab {listing.priceFrom} €
-                <span className="text-sm font-normal text-body">/Monat</span>
+                <span className="text-sm font-normal text-body"> /Monat</span>
               </p>
+              <p className="text-xs text-muted-text">Kostenlos & unverbindlich</p>
             </div>
-            <Button size="sm" onClick={openContact} className="gap-1.5">
-              <Send className="h-3.5 w-3.5" />
-              Anfragen
+            <Button onClick={openContact} className="h-10 px-5 font-semibold">
+              Angebot erhalten
             </Button>
           </div>
         </div>
 
         <Dialog open={formOpen} onOpenChange={setFormOpen}>
           <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
-            <DialogTitle>Vermieter kontaktieren</DialogTitle>
+            <DialogTitle>Angebot erhalten</DialogTitle>
             <LeadForm
               variant="sidebar"
               listingId={listing.id}
@@ -151,7 +129,6 @@ export function ListingPageClient({
     <AvailableOffers
       offers={offers}
       onSelectOffer={openContact}
-      onRequestQuote={openContact}
     />
   );
 }

@@ -9,9 +9,10 @@ import { cities } from "@/lib/mock-data";
 interface SearchBarProps {
   className?: string;
   size?: "default" | "lg";
+  variant?: "default" | "hero";
 }
 
-export function SearchBar({ className, size = "default" }: SearchBarProps) {
+export function SearchBar({ className, size = "default", variant = "default" }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -74,6 +75,80 @@ export function SearchBar({ className, size = "default" }: SearchBarProps) {
 
   const inputHeight = size === "lg" ? "h-12 text-base" : "h-10 text-sm";
 
+  function handleSearch() {
+    if (selectedIndex >= 0 && filtered[selectedIndex]) {
+      navigate(filtered[selectedIndex].slug);
+    } else if (filtered.length === 1) {
+      navigate(filtered[0].slug);
+    } else if (query.length > 0) {
+      const match = cities.find(
+        (c) => c.name.toLowerCase() === query.toLowerCase()
+      );
+      if (match) navigate(match.slug);
+      else router.push("/search");
+    } else {
+      router.push("/search");
+    }
+  }
+
+  const dropdown = isOpen && filtered.length > 0 && (
+    <div className="absolute top-full left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border bg-white shadow-lg">
+      {filtered.map((city, i) => (
+        <button
+          key={city.slug}
+          onClick={() => navigate(city.slug)}
+          className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-surface ${
+            i === selectedIndex ? "bg-surface" : ""
+          }`}
+        >
+          <MapPin className="h-4 w-4 shrink-0 text-muted-text" />
+          <div>
+            <span className="font-medium text-foreground">
+              {city.name}
+            </span>
+            <span className="ml-2 text-muted-text">
+              {city.listingCount} Büros
+            </span>
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+
+  if (variant === "hero") {
+    return (
+      <div ref={wrapperRef} className={`relative ${className ?? ""}`}>
+        <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-md sm:gap-3 sm:p-3">
+          <MapPin className="ml-2 h-5 w-5 shrink-0 text-muted-text" />
+          <input
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setIsOpen(true);
+              setSelectedIndex(-1);
+            }}
+            onFocus={() => setIsOpen(true)}
+            onKeyDown={handleKeyDown}
+            placeholder="Stadt, Stadtteil oder Adresse..."
+            autoComplete="off"
+            data-form-type="other"
+            suppressHydrationWarning
+            className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-text"
+          />
+          <button
+            type="button"
+            onClick={handleSearch}
+            className="flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-blue-hover"
+          >
+            Suchen
+            <Search className="h-4 w-4" />
+          </button>
+        </div>
+        {dropdown}
+      </div>
+    );
+  }
+
   return (
     <div ref={wrapperRef} className={`relative ${className ?? ""}`}>
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-text z-10" />
@@ -92,30 +167,7 @@ export function SearchBar({ className, size = "default" }: SearchBarProps) {
         suppressHydrationWarning
         className={`pl-10 bg-white ${inputHeight}`}
       />
-
-      {isOpen && filtered.length > 0 && (
-        <div className="absolute top-full left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border bg-white shadow-lg">
-          {filtered.map((city, i) => (
-            <button
-              key={city.slug}
-              onClick={() => navigate(city.slug)}
-              className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-surface ${
-                i === selectedIndex ? "bg-surface" : ""
-              }`}
-            >
-              <MapPin className="h-4 w-4 shrink-0 text-muted-text" />
-              <div>
-                <span className="font-medium text-foreground">
-                  {city.name}
-                </span>
-                <span className="ml-2 text-muted-text">
-                  {city.listingCount} Büros
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
+      {dropdown}
     </div>
   );
 }

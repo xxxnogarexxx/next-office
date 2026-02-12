@@ -16,6 +16,7 @@ export interface Listing {
   priceFrom: number;
   priceTo: number;
   areaSqm: number;
+  noticePeriod: string;
   amenities: string[];
   photos: string[];
   coverPhoto: string;
@@ -93,6 +94,7 @@ export const listings: Listing[] = [
     priceFrom: 499,
     priceTo: 4999,
     areaSqm: 1200,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -138,6 +140,7 @@ export const listings: Listing[] = [
     priceFrom: 599,
     priceTo: 5499,
     areaSqm: 800,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -181,6 +184,7 @@ export const listings: Listing[] = [
     priceFrom: 549,
     priceTo: 4199,
     areaSqm: 950,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -224,6 +228,7 @@ export const listings: Listing[] = [
     priceFrom: 449,
     priceTo: 6999,
     areaSqm: 2000,
+    noticePeriod: "6 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -270,6 +275,7 @@ export const listings: Listing[] = [
     priceFrom: 699,
     priceTo: 8999,
     areaSqm: 3000,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -314,6 +320,7 @@ export const listings: Listing[] = [
     priceFrom: 399,
     priceTo: 2999,
     areaSqm: 600,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -357,6 +364,7 @@ export const listings: Listing[] = [
     priceFrom: 399,
     priceTo: 3499,
     areaSqm: 750,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -399,6 +407,7 @@ export const listings: Listing[] = [
     priceFrom: 549,
     priceTo: 4499,
     areaSqm: 1100,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -441,6 +450,7 @@ export const listings: Listing[] = [
     priceFrom: 599,
     priceTo: 5999,
     areaSqm: 1800,
+    noticePeriod: "6 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -485,6 +495,7 @@ export const listings: Listing[] = [
     priceFrom: 649,
     priceTo: 5299,
     areaSqm: 900,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -526,6 +537,7 @@ export const listings: Listing[] = [
     priceFrom: 499,
     priceTo: 3299,
     areaSqm: 650,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -566,6 +578,7 @@ export const listings: Listing[] = [
     priceFrom: 549,
     priceTo: 4999,
     areaSqm: 1500,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -609,6 +622,7 @@ export const listings: Listing[] = [
     priceFrom: 699,
     priceTo: 3999,
     areaSqm: 500,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -651,6 +665,7 @@ export const listings: Listing[] = [
     priceFrom: 499,
     priceTo: 3999,
     areaSqm: 850,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -692,6 +707,7 @@ export const listings: Listing[] = [
     priceFrom: 599,
     priceTo: 5499,
     areaSqm: 1300,
+    noticePeriod: "6 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -735,6 +751,7 @@ export const listings: Listing[] = [
     priceFrom: 479,
     priceTo: 4299,
     areaSqm: 1000,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -777,6 +794,7 @@ export const listings: Listing[] = [
     priceFrom: 449,
     priceTo: 2499,
     areaSqm: 400,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -818,6 +836,7 @@ export const listings: Listing[] = [
     priceFrom: 749,
     priceTo: 6499,
     areaSqm: 1600,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -862,6 +881,7 @@ export const listings: Listing[] = [
     priceFrom: 549,
     priceTo: 3799,
     areaSqm: 700,
+    noticePeriod: "1 Monat",
     amenities: [
       "WLAN",
       "Meetingräume",
@@ -903,6 +923,7 @@ export const listings: Listing[] = [
     priceFrom: 649,
     priceTo: 5299,
     areaSqm: 1100,
+    noticePeriod: "3 Monate",
     amenities: [
       "WLAN",
       "Meetingräume",

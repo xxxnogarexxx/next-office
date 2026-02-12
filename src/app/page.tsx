@@ -9,37 +9,81 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Finden Sie das perfekte
-              <br />
-              <span className="text-primary">Büro</span> für Ihr Team
-            </h1>
-            <p className="mt-6 text-lg text-body">
-              Vergleichen Sie Büros und Office Spaces in Berlin, München,
-              Hamburg und Frankfurt. Kostenlose Beratung, beste Preise garantiert.
-            </p>
+      <section className="mx-auto max-w-7xl px-4 pt-6 pb-2 sm:px-6 lg:px-8">
+        <div className="relative rounded-2xl bg-surface lg:rounded-3xl">
+          <div className="grid lg:grid-cols-2">
+            {/* Left — text + search */}
+            <div className="flex flex-col justify-center px-6 py-12 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                Bürosuche war noch
+                <br />
+                nie so einfach.
+              </h1>
+              <p className="mt-4 max-w-md text-base text-body sm:text-lg">
+                Wir sind Deutschlands Plattform für flexible Büros und Office
+                Spaces — kostenlose Beratung, beste Konditionen.
+              </p>
 
-            {/* Search bar */}
-            <div className="mx-auto mt-10 max-w-lg">
-              <SearchBar size="lg" />
+              {/* Search bar */}
+              <div className="mt-8 max-w-lg">
+                <p className="mb-2 text-sm font-medium text-foreground">
+                  Büro finden
+                </p>
+                <SearchBar variant="hero" />
+              </div>
+
+              {/* Quick city links */}
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-sm text-body">
+                <span>Beliebte Städte:</span>
+                {cities.map((city) => (
+                  <Link
+                    key={city.slug}
+                    href={`/${city.slug}`}
+                    className="font-medium text-foreground underline underline-offset-2 hover:text-body transition-colors"
+                  >
+                    {city.name}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* Quick city links */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm text-body">
-              <span>Beliebte Städte:</span>
-              {cities.map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/${city.slug}`}
-                  className="font-medium text-foreground underline underline-offset-2 hover:text-body transition-colors"
-                >
-                  {city.name}
-                </Link>
-              ))}
+            {/* Right — hero image with fade */}
+            <div className="relative hidden min-h-[400px] overflow-hidden rounded-r-2xl lg:block lg:rounded-r-3xl">
+              <Image
+                src="/hero-office.jpg"
+                alt="Modernes Open-Space-Büro mit Personen an Holztischen"
+                fill
+                priority
+                className="object-cover"
+                sizes="50vw"
+              />
+              {/* Gradient fade from bg-surface into image */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(to right, #F8FAFC 0%, rgba(248,250,252,0.6) 25%, rgba(248,250,252,0.2) 50%, rgba(248,250,252,0) 70%)",
+                }}
+              />
             </div>
+          </div>
+
+          {/* Mobile hero image with top fade */}
+          <div className="relative aspect-[16/9] overflow-hidden rounded-b-2xl lg:hidden">
+            <Image
+              src="/hero-office.jpg"
+              alt="Modernes Open-Space-Büro mit Personen an Holztischen"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to bottom, #F8FAFC 0%, rgba(248,250,252,0.4) 20%, rgba(248,250,252,0) 50%)",
+              }}
+            />
           </div>
         </div>
       </section>
