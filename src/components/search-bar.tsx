@@ -138,10 +138,10 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
           <button
             type="button"
             onClick={handleSearch}
-            className="flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-blue-hover"
+            className="flex shrink-0 items-center justify-center rounded-lg bg-primary p-2.5 text-white transition-colors hover:bg-accent-blue-hover sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm sm:font-medium"
           >
-            Suchen
-            <Search className="h-4 w-4" />
+            <span className="hidden sm:inline">Suchen</span>
+            <Search className="h-5 w-5 sm:h-4 sm:w-4" />
           </button>
         </div>
         {dropdown}
