@@ -66,9 +66,39 @@ export function LeadForm({
     return () => observer.disconnect();
   }, [mounted]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // TODO: send to Supabase
+    setSubmitting(true);
+    setError(false);
+
+    const form = new FormData(e.currentTarget);
+
+    const res = await fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.get("lead_fullname"),
+        email: form.get("lead_mail"),
+        phone: form.get("lead_tel") || null,
+        team_size: form.get("teamSize") ? Number(form.get("teamSize")) : null,
+        start_date: form.get("startDate") || null,
+        city: form.get("city") || citySlug || null,
+        message: form.get("message") || null,
+        listing_id: listingId || null,
+        listing_name: listingName || null,
+      }),
+    });
+
+    setSubmitting(false);
+
+    if (!res.ok) {
+      setError(true);
+      return;
+    }
+
     setSubmitted(true);
   }
 
@@ -206,9 +236,15 @@ export function LeadForm({
       {listingId && <input type="hidden" name="listingId" value={listingId} />}
       {citySlug && <input type="hidden" name="city" value={citySlug} />}
 
-      <Button type="submit" size="lg" className="w-full">
+      {error && (
+        <p className="text-center text-sm text-error">
+          Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.
+        </p>
+      )}
+
+      <Button type="submit" size="lg" className="w-full" disabled={submitting}>
         <Send className="mr-2 h-4 w-4" />
-        Anfrage senden
+        {submitting ? "Wird gesendet..." : "Anfrage senden"}
       </Button>
 
       <p className="text-center text-xs text-muted-text">
