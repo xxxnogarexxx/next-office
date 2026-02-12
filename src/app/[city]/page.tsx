@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { getCityBySlug, getListingsByCity, listings as allListings } from "@/lib/mock-data";
+import { getCityBySlug, getListingsByCity, listings as allListings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
 import { SearchFilters } from "@/components/search-filters";

@@ -5,7 +5,7 @@ import MapGL, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapRef } from "react-map-gl/mapbox";
-import type { Listing } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 import {
   MAPBOX_TOKEN,
   MAP_STYLE,
@@ -177,10 +177,15 @@ function removeTransitLayer(map: mapboxgl.Map, id: string) {
 }
 
 export default function SearchMapInner({
-  listings,
+  listings: allListings,
   hoveredId,
   center,
 }: SearchMapInnerProps) {
+  // Filter to listings with valid coordinates for map display
+  const listings = allListings.filter(
+    (l): l is typeof l & { latitude: number; longitude: number } =>
+      l.latitude !== null && l.longitude !== null
+  );
   const mapRef = useRef<MapRef>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const didFit = useRef(false);
@@ -349,17 +354,19 @@ export default function SearchMapInner({
             href={`/${activeListing.citySlug}/${activeListing.slug}`}
             style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 10, minWidth: 260 }}
           >
-            <img
-              src={activeListing.coverPhoto}
-              alt={activeListing.name}
-              style={{
-                width: 90,
-                height: 90,
-                objectFit: "cover",
-                borderRadius: 8,
-                flexShrink: 0,
-              }}
-            />
+            {(activeListing.coverPhoto || activeListing.photos[0]) && (
+              <img
+                src={activeListing.coverPhoto || activeListing.photos[0]}
+                alt={activeListing.name}
+                style={{
+                  width: 90,
+                  height: 90,
+                  objectFit: "cover",
+                  borderRadius: 8,
+                  flexShrink: 0,
+                }}
+              />
+            )}
             <div style={{ minWidth: 0, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3 }}>
               <p style={{ fontWeight: 600, fontSize: 14, margin: 0, color: "#0f172a", lineHeight: 1.3 }}>
                 {activeListing.name}
@@ -368,10 +375,20 @@ export default function SearchMapInner({
                 {activeListing.address}, {activeListing.city}
               </p>
               <div style={{ display: "flex", gap: 10, fontSize: 12, color: "#64748b", margin: 0 }}>
-                <span>{activeListing.capacityMin}–{activeListing.capacityMax} Pers.</span>
-                <span style={{ fontWeight: 600, color: "#2563EB" }}>
-                  ab {activeListing.priceFrom} €/Mo.
-                </span>
+                {(activeListing.capacityMin !== null || activeListing.capacityMax !== null) && (
+                  <span>
+                    {activeListing.capacityMin !== null && activeListing.capacityMax !== null
+                      ? `${activeListing.capacityMin}–${activeListing.capacityMax} Pers.`
+                      : activeListing.capacityMax !== null
+                        ? `bis ${activeListing.capacityMax} Pers.`
+                        : `ab ${activeListing.capacityMin} Pers.`}
+                  </span>
+                )}
+                {activeListing.priceFrom !== null && (
+                  <span style={{ fontWeight: 600, color: "#2563EB" }}>
+                    ab {activeListing.priceFrom} €/Mo.
+                  </span>
+                )}
               </div>
             </div>
           </a>

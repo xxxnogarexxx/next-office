@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Listing } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 
 interface SearchMapProps {
   listings: Listing[];

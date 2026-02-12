@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Users, Euro, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type { Listing } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 
 interface ListingCardProps {
   listing: Listing;
@@ -15,6 +15,8 @@ interface ListingCardProps {
 function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
   const [current, setCurrent] = useState(0);
   const total = photos.length;
+  const touchStart = useRef<number | null>(null);
+  const touchDelta = useRef(0);
 
   const prev = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -28,8 +30,36 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
     setCurrent((c) => (c === total - 1 ? 0 : c + 1));
   }, [total]);
 
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientX;
+    touchDelta.current = 0;
+  }, []);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    if (touchStart.current === null) return;
+    touchDelta.current = e.touches[0].clientX - touchStart.current;
+  }, []);
+
+  const onTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (Math.abs(touchDelta.current) > 40) {
+      e.preventDefault();
+      if (touchDelta.current < 0) {
+        setCurrent((c) => (c === total - 1 ? c : c + 1));
+      } else {
+        setCurrent((c) => (c === 0 ? c : c - 1));
+      }
+    }
+    touchStart.current = null;
+    touchDelta.current = 0;
+  }, [total]);
+
   return (
-    <div className="group/carousel relative aspect-[16/10] overflow-hidden">
+    <div
+      className="group/carousel relative aspect-[16/10] overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {photos.map((photo, i) => (
         <Image
           key={photo}
@@ -44,12 +74,12 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
         />
       ))}
 
-      {/* Arrows */}
+      {/* Arrows — desktop only */}
       {total > 1 && (
         <>
           <button
             onClick={prev}
-            className={`absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-opacity hover:bg-white ${
+            className={`absolute left-2 top-1/2 z-10 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-opacity hover:bg-white lg:flex ${
               current === 0 ? "opacity-0" : "opacity-0 group-hover/carousel:opacity-100"
             }`}
             aria-label="Vorheriges Bild"
@@ -58,7 +88,7 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
           </button>
           <button
             onClick={next}
-            className={`absolute right-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-opacity hover:bg-white ${
+            className={`absolute right-2 top-1/2 z-10 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-opacity hover:bg-white lg:flex ${
               current === total - 1 ? "opacity-0" : "opacity-0 group-hover/carousel:opacity-100"
             }`}
             aria-label="Nächstes Bild"
@@ -86,7 +116,25 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
 }
 
 export function ListingCard({ listing, onHover }: ListingCardProps) {
-  const photos = listing.photos.length > 0 ? listing.photos : [listing.coverPhoto];
+  const photos = listing.photos.length > 0
+    ? listing.photos
+    : listing.coverPhoto
+      ? [listing.coverPhoto]
+      : ["/placeholder-office.jpg"];
+
+  const capacityText =
+    listing.capacityMin !== null && listing.capacityMax !== null
+      ? `${listing.capacityMin}–${listing.capacityMax} Personen`
+      : listing.capacityMax !== null
+        ? `bis ${listing.capacityMax} Personen`
+        : listing.capacityMin !== null
+          ? `ab ${listing.capacityMin} Personen`
+          : "Auf Anfrage";
+
+  const priceText =
+    listing.priceFrom !== null
+      ? `ab ${listing.priceFrom} €/Monat`
+      : "Preis auf Anfrage";
 
   return (
     <Link
@@ -98,9 +146,11 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
       <ImageCarousel photos={photos} name={listing.name} />
 
       <div className="p-4">
-        <p className="text-xs font-medium text-muted-text">
-          {listing.providerName}
-        </p>
+        {listing.providerName && (
+          <p className="text-xs font-medium text-muted-text">
+            {listing.providerName}
+          </p>
+        )}
         <h3 className="mt-1 text-base font-semibold text-foreground group-hover:text-body transition-colors">
           {listing.name}
         </h3>
@@ -114,30 +164,28 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
           </div>
           <div className="flex items-center gap-1.5 text-sm text-body">
             <Users className="h-3.5 w-3.5 shrink-0 text-muted-text" />
-            <span>
-              {listing.capacityMin}–{listing.capacityMax} Personen
-            </span>
+            <span>{capacityText}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm text-body">
             <Euro className="h-3.5 w-3.5 shrink-0 text-muted-text" />
-            <span>
-              ab {listing.priceFrom} €/Monat
-            </span>
+            <span>{priceText}</span>
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {listing.amenities.slice(0, 3).map((amenity) => (
-            <Badge key={amenity} variant="secondary" className="text-xs">
-              {amenity}
-            </Badge>
-          ))}
-          {listing.amenities.length > 3 && (
-            <Badge variant="secondary" className="text-xs">
-              +{listing.amenities.length - 3}
-            </Badge>
-          )}
-        </div>
+        {listing.amenities.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {listing.amenities.slice(0, 3).map((amenity) => (
+              <Badge key={amenity} variant="secondary" className="text-xs">
+                {amenity}
+              </Badge>
+            ))}
+            {listing.amenities.length > 3 && (
+              <Badge variant="secondary" className="text-xs">
+                +{listing.amenities.length - 3}
+              </Badge>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   );

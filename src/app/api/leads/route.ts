@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,6 +22,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Server-side context
+    const userAgent = request.headers.get("user-agent") || null;
+
+    // Google Ads tracking: client body first, server-side cookies as fallback
+    const cookieStore = await cookies();
+    const gclid = body.gclid || cookieStore.get("_no_gclid")?.value || null;
+    const gbraid = body.gbraid || cookieStore.get("_no_gbraid")?.value || null;
+    const wbraid = body.wbraid || cookieStore.get("_no_wbraid")?.value || null;
+    const landingPage = body.landing_page || cookieStore.get("_no_lp")?.value || null;
+    const referrer = body.referrer || cookieStore.get("_no_ref")?.value || null;
+
     // Save to Supabase
     const { error } = await supabase.from("leads").insert({
       name: body.name,
@@ -32,6 +44,13 @@ export async function POST(request: Request) {
       message: body.message || null,
       listing_id: body.listing_id || null,
       listing_name: body.listing_name || null,
+      // Google Ads tracking (in-memory context + server cookie fallback)
+      gclid,
+      gbraid,
+      wbraid,
+      landing_page: landingPage,
+      referrer,
+      user_agent: userAgent,
     });
 
     if (error) {

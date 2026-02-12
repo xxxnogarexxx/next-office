@@ -13,6 +13,8 @@ interface PhotoGalleryProps {
 export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  if (photos.length === 0) return null;
+
   return (
     <>
       {/* Grid preview — clickable */}

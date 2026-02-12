@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getCityBySlug } from "@/lib/mock-data";
+import { getCityBySlug } from "@/lib/listings";
 
 interface LayoutProps {
   params: Promise<{ city: string }>;

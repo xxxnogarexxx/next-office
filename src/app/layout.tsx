@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { TrackingProvider } from "@/components/tracking-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -70,10 +71,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
-        <Header />
-        <main suppressHydrationWarning>{children}</main>
-        <Footer />
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
+        <TrackingProvider>
+          <div className="overflow-x-clip">
+            <Header />
+            <main suppressHydrationWarning>{children}</main>
+            <Footer />
+          </div>
+        </TrackingProvider>
       </body>
     </html>
   );

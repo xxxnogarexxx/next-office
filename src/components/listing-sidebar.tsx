@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LeadForm } from "@/components/lead-form";
-import type { Listing } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 import type { OfficeOffer } from "@/components/available-offers";
 
 interface ListingSidebarProps {
@@ -39,10 +39,10 @@ export function ListingSidebar({ listing, offers }: ListingSidebarProps) {
         {/* Provider info */}
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface text-sm font-bold text-foreground">
-            {listing.providerName.charAt(0)}
+            {(listing.providerName || listing.name).charAt(0)}
           </div>
           <div>
-            <p className="font-semibold">{listing.providerName}</p>
+            <p className="font-semibold">{listing.providerName || listing.name}</p>
             <p className="text-xs text-muted-text">Vermieter</p>
           </div>
         </div>

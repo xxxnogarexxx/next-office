@@ -143,6 +143,7 @@
 - [ ] Google Workspace Domain-Alias — @next-office.io als Alias in Google Workspace
 - [ ] Analytics (GA4 + Meta Pixel)
 - [ ] Cookie Consent Banner (DSGVO)
+- [ ] Supabase Leads Backup — n8n Workflow: täglicher Export nach Google Sheets
 - [ ] Error Monitoring (Sentry)
 - [ ] Uptime Monitoring
 

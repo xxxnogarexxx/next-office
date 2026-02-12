@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useTracking } from "@/components/tracking-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cities } from "@/lib/mock-data";
+import { cities } from "@/lib/listings";
 import { Send, CheckCircle } from "lucide-react";
 
 interface LeadFormProps {
@@ -28,6 +29,7 @@ export function LeadForm({
   citySlug,
   variant = "inline",
 }: LeadFormProps) {
+  const tracking = useTracking();
   const [submitted, setSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
   const showCityField = !citySlug && !listingId;
@@ -89,6 +91,12 @@ export function LeadForm({
         message: form.get("message") || null,
         listing_id: listingId || null,
         listing_name: listingName || null,
+        // Google Ads tracking
+        gclid: tracking.gclid,
+        gbraid: tracking.gbraid,
+        wbraid: tracking.wbraid,
+        landing_page: tracking.landing_page,
+        referrer: tracking.referrer,
       }),
     });
 

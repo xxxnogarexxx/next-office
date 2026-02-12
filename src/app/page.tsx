@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Shield, Clock, TrendingUp, Star, Phone, Mail } from "lucide-react";
+import { ArrowRight, Shield, Clock, TrendingUp, Phone, Mail } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { SearchBar } from "@/components/search-bar";
-import { cities } from "@/lib/mock-data";
+import { cities } from "@/lib/listings";
 
 const testimonials = [
   {
@@ -11,21 +11,27 @@ const testimonials = [
     name: "Melissa Blume",
     role: "Head of HR",
     company: "Salesfive Consulting GmbH",
-    image: "/testimonial-melissa.jpg",
+    avatar: "/testimonial-melissa.jpg",
+    office: "/office-melissa.webp",
+    logo: "/logo-salesfive.svg",
   },
   {
     text: "NextOffice hat uns dabei unterstützt, das für uns optimal passende Büro zu finden und uns bis zum Vertragsabschluss betreut. Der Service war immer kompetent und freundlich!",
     name: "Dr. Ralf Heublein",
-    role: "Geschäftsführer",
+    role: "CEO",
     company: "Mediapool Content Services GmbH",
-    image: "/testimonial-ralf.jpg",
+    avatar: "/testimonial-ralf.jpg",
+    office: "/office-heublein.webp",
+    logo: "/logo-mediapool.png",
   },
   {
     text: "NextOffice hat uns dabei geholfen, ein geeignetes Büro zu finden. Uns hat die schnelle, professionelle und freundliche Beratung überzeugt und wir können den Service wärmstens empfehlen.",
     name: "Thomas Urban",
-    role: "Geschäftsführer",
+    role: "CEO",
     company: "KUMAVISION GmbH",
-    image: "/testimonial-thomas.jpg",
+    avatar: "/testimonial-thomas.jpg",
+    office: "/office-thomas.webp",
+    logo: "/logo-kumavision.png",
   },
 ];
 
@@ -230,37 +236,50 @@ export default function HomePage() {
           Über 500 Unternehmen haben mit uns ihr neues Büro gefunden.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="flex flex-col rounded-xl border bg-white p-6"
+              className="flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm"
             >
-              <div className="mb-4 flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-4 w-4 fill-amber-400 text-amber-400"
-                  />
-                ))}
-              </div>
-              <p className="flex-1 text-sm leading-relaxed text-body">
+              {/* Quote */}
+              <p className="flex-1 px-6 pt-6 text-sm leading-relaxed text-body">
                 &ldquo;{t.text}&rdquo;
               </p>
-              <div className="mt-6 flex items-center gap-3 border-t pt-4">
+
+              {/* Office photo */}
+              <div className="relative mx-6 mt-5 aspect-[16/10] overflow-hidden rounded-lg">
                 <Image
-                  src={t.image}
-                  alt={t.name}
-                  width={44}
-                  height={44}
-                  className="rounded-full object-cover"
+                  src={t.office}
+                  alt={`Büro von ${t.company}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div>
-                  <p className="font-semibold text-foreground">{t.name}</p>
-                  <p className="text-sm text-muted-text">
-                    {t.role}, {t.company}
-                  </p>
+              </div>
+
+              {/* Person + Company logo */}
+              <div className="flex items-center justify-between px-6 py-5">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={t.avatar}
+                    alt={t.name}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-text">{t.role}</p>
+                  </div>
                 </div>
+                <Image
+                  src={t.logo}
+                  alt={t.company}
+                  width={120}
+                  height={32}
+                  className="max-h-9 max-w-28 w-auto object-contain object-right"
+                />
               </div>
             </div>
           ))}

@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { LeadForm } from "@/components/lead-form";
 import { AvailableOffers } from "@/components/available-offers";
 import { Shield, CheckCircle, Users } from "lucide-react";
-import type { Listing } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 import type { OfficeOffer } from "@/components/available-offers";
 
 interface ListingPageClientProps {
@@ -35,13 +35,21 @@ export function ListingPageClient({
         <div className="rounded-xl border bg-white p-6 shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
           {/* Price anchor */}
           <p className="text-2xl font-bold">
-            ab {listing.priceFrom} €
-            <span className="text-base font-normal text-body"> /Monat</span>
+            {listing.priceFrom !== null ? (
+              <>ab {listing.priceFrom} €<span className="text-base font-normal text-body"> /Monat</span></>
+            ) : (
+              "Preis auf Anfrage"
+            )}
           </p>
 
           {/* Capacity info */}
           <p className="mt-1 text-sm text-body">
-            {listing.capacityMin}–{listing.capacityMax} Personen · {listing.noticePeriod} Kündigungsfrist
+            {listing.capacityMin !== null && listing.capacityMax !== null
+              ? `${listing.capacityMin}–${listing.capacityMax} Personen`
+              : listing.capacityMax !== null
+                ? `bis ${listing.capacityMax} Personen`
+                : "Kapazität auf Anfrage"}
+            {listing.noticePeriod ? ` · ${listing.noticePeriod}` : ""}
           </p>
 
           {/* CTA Button */}
@@ -95,8 +103,11 @@ export function ListingPageClient({
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-base font-bold">
-                ab {listing.priceFrom} €
-                <span className="text-sm font-normal text-body"> /Monat</span>
+                {listing.priceFrom !== null ? (
+                  <>ab {listing.priceFrom} €<span className="text-sm font-normal text-body"> /Monat</span></>
+                ) : (
+                  "Preis auf Anfrage"
+                )}
               </p>
               <p className="text-xs text-muted-text">Kostenlos & unverbindlich</p>
             </div>

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { cities, listings } from "@/lib/mock-data";
+import { cities, listings } from "@/lib/listings";
 import { getAllPosts } from "@/lib/blog";
 
 const SITE_URL = "https://next-office.io";

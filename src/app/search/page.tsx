@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { listings } from "@/lib/mock-data";
+import { listings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
 import { SearchFilters } from "@/components/search-filters";

@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { ListingCard } from "@/components/listing-card";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { ListingMap } from "@/components/listing-map";
-import { getListingBySlug, getListingsByCity } from "@/lib/mock-data";
+import { getListingBySlug, getListingsByCity } from "@/lib/listings";
 import { ListingPageClient } from "./listing-page-client";
 
 interface PageProps {
@@ -38,7 +38,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${listing.name} – Büro mieten in ${listing.city}`;
-  const description = `${listing.name} in ${listing.address}, ${listing.city}. ${listing.capacityMin}–${listing.capacityMax} Personen, ab ${listing.priceFrom} €/Monat. Jetzt kostenlos anfragen.`;
+  const capacityDesc = listing.capacityMin !== null && listing.capacityMax !== null
+    ? `${listing.capacityMin}–${listing.capacityMax} Personen, `
+    : "";
+  const priceDesc = listing.priceFrom !== null ? `ab ${listing.priceFrom} €/Monat. ` : "";
+  const description = `${listing.name} in ${listing.address}, ${listing.city}. ${capacityDesc}${priceDesc}Jetzt kostenlos anfragen.`;
 
   return {
     title,
@@ -84,12 +88,12 @@ export default async function ListingDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const jsonLd = {
+  const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: listing.name,
     description: listing.description,
-    image: listing.photos,
+    image: listing.photos.length > 0 ? listing.photos : undefined,
     address: {
       "@type": "PostalAddress",
       streetAddress: listing.address,
@@ -97,14 +101,18 @@ export default async function ListingDetailPage({ params }: PageProps) {
       postalCode: listing.postalCode,
       addressCountry: listing.country,
     },
-    geo: {
+    url: `https://next-office.io/${citySlug}/${listingSlug}`,
+  };
+  if (listing.latitude !== null && listing.longitude !== null) {
+    jsonLd.geo = {
       "@type": "GeoCoordinates",
       latitude: listing.latitude,
       longitude: listing.longitude,
-    },
-    url: `https://next-office.io/${citySlug}/${listingSlug}`,
-    priceRange: `ab ${listing.priceFrom} €/Monat`,
-  };
+    };
+  }
+  if (listing.priceFrom !== null) {
+    jsonLd.priceRange = `ab ${listing.priceFrom} €/Monat`;
+  }
 
   const similarListings = getListingsByCity(listing.citySlug)
     .filter((l) => l.id !== listing.id)
@@ -119,7 +127,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
       capacityMax: 2,
       areaSqmMin: 5,
       areaSqmMax: 8,
-      price: listing.priceFrom,
+      price: listing.priceFrom ?? undefined,
     },
     {
       type: "private_office" as const,
@@ -141,9 +149,9 @@ export default async function ListingDetailPage({ params }: PageProps) {
       type: "suite" as const,
       label: "Suite",
       capacityMin: 21,
-      capacityMax: listing.capacityMax,
+      capacityMax: listing.capacityMax ?? 50,
       areaSqmMin: 60,
-      areaSqmMax: Math.round(listing.areaSqm * 0.5),
+      areaSqmMax: listing.areaSqm ? Math.round(listing.areaSqm * 0.5) : 200,
     },
   ];
 
@@ -164,15 +172,19 @@ export default async function ListingDetailPage({ params }: PageProps) {
         </Link>
 
         {/* Photo gallery — clickable, opens fullscreen */}
-        <div className="mt-4">
-          <PhotoGallery photos={listing.photos} name={listing.name} />
-        </div>
+        {listing.photos.length > 0 && (
+          <div className="mt-4">
+            <PhotoGallery photos={listing.photos} name={listing.name} />
+          </div>
+        )}
 
         {/* Title section — above flex so sidebar aligns with key facts */}
-        <div className="mt-8">
-          <p className="text-sm font-medium text-muted-text">
-            {listing.providerName}
-          </p>
+        <div className={listing.photos.length > 0 ? "mt-8" : "mt-4"}>
+          {listing.providerName && (
+            <p className="text-sm font-medium text-muted-text">
+              {listing.providerName}
+            </p>
+          )}
           <h1 className="mt-1 text-3xl font-bold">{listing.name}</h1>
         </div>
 
@@ -188,30 +200,37 @@ export default async function ListingDetailPage({ params }: PageProps) {
                   label: "Adresse",
                   value: `${listing.address}, ${listing.postalCode} ${listing.city}`,
                 },
-                {
+                (listing.capacityMin !== null || listing.capacityMax !== null) ? {
                   icon: Users,
                   label: "Kapazität",
-                  value: `${listing.capacityMin}–${listing.capacityMax} Personen`,
-                },
+                  value: listing.capacityMin !== null && listing.capacityMax !== null
+                    ? `${listing.capacityMin}–${listing.capacityMax} Personen`
+                    : listing.capacityMax !== null
+                      ? `bis ${listing.capacityMax} Personen`
+                      : `ab ${listing.capacityMin} Personen`,
+                } : null,
                 {
                   icon: Euro,
                   label: "Preis",
-                  value: `ab ${listing.priceFrom} €/Monat`,
+                  value: listing.priceFrom !== null ? `ab ${listing.priceFrom} €/Monat` : "Auf Anfrage",
                 },
-                {
+                listing.noticePeriod ? {
                   icon: Clock,
                   label: "Kündigungsfrist",
                   value: listing.noticePeriod,
-                },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="rounded-lg border p-3">
-                  <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4 text-muted-text" />
-                    <span className="text-xs text-muted-text">{label}</span>
+                } : null,
+              ].filter(Boolean).map((fact) => {
+                const { icon: Icon, label, value } = fact!;
+                return (
+                  <div key={label} className="rounded-lg border p-3">
+                    <div className="flex items-center gap-2">
+                      <Icon className="h-4 w-4 text-muted-text" />
+                      <span className="text-xs text-muted-text">{label}</span>
+                    </div>
+                    <p className="mt-1 text-sm font-medium">{value}</p>
                   </div>
-                  <p className="mt-1 text-sm font-medium">{value}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <Separator className="my-8" />
@@ -272,14 +291,16 @@ export default async function ListingDetailPage({ params }: PageProps) {
           <p className="mt-2 text-body">
             {listing.address}, {listing.postalCode} {listing.city}
           </p>
-          <div className="mt-4">
-            <ListingMap
-              latitude={listing.latitude}
-              longitude={listing.longitude}
-              name={listing.name}
-              address={`${listing.address}, ${listing.postalCode} ${listing.city}`}
-            />
-          </div>
+          {listing.latitude !== null && listing.longitude !== null && (
+            <div className="mt-4">
+              <ListingMap
+                latitude={listing.latitude}
+                longitude={listing.longitude}
+                name={listing.name}
+                address={`${listing.address}, ${listing.postalCode} ${listing.city}`}
+              />
+            </div>
+          )}
         </div>
 
         {/* Similar listings */}
