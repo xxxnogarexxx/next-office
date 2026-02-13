@@ -69,7 +69,7 @@ export function ListingPageClient({
             </div>
             <div className="flex items-center gap-2.5 text-sm text-body">
               <Users className="h-4 w-4 shrink-0 text-muted-text" />
-              <span>Über 2.000 Unternehmen vertrauen uns</span>
+              <span>Über 1.000 Unternehmen vertrauen uns</span>
             </div>
           </div>
         </div>

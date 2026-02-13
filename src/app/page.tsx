@@ -222,7 +222,7 @@ export default function HomePage() {
           Das sagen unsere Kunden
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-center text-body">
-          Über 500 Unternehmen haben mit uns ihr neues Büro gefunden.
+          Über 1.000 Unternehmen haben mit uns ihr neues Büro gefunden.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
