@@ -78,10 +78,10 @@ export default function CitySearchPage() {
                   />
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base font-bold text-white sm:text-xl">
-                      Ihr Büro in {cityName} — in 2 Minuten anfragen
+                      Ihr Büro in {cityName} — in 2 Minuten.
                     </h3>
                     <p className="mt-1 text-sm text-gray-400">
-                      Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100 % kostenlos.
+                      Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100% kostenlos und unverbindlich.
                     </p>
                   </div>
                   <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors group-hover:bg-gray-100 sm:flex">
