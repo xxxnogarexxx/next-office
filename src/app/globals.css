@@ -7,6 +7,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Prevent Radix Dialog from adding padding-right to compensate for scrollbar removal */
+body[style*="pointer-events"] {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
