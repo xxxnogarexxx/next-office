@@ -70,7 +70,7 @@ export function AvailableOffers({
               <Button
                 size="sm"
                 variant="outline"
-                className="mx-auto mt-3 border-foreground bg-foreground text-white hover:bg-foreground/90 hover:text-white sm:hidden"
+                className="mx-auto mt-3 flex border-foreground bg-foreground text-white hover:bg-foreground/90 hover:text-white sm:hidden"
                 onClick={() => onSelectOffer(offer)}
               >
                 Angebot erhalten
