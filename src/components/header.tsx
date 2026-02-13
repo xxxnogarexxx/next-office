@@ -14,7 +14,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-0.5">
+        <Link href="/" className="flex items-center gap-0.5 border border-black px-2 py-1">
           <span className="text-2xl font-normal tracking-tight text-foreground">
             Next
           </span>

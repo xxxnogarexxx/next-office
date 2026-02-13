@@ -119,7 +119,7 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
     return (
       <div ref={wrapperRef} className={`relative ${className ?? ""}`}>
         <div className="rounded-xl bg-white px-4 pb-3 pt-3 shadow-md sm:px-5 sm:pb-3 sm:pt-4">
-          <p className="mb-1.5 text-sm font-semibold text-foreground">Büro finden</p>
+          <p className="mb-1.5 text-sm font-semibold text-foreground">Wo suchen Sie?</p>
           <div className="flex items-center gap-2 sm:gap-3">
             <MapPin className="h-5 w-5 shrink-0 text-muted-text" />
             <input
