@@ -212,13 +212,13 @@ export default function AboutPage() {
                   Ihr Ansprechpartner
                 </p>
                 <h3 className="mt-2 text-2xl font-bold">Benjamin Plass</h3>
-                <p className="text-body">Experte für flexible Büroflächen</p>
+                <p className="text-body">Ihr Experte für die Bürosuche</p>
 
                 <p className="mt-4 text-sm leading-relaxed text-body">
-                  &ldquo;Ich berate Unternehmen bei der Suche nach flexiblen
-                  Büroflächen — von der Bedarfsanalyse über die Besichtigung bis
-                  zum Vertragsabschluss. Persönlich, kostenlos und mit den
-                  besten Konditionen am Markt.&rdquo;
+                  &ldquo;Ich helfe Unternehmen, das passende Büro zu finden —
+                  von der Bedarfsanalyse über die Besichtigung bis zum
+                  Vertragsabschluss. Kostenlos, persönlich und immer mit den
+                  besten Konditionen.&rdquo;
                 </p>
 
                 <div className="mt-6 space-y-2.5">
