@@ -24,7 +24,7 @@ const stats = [
   { value: "2017", label: "Gegründet" },
   { value: "1.000+", label: "Unternehmen beraten" },
   { value: "30.000+", label: "qm vermittelt" },
-  { value: "6", label: "Städte in Deutschland" },
+  { value: "65+", label: "Städte in der DACH-Region" },
 ];
 
 const values = [
