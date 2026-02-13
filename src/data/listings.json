@@ -241,7 +241,7 @@
     "priceFrom": 999,
     "priceTo": null,
     "areaSqm": null,
-    "noticePeriod": "Kündigungsfristen können individuell verhandelt werden",
+    "noticePeriod": "ab 1 Monat",
     "amenities": [
       "24/7",
       "Drucker",
@@ -286,7 +286,7 @@
     "priceFrom": 999,
     "priceTo": null,
     "areaSqm": null,
-    "noticePeriod": "können individuell verhandelt werden",
+    "noticePeriod": "ab 1 Monat",
     "amenities": [
       "24/7",
       "Drucker",
@@ -332,7 +332,7 @@
     "priceFrom": 449,
     "priceTo": null,
     "areaSqm": null,
-    "noticePeriod": "verhandelbar",
+    "noticePeriod": "ab 1 Monat",
     "amenities": [
       "24/7",
       "Drucker",
