@@ -57,7 +57,7 @@ export default function CitySearchPage() {
         <div
           className={`${
             showMap ? "flex" : "hidden lg:flex"
-          } w-full flex-1 lg:w-1/2 lg:max-w-[50%]`}
+          } h-full w-full flex-1 lg:w-1/2 lg:max-w-[50%]`}
         >
           <SearchMap
             listings={displayListings}
