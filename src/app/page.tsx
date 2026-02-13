@@ -14,6 +14,7 @@ const testimonials = [
     avatar: "/testimonial-melissa.jpg",
     office: "/office-melissa.webp",
     logo: "/logo-salesfive.svg",
+    logoClass: "max-h-8 max-w-28",
   },
   {
     text: "NextOffice hat uns dabei unterstützt, das für uns optimal passende Büro zu finden und uns bis zum Vertragsabschluss betreut. Der Service war immer kompetent und freundlich!",
@@ -23,6 +24,7 @@ const testimonials = [
     avatar: "/testimonial-ralf.jpg",
     office: "/office-heublein.webp",
     logo: "/logo-mediapool.png",
+    logoClass: "max-h-10 max-w-32",
   },
   {
     text: "NextOffice hat uns dabei geholfen, ein geeignetes Büro zu finden. Uns hat die schnelle, professionelle und freundliche Beratung überzeugt und wir können den Service wärmstens empfehlen.",
@@ -32,6 +34,7 @@ const testimonials = [
     avatar: "/testimonial-thomas.jpg",
     office: "/office-thomas.webp",
     logo: "/logo-kumavision.png",
+    logoClass: "max-h-14 max-w-40",
   },
 ];
 
@@ -121,6 +124,66 @@ export default function HomePage() {
                 </Link>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Client logos */}
+      <section className="border-b">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+          <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-text">
+            Über 1.000 Unternehmen vertrauen uns
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-8 sm:gap-12 lg:gap-16">
+            <Image
+              src="/logo-zalando.svg"
+              alt="Zalando"
+              width={100}
+              height={24}
+              className="h-4 w-auto object-contain opacity-40 grayscale sm:h-5"
+            />
+            <Image
+              src="/logo-canon.svg"
+              alt="Canon"
+              width={80}
+              height={22}
+              className="h-4 w-auto object-contain opacity-40 grayscale sm:h-5"
+            />
+            <Image
+              src="/logo-randstad.svg"
+              alt="Randstad"
+              width={110}
+              height={26}
+              className="h-5 w-auto object-contain opacity-40 grayscale sm:h-6"
+            />
+            <Image
+              src="/logo-fresenius.svg"
+              alt="Fresenius Medical Care"
+              width={110}
+              height={26}
+              className="hidden h-5 w-auto object-contain opacity-40 grayscale sm:block sm:h-6"
+            />
+            <Image
+              src="/logo-sky.svg"
+              alt="Sky"
+              width={70}
+              height={28}
+              className="h-6 w-auto object-contain opacity-40 grayscale sm:h-7"
+            />
+            <Image
+              src="/logo-gigaset.svg"
+              alt="Gigaset"
+              width={100}
+              height={24}
+              className="hidden h-5 w-auto object-contain opacity-40 grayscale sm:block sm:h-6"
+            />
+            <Image
+              src="/logo-ideo.svg"
+              alt="IDEO"
+              width={60}
+              height={20}
+              className="hidden h-4 w-auto object-contain opacity-40 grayscale lg:block lg:h-5"
+            />
           </div>
         </div>
       </section>
@@ -265,9 +328,9 @@ export default function HomePage() {
                 <Image
                   src={t.logo}
                   alt={t.company}
-                  width={120}
-                  height={32}
-                  className="max-h-9 max-w-28 w-auto object-contain object-right"
+                  width={140}
+                  height={40}
+                  className={`w-auto object-contain object-right opacity-60 grayscale ${t.logoClass}`}
                 />
               </div>
             </div>

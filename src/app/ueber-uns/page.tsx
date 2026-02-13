@@ -54,6 +54,7 @@ const testimonials = [
     avatar: "/testimonial-melissa.jpg",
     office: "/office-melissa.webp",
     logo: "/logo-salesfive.svg",
+    logoClass: "max-h-8 max-w-28",
   },
   {
     text: "NextOffice hat uns dabei unterstützt, das für uns optimal passende Büro zu finden und uns bis zum Vertragsabschluss betreut. Der Service war immer kompetent und freundlich!",
@@ -63,6 +64,7 @@ const testimonials = [
     avatar: "/testimonial-ralf.jpg",
     office: "/office-heublein.webp",
     logo: "/logo-mediapool.png",
+    logoClass: "max-h-10 max-w-32",
   },
   {
     text: "NextOffice hat uns dabei geholfen, ein geeignetes Büro zu finden. Uns hat die schnelle, professionelle und freundliche Beratung überzeugt und wir können den Service wärmstens empfehlen.",
@@ -72,6 +74,7 @@ const testimonials = [
     avatar: "/testimonial-thomas.jpg",
     office: "/office-thomas.webp",
     logo: "/logo-kumavision.png",
+    logoClass: "max-h-14 max-w-40",
   },
 ];
 
@@ -296,9 +299,9 @@ export default function AboutPage() {
                   <Image
                     src={t.logo}
                     alt={t.company}
-                    width={120}
-                    height={32}
-                    className="max-h-9 max-w-28 w-auto object-contain object-right"
+                    width={140}
+                    height={40}
+                    className={`w-auto object-contain object-right opacity-60 grayscale ${t.logoClass}`}
                   />
                 </div>
               </div>
