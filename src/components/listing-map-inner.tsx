@@ -440,78 +440,86 @@ export default function ListingMapInner({
   const transportCategories = ["ubahn", "sbahn", "bus"] as const;
   const otherCategories = ["restaurant", "cafe", "parking"] as const;
 
+  const categoryRow = (catId: PoiCategory) => {
+    const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
+    const isActive = state.active.has(catId);
+    const count = state.pois[catId]?.length;
+    const isLoading = state.loading.has(catId);
+    return (
+      <label
+        key={catId}
+        className="mb-1 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50"
+      >
+        <input
+          type="checkbox"
+          checked={isActive}
+          onChange={() => toggleCategory(catId)}
+          className="h-4 w-4 rounded border-slate-300 accent-blue-600"
+        />
+        <span style={{ fontSize: 15 }}>{cat.icon}</span>
+        <span className="flex-1">{cat.label}</span>
+        <span className="min-w-[20px] text-right text-xs text-muted-text">
+          {isLoading ? "…" : count !== undefined ? count : ""}
+        </span>
+      </label>
+    );
+  };
+
   return (
-    <div className="flex rounded-lg border" style={{ height: 560 }}>
-      {/* Sidebar */}
-      <div className="flex w-[260px] shrink-0 flex-col border-r bg-white">
-        <div className="flex-1 overflow-y-auto p-5">
-          <p className="text-sm font-semibold">{name}</p>
-          <p className="mt-0.5 text-xs text-muted-text">{address}</p>
+    <div className="flex flex-col rounded-lg border lg:flex-row" style={{ minHeight: 560 }}>
+      {/* Sidebar — horizontal scroll on mobile, vertical on desktop */}
+      <div className="flex shrink-0 flex-col border-b bg-white lg:w-[260px] lg:border-b-0 lg:border-r">
+        <div className="p-4 lg:flex-1 lg:overflow-y-auto lg:p-5">
+          {/* Name + address — desktop only */}
+          <div className="hidden lg:block">
+            <p className="text-sm font-semibold">{name}</p>
+            <p className="mt-0.5 text-xs text-muted-text">{address}</p>
+          </div>
 
-          <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
-            Transport
-          </p>
-          {transportCategories.map((catId) => {
-            const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
-            const isActive = state.active.has(catId);
-            const count = state.pois[catId]?.length;
-            const isLoading = state.loading.has(catId);
-            return (
-              <label
-                key={catId}
-                className="mb-1 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50"
-              >
-                <input
-                  type="checkbox"
-                  checked={isActive}
-                  onChange={() => toggleCategory(catId)}
-                  className="h-4 w-4 rounded border-slate-300 accent-blue-600"
-                />
-                <span style={{ fontSize: 15 }}>{cat.icon}</span>
-                <span className="flex-1">{cat.label}</span>
-                <span className="min-w-[20px] text-right text-xs text-muted-text">
-                  {isLoading ? "…" : count !== undefined ? count : ""}
-                </span>
-              </label>
-            );
-          })}
+          {/* Mobile: compact grid layout */}
+          <div className="lg:hidden">
+            <div className="grid grid-cols-2 gap-x-4">
+              <div>
+                <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+                  Transport
+                </p>
+                {transportCategories.map(categoryRow)}
+              </div>
+              <div>
+                <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+                  In der Nähe
+                </p>
+                {otherCategories.map(categoryRow)}
+              </div>
+            </div>
+            {visiblePois.length > 0 && (
+              <p className="mt-2 text-[11px] text-muted-text">
+                {visiblePois.length} Ergebnisse auf der Karte
+              </p>
+            )}
+          </div>
 
-          <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
-            In der Nähe
-          </p>
-          {otherCategories.map((catId) => {
-            const cat = POI_CATEGORIES.find((c) => c.id === catId)!;
-            const isActive = state.active.has(catId);
-            const count = state.pois[catId]?.length;
-            const isLoading = state.loading.has(catId);
-            return (
-              <label
-                key={catId}
-                className="mb-1 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50"
-              >
-                <input
-                  type="checkbox"
-                  checked={isActive}
-                  onChange={() => toggleCategory(catId)}
-                  className="h-4 w-4 rounded border-slate-300 accent-blue-600"
-                />
-                <span style={{ fontSize: 15 }}>{cat.icon}</span>
-                <span className="flex-1">{cat.label}</span>
-                <span className="min-w-[20px] text-right text-xs text-muted-text">
-                  {isLoading ? "…" : count !== undefined ? count : ""}
-                </span>
-              </label>
-            );
-          })}
-
-          {visiblePois.length > 0 && (
-            <p className="mt-4 text-[11px] text-muted-text">
-              {visiblePois.length} Ergebnisse auf der Karte
+          {/* Desktop: vertical lists */}
+          <div className="hidden lg:block">
+            <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+              Transport
             </p>
-          )}
+            {transportCategories.map(categoryRow)}
+
+            <p className="mb-2.5 mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-text">
+              In der Nähe
+            </p>
+            {otherCategories.map(categoryRow)}
+
+            {visiblePois.length > 0 && (
+              <p className="mt-4 text-[11px] text-muted-text">
+                {visiblePois.length} Ergebnisse auf der Karte
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="border-t px-5 py-4">
+        <div className="hidden border-t px-5 py-4 lg:block">
           <div className="flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-500">
             <span className="mt-px shrink-0">&#9432;</span>
             <span>Klicke auf die Markierungen, um Details zu sehen</span>
@@ -520,7 +528,7 @@ export default function ListingMapInner({
       </div>
 
       {/* Map */}
-      <div className="relative flex-1" style={{ overflow: "visible" }}>
+      <div className="relative h-[400px] flex-1 lg:h-auto" style={{ overflow: "visible" }}>
         <MapGL
           ref={mapRef}
           initialViewState={{
