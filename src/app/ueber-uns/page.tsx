@@ -118,30 +118,30 @@ export default function AboutPage() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
             <h2 className="text-2xl font-bold sm:text-3xl">
-              Von CoworkingGuide zu NextOffice
+              Unsere Geschichte
             </h2>
             <div className="mt-6 space-y-4 text-body leading-relaxed">
               <p>
-                2017 haben wir als{" "}
+                2017 haben wir{" "}
                 <span className="font-medium text-foreground">
                   CoworkingGuide.de
                 </span>{" "}
-                begonnen — mit einer einfachen Idee: Unternehmen dabei zu
-                helfen, den wachsenden Markt für Coworking und flexible Büros zu
-                navigieren. Was als Vergleichsportal startete, wurde schnell zu
-                einem umfassenden Beratungsservice.
+                gegründet — Deutschlands Plattform für flexible Büroflächen. Von
+                Coworking Spaces über Private Offices bis hin zu ganzen
+                Büroetagen: Wir helfen Unternehmen, die passenden Räume zu
+                finden. Heute mit über 65 Städten in der DACH-Region.
               </p>
               <p>
-                Heute sind wir{" "}
+                Mit{" "}
                 <span className="font-medium text-foreground">NextOffice</span>{" "}
-                — eine Full-Service-Plattform für alle Arten flexibler
-                Büroflächen. Von Private Offices und Coworking Spaces bis hin zu
-                Enterprise Suites für Teams mit 200+ Mitarbeitern.
+                gehen wir den nächsten Schritt: eine neue, moderne Plattform mit
+                persönlicher Beratung — von der ersten Anfrage bis zum Einzug.
+                Für Teams jeder Größe, von 1 bis 200+ Mitarbeitern.
               </p>
               <p>
-                Unser Ansatz ist dabei gleich geblieben: Wir kennen den Markt,
-                verstehen Ihre Anforderungen und finden das Büro, das wirklich
-                zu Ihrem Unternehmen passt. Persönlich, nicht automatisiert.
+                Unser Ansatz bleibt derselbe: Wir kennen den Markt, verstehen
+                Ihre Anforderungen und finden das Büro, das wirklich zu Ihrem
+                Unternehmen passt. Persönlich, nicht automatisiert.
               </p>
             </div>
           </div>
