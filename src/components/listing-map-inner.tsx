@@ -79,7 +79,16 @@ async function fetchAllTransitPOIs(
   const overpassQuery = `[out:json][timeout:15];(node["station"="subway"](around:1500,${lat},${lng});node["railway"="station"]["station"="light_rail"](around:2000,${lat},${lng});node["highway"="bus_stop"](around:800,${lat},${lng}););out body;`;
 
   const res = await fetch(`/api/transit?query=${encodeURIComponent(overpassQuery)}`);
+
+  if (!res.ok) {
+    throw new Error(`Transit API returned ${res.status}`);
+  }
+
   const data = await res.json();
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
 
   const buckets: Record<string, Map<string, POI>> = {
     ubahn: new Map(),
@@ -189,9 +198,11 @@ export default function ListingMapInner({
     const mapboxCategories = ["restaurant", "cafe", "parking"] as const;
     const cacheKey = `poi-${latitude.toFixed(4)}-${longitude.toFixed(4)}`;
 
-    // Check localStorage cache first
+    // Check localStorage cache first — skip if transit data is all empty (likely a poisoned cache)
     const cached = getCached(cacheKey);
-    if (cached) {
+    const hasTransitData = cached &&
+      ((cached.ubahn?.length ?? 0) + (cached.sbahn?.length ?? 0) + (cached.bus?.length ?? 0) > 0);
+    if (cached && hasTransitData) {
       setState((prev) => ({
         ...prev,
         pois: cached,
@@ -205,18 +216,31 @@ export default function ListingMapInner({
       loading: new Set(allCategories),
     }));
 
-    // Collect all results to cache when done
+    // Collect all results to cache when done — only cache if transit succeeded
     const allPois: Record<string, POI[]> = {};
     let pending = 4; // 1 transit + 3 mapbox
+    let transitFailed = false;
     const maybeCache = () => {
       pending--;
-      if (pending === 0 && !cancelled) {
+      if (pending === 0 && !cancelled && !transitFailed) {
         setCache(cacheKey, allPois);
       }
     };
 
-    // Single Overpass call for all transit (fast, no rate limiting)
-    fetchAllTransitPOIs(longitude, latitude)
+    // Single Overpass call for all transit — retry once on failure
+    const fetchTransitWithRetry = async (attempt: number): Promise<Record<string, POI[]>> => {
+      try {
+        return await fetchAllTransitPOIs(longitude, latitude);
+      } catch {
+        if (attempt < 2) {
+          await new Promise((r) => setTimeout(r, 2000));
+          return fetchTransitWithRetry(attempt + 1);
+        }
+        throw new Error("Transit fetch failed after retry");
+      }
+    };
+
+    fetchTransitWithRetry(1)
       .then((transitPois) => {
         if (cancelled) return;
         Object.assign(allPois, transitPois);
@@ -235,8 +259,8 @@ export default function ListingMapInner({
       })
       .catch(() => {
         if (cancelled) return;
-        Object.assign(allPois, { ubahn: [], sbahn: [], bus: [] });
-        maybeCache();
+        transitFailed = true;
+        maybeCache(); // won't cache because transitFailed=true
         setState((prev) => {
           const nextLoading = new Set(prev.loading);
           nextLoading.delete("ubahn");

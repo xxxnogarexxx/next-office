@@ -149,9 +149,17 @@ export default async function ListingDetailPage({ params }: PageProps) {
       type: "suite" as const,
       label: "Suite",
       capacityMin: 21,
-      capacityMax: listing.capacityMax ?? 50,
+      capacityMax: 50,
       areaSqmMin: 60,
-      areaSqmMax: listing.areaSqm ? Math.round(listing.areaSqm * 0.5) : 200,
+      areaSqmMax: 200,
+    },
+    {
+      type: "suite" as const,
+      label: "Enterprise Suite",
+      capacityMin: 51,
+      capacityMax: 200,
+      areaSqmMin: 201,
+      areaSqmMax: 1000,
     },
   ];
 

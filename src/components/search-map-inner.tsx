@@ -350,6 +350,7 @@ export default function SearchMapInner({
           closeOnClick={false}
           offset={[0, -36]}
           maxWidth="320px"
+          style={{ zIndex: 20 }}
         >
           <a
             href={`/${activeListing.citySlug}/${activeListing.slug}`}

@@ -289,24 +289,38 @@ export default function HomePage() {
       {/* Contact CTA */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-2xl bg-surface lg:rounded-3xl">
-          <div className="grid lg:grid-cols-5">
-            {/* Left — text + form */}
-            <div className="px-6 py-10 sm:px-10 sm:py-14 lg:col-span-3 lg:px-14 lg:py-16">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                Kostenlose Beratung anfragen
-              </h2>
-              <p className="mt-3 max-w-lg text-body">
-                Sagen Sie uns, was Sie suchen — wir finden das passende Büro für
-                Sie. 100% kostenlos, unverbindlich und persönlich.
-              </p>
+          {/* Heading — mobile only (above Benjamin) */}
+          <div className="px-6 pt-10 sm:px-10 lg:hidden">
+            <h2 className="text-2xl font-bold sm:text-3xl">
+              Kostenlose Beratung anfragen
+            </h2>
+            <p className="mt-3 max-w-lg text-body">
+              Sagen Sie uns, was Sie suchen — wir finden das passende Büro für
+              Sie. 100% kostenlos, unverbindlich und persönlich.
+            </p>
+          </div>
 
-              <div className="mt-8">
+          <div className="grid lg:grid-cols-5">
+            {/* Left — text + form (on mobile: form only, appears second) */}
+            <div className="order-2 px-6 pb-10 sm:px-10 sm:py-14 lg:order-1 lg:col-span-3 lg:px-14 lg:py-16">
+              {/* Heading — desktop only */}
+              <div className="hidden lg:block">
+                <h2 className="text-2xl font-bold sm:text-3xl">
+                  Kostenlose Beratung anfragen
+                </h2>
+                <p className="mt-3 max-w-lg text-body">
+                  Sagen Sie uns, was Sie suchen — wir finden das passende Büro für
+                  Sie. 100% kostenlos, unverbindlich und persönlich.
+                </p>
+              </div>
+
+              <div className="lg:mt-8">
                 <LeadForm variant="inline" />
               </div>
             </div>
 
-            {/* Right — contact person */}
-            <div className="flex flex-col items-center justify-center bg-white px-6 py-10 text-center sm:px-10 lg:col-span-2 lg:py-16">
+            {/* Right — contact person (on mobile: appears first) */}
+            <div className="order-1 flex flex-col items-center justify-center bg-white px-6 py-10 text-center sm:px-10 lg:order-2 lg:col-span-2 lg:py-16">
               <Image
                 src="/team-benjamin.jpg"
                 alt="Benjamin Plass"
