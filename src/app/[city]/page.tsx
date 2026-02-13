@@ -85,13 +85,13 @@ export default function CitySearchPage() {
                     </p>
                   </div>
                   <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors group-hover:bg-blue-700 sm:flex">
-                    Jetzt starten
+                    Jetzt anfragen
                     <ArrowRight className="h-4 w-4" />
                   </div>
                 </div>
                 {/* Mobile CTA */}
                 <div className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white sm:hidden">
-                  Jetzt starten
+                  Jetzt anfragen
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </button>
