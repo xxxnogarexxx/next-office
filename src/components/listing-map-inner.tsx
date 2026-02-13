@@ -466,7 +466,7 @@ export default function ListingMapInner({
   };
 
   return (
-    <div className="flex flex-col rounded-lg border lg:flex-row" style={{ minHeight: 560 }}>
+    <div className="flex flex-col rounded-lg border lg:flex-row lg:h-[560px]">
       {/* Sidebar — horizontal scroll on mobile, vertical on desktop */}
       <div className="flex shrink-0 flex-col border-b bg-white lg:w-[260px] lg:border-b-0 lg:border-r">
         <div className="p-4 lg:flex-1 lg:overflow-y-auto lg:p-5">
@@ -528,7 +528,7 @@ export default function ListingMapInner({
       </div>
 
       {/* Map */}
-      <div className="relative h-[400px] flex-1 lg:h-auto" style={{ overflow: "visible" }}>
+      <div className="relative h-[400px] shrink-0 lg:h-auto lg:flex-1" style={{ overflow: "visible" }}>
         <MapGL
           ref={mapRef}
           initialViewState={{
