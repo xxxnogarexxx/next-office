@@ -13,7 +13,7 @@ export default function SearchPage() {
   const [showMap, setShowMap] = useState(false);
 
   return (
-    <div className="flex h-[calc(100dvh-4rem)] flex-col">
+    <div className="flex h-[calc(100dvh-5rem)] flex-col">
       <SearchFilters />
 
       <div className="relative flex flex-1 overflow-hidden">

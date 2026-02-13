@@ -22,7 +22,7 @@ export default function CitySearchPage() {
   const cityName = city?.name ?? citySlug;
 
   return (
-    <div className="flex h-[calc(100dvh-4rem)] flex-col">
+    <div className="flex h-[calc(100dvh-5rem)] flex-col">
       {/* City header */}
       <div className="border-b bg-white px-4 py-3">
         <h1 className="text-xl font-bold">

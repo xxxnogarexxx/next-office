@@ -235,6 +235,18 @@ export default function SearchMapInner({
     }
   }, [overlayActive, transitLines, mapLoaded]);
 
+  // Resize map when container becomes visible (mobile toggle)
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current) return;
+    const map = mapRef.current.getMap();
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.resize();
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [mapLoaded]);
+
   // Fly to city center
   useEffect(() => {
     if (center && mapRef.current) {

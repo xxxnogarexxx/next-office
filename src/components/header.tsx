@@ -47,17 +47,27 @@ export function Header() {
               <span className="sr-only">Menü öffnen</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72">
-            <nav className="mt-8 flex flex-col gap-6">
-              <Button asChild className="h-auto px-6 py-2.5 text-base">
+          <SheetContent side="right" className="w-80 p-0" showCloseButton={false}>
+            <div className="flex h-20 items-center justify-between border-b px-6">
+              <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-0.5 border border-black px-2 py-1">
+                <span className="text-2xl font-normal tracking-tight">Next</span>
+                <span className="text-2xl font-bold tracking-tight">Office</span>
+              </Link>
+              <button onClick={() => setOpen(false)} className="rounded-md p-2 hover:bg-gray-100">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <nav className="flex flex-col px-6 py-6">
+              <Button asChild className="h-auto w-full py-3 text-base">
                 <Link href="/contact" onClick={() => setOpen(false)}>
                   Schnellangebot
                 </Link>
               </Button>
 
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">Unternehmen</h3>
-                <div className="mt-3 flex flex-col gap-2">
+              <div className="mt-8">
+                <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Unternehmen</p>
+                <div className="mt-3 flex flex-col gap-1">
                   {[
                     { href: "/ueber-uns", label: "Über uns" },
                     { href: "/fuer-anbieter", label: "Für Anbieter" },
@@ -68,7 +78,7 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="text-sm text-body transition-colors hover:text-foreground"
+                      className="-mx-2 rounded-md px-2 py-2 text-[15px] text-gray-700 transition-colors hover:bg-gray-50 hover:text-foreground"
                     >
                       {link.label}
                     </Link>
@@ -76,9 +86,9 @@ export function Header() {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">Rechtliches</h3>
-                <div className="mt-3 flex flex-col gap-2">
+              <div className="mt-6 border-t pt-6">
+                <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Rechtliches</p>
+                <div className="mt-3 flex flex-col gap-1">
                   {[
                     { href: "/datenschutz", label: "Datenschutz" },
                     { href: "/impressum", label: "Impressum" },
@@ -88,7 +98,7 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="text-sm text-body transition-colors hover:text-foreground"
+                      className="-mx-2 rounded-md px-2 py-2 text-[15px] text-gray-700 transition-colors hover:bg-gray-50 hover:text-foreground"
                     >
                       {link.label}
                     </Link>
