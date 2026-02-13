@@ -134,7 +134,7 @@ export default function HomePage() {
           <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-text">
             Über 1.000 Unternehmen vertrauen uns
           </p>
-          <div className="mt-6 flex items-center gap-8 overflow-x-auto pb-2 sm:justify-center sm:gap-12 sm:overflow-x-visible sm:pb-0 lg:gap-16">
+          <div className="mt-6 flex items-center gap-8 overflow-x-auto scrollbar-hide pb-2 sm:justify-center sm:gap-12 sm:overflow-x-visible sm:pb-0 lg:gap-16">
             <Image
               src="/logo-zalando.svg"
               alt="Zalando"
