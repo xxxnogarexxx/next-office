@@ -66,7 +66,7 @@ export default function CitySearchPage() {
             <div className="my-4">
               <button
                 onClick={() => setFormOpen(true)}
-                className="group w-full rounded-2xl border-2 border-blue-200 bg-blue-50 p-5 text-left shadow-sm transition-all hover:border-blue-300 hover:shadow-md sm:p-6"
+                className="group w-full rounded-2xl bg-gray-900 p-5 text-left shadow-md transition-all hover:bg-gray-800 hover:shadow-lg sm:p-6"
               >
                 <div className="flex items-start gap-4 sm:items-center sm:gap-5">
                   <Image
@@ -74,23 +74,23 @@ export default function CitySearchPage() {
                     alt="Benjamin Plass"
                     width={56}
                     height={56}
-                    className="mt-0.5 h-10 w-10 shrink-0 rounded-full object-cover sm:mt-0 sm:h-14 sm:w-14"
+                    className="mt-0.5 h-10 w-10 shrink-0 rounded-full border-2 border-gray-700 object-cover sm:mt-0 sm:h-14 sm:w-14"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-bold text-foreground sm:text-xl">
+                    <h3 className="text-base font-bold text-white sm:text-xl">
                       Ihr Büro in {cityName} — in 2 Minuten anfragen
                     </h3>
-                    <p className="mt-1 text-sm text-body">
+                    <p className="mt-1 text-sm text-gray-400">
                       Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100 % kostenlos.
                     </p>
                   </div>
-                  <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors group-hover:bg-blue-700 sm:flex">
+                  <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors group-hover:bg-gray-100 sm:flex">
                     Jetzt anfragen
                     <ArrowRight className="h-4 w-4" />
                   </div>
                 </div>
                 {/* Mobile CTA */}
-                <div className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white sm:hidden">
+                <div className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 sm:hidden">
                   Jetzt anfragen
                   <ArrowRight className="h-4 w-4" />
                 </div>
