@@ -134,55 +134,55 @@ export default function HomePage() {
           <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-text">
             Über 1.000 Unternehmen vertrauen uns
           </p>
-          <div className="mt-6 flex items-center justify-center gap-8 sm:gap-12 lg:gap-16">
+          <div className="mt-6 flex items-center gap-8 overflow-x-auto pb-2 sm:justify-center sm:gap-12 sm:overflow-x-visible sm:pb-0 lg:gap-16">
             <Image
               src="/logo-zalando.svg"
               alt="Zalando"
               width={100}
               height={24}
-              className="h-4 w-auto object-contain opacity-40 grayscale sm:h-5"
+              className="h-4 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-5"
             />
             <Image
               src="/logo-canon.svg"
               alt="Canon"
               width={80}
               height={22}
-              className="h-4 w-auto object-contain opacity-40 grayscale sm:h-5"
+              className="h-4 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-5"
             />
             <Image
               src="/logo-randstad.svg"
               alt="Randstad"
               width={110}
               height={26}
-              className="h-5 w-auto object-contain opacity-40 grayscale sm:h-6"
+              className="h-5 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-6"
             />
             <Image
               src="/logo-fresenius.svg"
               alt="Fresenius Medical Care"
               width={110}
               height={26}
-              className="hidden h-5 w-auto object-contain opacity-40 grayscale sm:block sm:h-6"
+              className="h-5 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-6"
             />
             <Image
               src="/logo-sky.svg"
               alt="Sky"
               width={70}
               height={28}
-              className="h-6 w-auto object-contain opacity-40 grayscale sm:h-7"
+              className="h-6 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-7"
             />
             <Image
               src="/logo-gigaset.svg"
               alt="Gigaset"
               width={100}
               height={24}
-              className="hidden h-5 w-auto object-contain opacity-40 grayscale sm:block sm:h-6"
+              className="h-5 w-auto shrink-0 object-contain opacity-40 grayscale sm:h-6"
             />
             <Image
               src="/logo-ideo.svg"
               alt="IDEO"
               width={60}
               height={20}
-              className="hidden h-4 w-auto object-contain opacity-40 grayscale lg:block lg:h-5"
+              className="h-4 w-auto shrink-0 object-contain opacity-40 grayscale lg:h-5"
             />
           </div>
         </div>

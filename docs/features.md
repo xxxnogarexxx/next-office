@@ -11,50 +11,46 @@
 
 | # | Task | Bereich | Status |
 |---|------|---------|--------|
-| 1 | Echte Listings mit echten Daten (Adressen, Preise, Fotos, Anbieter) | Content | Offen |
-| 2 | Texte anpassen (Hero, Beschreibungen, CTAs, Footer, Legal) | Content | Offen |
-| 3 | Formulare testen (alle Varianten, E-Mail-Zustellung prüfen) | QA | Offen |
-| 4 | Echte Filter-Logik (Preis, Teamgröße, Ausstattung) | Suche & Filter | Offen |
-| 5 | Analytics einbinden (GA4 + Meta Pixel) | Infrastruktur | Offen |
-| 6 | Google Search Console — Indexierung prüfen | SEO | Offen |
-| 7 | Über uns Seite (`/about`) bauen | Seiten | Offen — aktuell 404 |
+| 1 | Merge CSV mit capacityMin/Max + noticePeriod | Content | Offen — `spaces-to-fill.csv` an User gesendet |
+| 2 | Auto-generierte "Über dieses Büro" Beschreibungen | Content | Offen — nach CSV-Merge |
+| 3 | gclid Tracking Layer finalisieren | Tracking | In Arbeit — Code vorhanden, uncommitted |
+| 4 | Cookie Consent Banner (DSGVO) | Legal | Offen |
 
 ### Nice-to-have vor Launch (nicht blockierend)
-- Für Anbieter Seite (`/for-providers`)
-- Cookie Consent Banner (DSGVO)
-- "Angebot wählen" — gewähltes Angebot ans Formular übergeben
 - Impressum/Datenschutz Inhalt juristisch prüfen lassen
+- "Angebot wählen" — gewähltes Angebot ans Formular übergeben
 
 ---
 
 ## Seiten
 
-- [x] **Homepage** — Hero, Suchleiste, Städte-Karten, Value Props, Lead-Formular
-- [x] **Homepage Mobile** — Zentriertes Layout, Bild + überlappendes Suchfeld (ShareSpace-Stil)
+- [x] **Homepage** — Hero mit Suchleiste, Trust-Logos (7 Kundenlogos), Städte-Karten, Testimonials, Lead-Formular
+- [x] **Homepage Mobile** — Zentriertes Layout, Bild + überlappendes Suchfeld
 - [x] **Städte-Suche** (`/berlin`, `/muenchen`, etc.) — Listing-Grid + interaktive Karte
-- [x] **Listing-Detail** (`/berlin/spaces-potsdamer-platz`) — Fotos, Key Facts, Angebote, Ausstattung, Karte, ähnliche Büros
-- [x] **Kontakt** (`/contact`) — Formular + Info-Bereich
+- [x] **Listing-Detail** (`/berlin/spaces-potsdamer-platz`) — Fotos, Key Facts, Angebote, Ausstattung, POI-Karte, ähnliche Büros
+- [x] **Kontakt** (`/contact`) — Conversion-optimiert: Trust-Stats, Formular, Benjamin-Karte mit Antwortzeit-Badge, Prozess-Stepper, Kundenlogos
+- [x] **Über uns** (`/ueber-uns`) — Hero, Stats, Geschichte (CG + NextOffice), Werte, Benjamin-Karte, Testimonials, CTA
+- [x] **Für Anbieter** (`/fuer-anbieter`) — Hero mit Features-Checkliste, 4 Benefits, 4-Schritte-Prozess, CTA mit Lead-Formular + Benjamin-Karte
 - [x] **Blog-Index** (`/blog`) — Artikel-Übersicht
 - [x] **Blog-Artikel** (`/blog/[slug]`) — Markdown-basiert mit CTA
 - [x] **Impressum** (`/impressum`)
 - [x] **Datenschutz** (`/datenschutz`)
 - [x] **AGB** (`/agb`)
-- [~] **Suche** (`/search`) — Seite existiert, keine echte Suchlogik
-- [ ] **Über uns** (`/about`) — 404
-- [ ] **Für Anbieter** (`/for-providers`) — 404
+- [x] **Suche** (`/search`) — Alle Listings mit Karte
+- [ ] **Stadtteile-Seiten** (z.B. `/berlin/kreuzberg`) — für SEO
 
 ## Komponenten & Features
 
 ### Navigation & Layout
-- [x] Header mit Logo, "Büros finden"-Link, "Schnellangebot"-Button
+- [x] Header (h-24) mit Logo (schwarzer Rahmen), "Schnellangebot"-Button
 - [x] Mobile Hamburger-Menü
-- [x] Footer mit Stadt-Links, Unternehmens-Links, Rechtliches
+- [x] Footer mit Stadt-Links, Unternehmens-Links (Über uns, Für Anbieter), Rechtliches
 - [x] Responsive Design (Mobile, Tablet, Desktop)
 - [x] Custom Favicon
 
 ### Suche & Filter
 - [x] Suchleiste mit Autocomplete (Stadt-Navigation)
-- [x] Hero-Suchleiste — Mobile: Icon-Only Button, Desktop: "Suchen" Text
+- [x] Hero-Suchleiste — "Wo suchen Sie?" Label im Container, Mobile: Icon-Only Button, Desktop: "Suchen" Text
 - [~] Filter-Buttons (Alle Preise, Teamgröße, Ausstattung, Sofort verfügbar) — nur UI
 - [ ] Echte Filter-Logik (Preis-Range, Kapazität, Ausstattung)
 - [ ] Volltextsuche über alle Listings
@@ -62,55 +58,66 @@
 
 ### Karten (Mapbox GL)
 - [x] Mapbox GL JS mit react-map-gl v7 (Premium-Kartenstil light-v11)
-- [x] Städte-/Such-Karte mit blauen Teardrop-Pins
+- [x] Städte-/Such-Karte mit blauen Teardrop-Pins (aktiver Pin schwarz + z-index)
 - [x] Klickbare Popups mit Bild-Preview, Name, Adresse, Kapazität, Preis
 - [x] Hover-Effekt auf Pins (dunkleres Blau, größerer Pin)
 - [x] Scroll-Zoom mit Mausrad (wie Airbnb)
 - [x] U-Bahn-Linien Overlay — farbige Polylines mit Hover-Tooltips (Liniennummer)
 - [x] S-Bahn-Linien Overlay — farbige Polylines mit Hover-Tooltips (Liniennummer)
+- [x] Stadtteile-Overlay — Boundary-Polygone (Overpass → GeoJSON layers)
 - [x] Separate Toggle-Buttons für U-Bahn / S-Bahn mit Linienanzahl
-- [x] Listing-Detail-Karte (einzelner Pin)
+- [x] Listing-Detail-Karte (einzelner Pin) — responsive (filters above, map below on mobile)
 - [x] POI-System auf Listing-Karten: U-Bahn, S-Bahn, Bus (Overpass API), Restaurants, Cafés, Parking (Mapbox)
 - [x] POI Toggle-Buttons mit Anzahl + Entfernungsangaben
-- [x] Mobile: "Karte anzeigen" Toggle-Button
-- [x] Daten in localStorage gecacht (24h TTL)
+- [x] Mobile: "Karte anzeigen" Toggle-Button (dvh statt vh)
+- [x] Daten in localStorage gecacht (24h TTL), retry + no-cache-on-error
+- [x] Overpass API Proxy mit 12s Timeout + Error-Handling
 - [ ] Cluster-Pins bei vielen Listings
 
 ### Listing-Karten (Grid)
 - [x] Airbnb-Style Bilder-Karussell (Pfeile bei Hover, Dot-Indikatoren, Fade-Übergang)
 - [x] Provider-Name, Listing-Name, Adresse, Kapazität, Preis, Amenities
 - [x] Versteckter Scrollbalken auf Listing-Panels
+- [x] Mobile Photo-Swipe
 
 ### Listing-Detail
-- [x] Foto-Galerie mit Fullscreen-Modus (6 Fotos pro Listing)
+- [x] Foto-Galerie mit Fullscreen-Modus (ESC schließt)
 - [x] Key Facts (Adresse, Kapazität, Preis, Fläche, Kündigungsfrist)
 - [x] Beschreibung
-- [x] Verfügbare Angebote (Private Office, Suite)
+- [x] Enterprise Suite Angebot (auf allen Listings)
 - [x] Ausstattung mit Icons
 - [x] Standort-Karte mit POI-System
 - [x] Ähnliche Büros
-- [x] Sticky Sidebar (Desktop) mit Anbieter-Info + CTA
-- [x] Sticky Bottom Bar (Mobile) mit Preis + CTA
+- [x] Sticky Sidebar (Desktop, overflow-x-clip Fix) mit Anbieter-Info + CTA
+- [x] Sticky Bottom Bar (Mobile) mit Preis + CTA — Benjamin zuerst
 - [~] Angebots-Dropdown in Sidebar — Auswahl hat keinen Effekt
 - [~] "Angebot wählen" — öffnet Formular, übergibt aber nicht welches Angebot
 
+### Trust & Social Proof
+- [x] Homepage Trust-Logos: Zalando, Canon, Randstad, Fresenius, Sky, Gigaset, IDEO (grayscale, 40% Opacity)
+- [x] Kontaktseite Kundenlogos: Zalando, Canon, Fresenius, Sky
+- [x] Testimonials: 3 Kundenstimmen mit Zitat, Bürofoto, Avatar, Name/Rolle, Firmenlogo (grayscale)
+- [x] "Über 1.000 Unternehmen" — konsistent auf allen Seiten
+- [x] Kontaktseite: "Antwortzeit: unter 2 Stunden" Badge
+
 ### Lead-Formulare
 - [x] Sidebar-Formular (im Dialog)
-- [x] Inline-Formular (Homepage)
-- [x] Kontaktseiten-Formular (50/50 Split)
+- [x] Inline-Formular (Homepage, Über uns, Für Anbieter)
+- [x] Kontaktseiten-Formular (conversion-optimiert mit Trust-Elementen)
 - [x] Felder: Name, E-Mail, Telefon, Teamgröße, Einzugsdatum, Stadt, Nachricht
 - [x] Erfolgs-Bestätigung nach Absenden
 - [x] MutationObserver gegen Passwort-Manager-Shaking
 - [x] Backend-Anbindung (Supabase) — Leads in DB gespeichert
-- [x] E-Mail-Benachrichtigung bei neuer Anfrage (Resend, noreply@next-office.io)
+- [x] E-Mail-Benachrichtigung bei neuer Anfrage (Resend, noreply@next-office.io → anfrage@coworkingguide.de)
 - [x] E-Mail zeigt: Arbeitsplätze, Einzugsdatum (DD.MM.YY), Stadt, Firmenname aus Domain
+- [~] gclid Tracking — Code vorhanden, noch nicht committed
 - [ ] Lead-Daten an CRM weiterleiten
 - [ ] Auto-Reply E-Mail an den Anfragenden
 
 ### SEO
 - [x] Meta-Tags pro Seite (Title, Description, OG, Twitter)
 - [x] JSON-LD Schema (LocalBusiness für Listings, Article für Blog)
-- [x] Automatische Sitemap (`/sitemap.xml`)
+- [x] Automatische Sitemap (`/sitemap.xml`) — alle Seiten inkl. Über uns, Für Anbieter
 - [x] robots.txt
 - [x] Canonical URLs
 - [ ] Indexierung in Google Search Console prüfen
@@ -124,33 +131,36 @@
 - [ ] Artikel-Kategorien / Tags
 
 ### Content
-- [x] 20 Listings mit realistischen Daten (Adressen, Koordinaten, Preise, Amenities, Kündigungsfrist)
-- [x] 6 Fotos pro Listing (Unsplash)
-- [x] 4 Städte mit Bildern
-- [~] Listing-Zahlen auf Homepage (48, 35, 29, 22) — Fake, real je 5
-- [ ] Echte Listings aus Coworkingguide-Datenbank importieren
-- [ ] Echte Fotos von Anbietern
-- [ ] Weitere Städte (Köln, Düsseldorf, Stuttgart, Wien, Zürich)
+- [x] 264 echte Listings aus Contentful CMS (93 Berlin, 46 Hamburg, 42 München, 32 Frankfurt, 31 Köln, 20 Düsseldorf)
+- [x] Fotos auf Contentful CDN (images.ctfassets.net)
+- [x] 6 Städte mit Bildern
+- [x] Import-Script (`scripts/import-contentful.ts`) — CG→NO Format-Transformation
+- [x] Statische JSON-Daten (`src/data/listings.json`, `src/data/cities.json`)
+- [x] Defaults: noticePeriod "ab 1 Monat", capacityMin=1, "1–50+ Personen" wenn kein Max
 
 ## Infrastruktur & Ops
 
 - [x] Vercel Deployment (Auto-Deploy via GitHub)
 - [x] Custom Domain (next-office.io)
 - [x] SSL/HTTPS
-- [x] Supabase Backend (PostgreSQL)
+- [x] Supabase Backend (PostgreSQL) — für Leads
 - [x] Resend E-Mail (verifizierte Domain next-office.io)
 - [x] Mapbox GL Token (Vercel Env Vars)
+- [x] n8n Workflow: NetHunt → Google Sheets Conversion Upload (Qualified Lead + Closed Deal)
 - [ ] Google Workspace Domain-Alias — @next-office.io als Alias in Google Workspace
 - [ ] Analytics (GA4 + Meta Pixel)
 - [ ] Cookie Consent Banner (DSGVO)
-- [ ] Supabase Leads Backup — n8n Workflow: täglicher Export nach Google Sheets
 - [ ] Error Monitoring (Sentry)
 - [ ] Uptime Monitoring
 
 ## Feature Backlog
 
+### Nächste Schritte
+- [ ] **Auto-Sync Contentful → NO** — Contentful Webhook → Vercel Deploy Hook, Import-Script läuft bei Build. Script handhabt bereits CG→NO Transformation.
+- [ ] **Echte Filter-Logik** — Preis-Range, Kapazität, Ausstattung auf Städte-/Suchseiten
+- [ ] **Analytics** — GA4 + Meta Pixel nach Launch
+
 ### UX & Conversion
-- [ ] **ESC-Taste für Foto-Galerie** — Fullscreen-Overlay schließen mit Escape
 - [ ] **Chatbot** — KI-gestützter Chat (Fragen beantworten, Leads generieren)
 - [ ] **Rückruf-Popup** — Nach X Sekunden: "Brauchen Sie Hilfe?" Popup
 - [ ] **Heyflow-Funnel** — Step-by-Step Fragebogen (Teamgröße → Budget → Stadt → Kontaktdaten)
@@ -164,4 +174,5 @@
 - [ ] Virtuelle Touren (360-Grad)
 - [ ] Multi-Language (EN für internationale Nutzer)
 - [ ] A/B Testing für Conversion-Optimierung
-- [ ] Stadtteile-Overlay auf Karte (vorbereitet, API existiert unter /api/districts)
+- [ ] Stadtteile-Seiten für SEO
+- [ ] Cluster-Pins bei vielen Listings

@@ -64,7 +64,7 @@ export default function ContactPage() {
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-body sm:text-lg">
             Sagen Sie uns, was Sie suchen — wir finden passende Büros und melden
-            uns innerhalb von 2 Stunden bei Ihnen.
+            uns innerhalb von 30 Minuten bei Ihnen.
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-text">
             <span>1.000+ Unternehmen beraten</span>
@@ -100,7 +100,7 @@ export default function ContactPage() {
               </div>
 
               <p className="mt-4 text-center text-xs text-muted-text">
-                Kostenlos & unverbindlich. Antwort in unter 2 Stunden.
+                Kostenlos & unverbindlich. Antwort in unter 30 Minuten.
               </p>
             </div>
 
@@ -109,34 +109,34 @@ export default function ContactPage() {
               <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-text">
                 Vertrauen uns unter anderem
               </p>
-              <div className="mt-4 flex items-center justify-center gap-x-10">
+              <div className="mt-4 flex items-center gap-x-8 overflow-x-auto pb-2 sm:justify-center sm:gap-x-10 sm:overflow-x-visible sm:pb-0">
                 <Image
                   src="/logo-zalando.svg"
                   alt="Zalando"
                   width={100}
                   height={24}
-                  className="h-5 w-auto object-contain opacity-50 grayscale"
+                  className="h-5 w-auto shrink-0 object-contain opacity-50 grayscale"
                 />
                 <Image
                   src="/logo-canon.svg"
                   alt="Canon"
                   width={80}
                   height={22}
-                  className="h-5 w-auto object-contain opacity-50 grayscale"
+                  className="h-5 w-auto shrink-0 object-contain opacity-50 grayscale"
                 />
                 <Image
                   src="/logo-fresenius.svg"
                   alt="Fresenius Medical Care"
                   width={100}
                   height={24}
-                  className="h-5 w-auto object-contain opacity-50 grayscale"
+                  className="h-5 w-auto shrink-0 object-contain opacity-50 grayscale"
                 />
                 <Image
                   src="/logo-sky.svg"
                   alt="Sky"
                   width={80}
                   height={32}
-                  className="h-7 w-auto object-contain opacity-50 grayscale"
+                  className="h-7 w-auto shrink-0 object-contain opacity-50 grayscale"
                 />
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function ContactPage() {
               <div className="mt-5 flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
                 <Clock className="h-4 w-4 shrink-0" />
                 <span className="font-medium">
-                  Antwortzeit: unter 2 Stunden
+                  Antwortzeit: unter 30 Minuten
                 </span>
               </div>
 
