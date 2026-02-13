@@ -26,7 +26,7 @@
 
 - [x] **Homepage** — Hero mit Suchleiste, Trust-Logos (7 Kundenlogos), Städte-Karten, Testimonials, Lead-Formular
 - [x] **Homepage Mobile** — Zentriertes Layout, Bild + überlappendes Suchfeld
-- [x] **Städte-Suche** (`/berlin`, `/muenchen`, etc.) — Listing-Grid + interaktive Karte
+- [x] **Städte-Suche** (`/berlin`, `/muenchen`, etc.) — Listing-Grid + interaktive Karte + Inline-CTA-Banner
 - [x] **Listing-Detail** (`/berlin/spaces-potsdamer-platz`) — Fotos, Key Facts, Angebote, Ausstattung, POI-Karte, ähnliche Büros
 - [x] **Kontakt** (`/contact`) — Conversion-optimiert: Trust-Stats, Formular, Benjamin-Karte mit Antwortzeit-Badge, Prozess-Stepper, Kundenlogos
 - [x] **Über uns** (`/ueber-uns`) — Hero, Stats, Geschichte (CG + NextOffice), Werte, Benjamin-Karte, Testimonials, CTA
@@ -42,8 +42,8 @@
 ## Komponenten & Features
 
 ### Navigation & Layout
-- [x] Header (h-24) mit Logo (schwarzer Rahmen), "Schnellangebot"-Button
-- [x] Mobile Hamburger-Menü
+- [x] Header (h-20, full-width) mit Logo (schwarzer Rahmen), "Schnellangebot"-Button
+- [x] Mobile Hamburger-Menü — Sheet mit Logo-Header, Schnellangebot CTA, Unternehmen + Rechtliches Sections, große Tap-Targets
 - [x] Footer mit Stadt-Links, Unternehmens-Links (Über uns, Für Anbieter), Rechtliches
 - [x] Responsive Design (Mobile, Tablet, Desktop)
 - [x] Custom Favicon
@@ -69,7 +69,8 @@
 - [x] Listing-Detail-Karte (einzelner Pin) — responsive (filters above, map below on mobile)
 - [x] POI-System auf Listing-Karten: U-Bahn, S-Bahn, Bus (Overpass API), Restaurants, Cafés, Parking (Mapbox)
 - [x] POI Toggle-Buttons mit Anzahl + Entfernungsangaben
-- [x] Mobile: "Karte anzeigen" Toggle-Button (dvh statt vh)
+- [x] Mobile: "Karte anzeigen" Toggle-Button (dvh mit 5rem Header-Offset)
+- [x] ResizeObserver auf SearchMapInner — map.resize() bei Toggle (fix für weißen Bereich)
 - [x] Daten in localStorage gecacht (24h TTL), retry + no-cache-on-error
 - [x] Overpass API Proxy mit 12s Timeout + Error-Handling
 - [ ] Cluster-Pins bei vielen Listings
@@ -79,32 +80,39 @@
 - [x] Provider-Name, Listing-Name, Adresse, Kapazität, Preis, Amenities
 - [x] Versteckter Scrollbalken auf Listing-Panels
 - [x] Mobile Photo-Swipe
+- [x] Inline-CTA-Banner nach 4. Listing — dunkles Design (gray-900), Benjamin-Foto, "Jetzt anfragen" Button, öffnet Lead-Popup
 
 ### Listing-Detail
 - [x] Foto-Galerie mit Fullscreen-Modus (ESC schließt)
 - [x] Key Facts (Adresse, Kapazität, Preis, Fläche, Kündigungsfrist)
 - [x] Beschreibung
+- [x] Verfügbare Angebote mit "Angebot erhalten" Buttons (schwarz, responsive Layout)
 - [x] Enterprise Suite Angebot (auf allen Listings)
 - [x] Ausstattung mit Icons
 - [x] Standort-Karte mit POI-System
 - [x] Ähnliche Büros
-- [x] Sticky Sidebar (Desktop, overflow-x-clip Fix) mit Anbieter-Info + CTA
-- [x] Sticky Bottom Bar (Mobile) mit Preis + CTA — Benjamin zuerst
-- [~] Angebots-Dropdown in Sidebar — Auswahl hat keinen Effekt
+- [x] Sticky Sidebar (Desktop) — Preis, "Kostenloses Angebot erhalten" (blau), Urgency-Badge (amber), Trust-Signals (grün), Benjamin-Berater-Karte
+- [x] Sticky Bottom Bar (Mobile) mit Preis + CTA
+- [x] Lead-Popup (Dialog) — Trust-Strip (3 Punkte: kostenlos, 30 Min, Preisgarantie), Formular, Kundenlogos (Zalando/Canon/Fresenius), Benjamin-Footer mit 5 Sternen
+- [~] Angebots-Dropdown in alter Sidebar — Auswahl hat keinen Effekt
 - [~] "Angebot wählen" — öffnet Formular, übergibt aber nicht welches Angebot
 
 ### Trust & Social Proof
 - [x] Homepage Trust-Logos: Zalando, Canon, Randstad, Fresenius, Sky, Gigaset, IDEO (grayscale, 40% Opacity)
 - [x] Kontaktseite Kundenlogos: Zalando, Canon, Fresenius, Sky
+- [x] Lead-Popup Kundenlogos: Zalando, Canon, Fresenius (grayscale)
 - [x] Testimonials: 3 Kundenstimmen mit Zitat, Bürofoto, Avatar, Name/Rolle, Firmenlogo (grayscale)
 - [x] "Über 1.000 Unternehmen" — konsistent auf allen Seiten
 - [x] Kontaktseite: "Antwortzeit: unter 2 Stunden" Badge
+- [x] Sidebar + Popup: "Antwort in unter 30 Min." Badge
 
 ### Lead-Formulare
-- [x] Sidebar-Formular (im Dialog)
+- [x] Dialog-Formular (variant="dialog" — ohne Border/Padding/Header, für Popup)
+- [x] Sidebar-Formular (variant="sidebar" — mit Border + "Jetzt anfragen" Header)
 - [x] Inline-Formular (Homepage, Über uns, Für Anbieter)
 - [x] Kontaktseiten-Formular (conversion-optimiert mit Trust-Elementen)
-- [x] Felder: Name, E-Mail, Telefon, Teamgröße, Einzugsdatum, Stadt, Nachricht
+- [x] Felder: Name*, E-Mail*, Telefon*, Teamgröße*, Einzugsdatum*, Stadt*, Nachricht (optional)
+- [x] Alle Felder required außer Nachricht (mit "(optional)" Label)
 - [x] Erfolgs-Bestätigung nach Absenden
 - [x] MutationObserver gegen Passwort-Manager-Shaking
 - [x] Backend-Anbindung (Supabase) — Leads in DB gespeichert
@@ -147,11 +155,17 @@
 - [x] Resend E-Mail (verifizierte Domain next-office.io)
 - [x] Mapbox GL Token (Vercel Env Vars)
 - [x] n8n Workflow: NetHunt → Google Sheets Conversion Upload (Qualified Lead + Closed Deal)
+- [x] Dev Server: ~/Developer/next-office (aus iCloud verschoben wegen Crash-Probleme)
+- [x] Stündliches Backup zu iCloud via launchd
 - [ ] Google Workspace Domain-Alias — @next-office.io als Alias in Google Workspace
 - [ ] Analytics (GA4 + Meta Pixel)
 - [ ] Cookie Consent Banner (DSGVO)
 - [ ] Error Monitoring (Sentry)
 - [ ] Uptime Monitoring
+
+## Bekannte Bugs
+
+- [ ] **Layout-Shift bei Dialog auf City/Search-Seiten** — Radix Dialog entfernt Scrollbar, Map/Liste verschiebt sich ~1mm. Workarounds (scrollbar-gutter, padding-right !important) bisher wirkungslos.
 
 ## Feature Backlog
 
@@ -164,7 +178,7 @@
 - [ ] **Chatbot** — KI-gestützter Chat (Fragen beantworten, Leads generieren)
 - [ ] **Rückruf-Popup** — Nach X Sekunden: "Brauchen Sie Hilfe?" Popup
 - [ ] **Heyflow-Funnel** — Step-by-Step Fragebogen (Teamgröße → Budget → Stadt → Kontaktdaten)
-- [ ] **"Das passende Büro in 2 Minuten" CTA-Box** — Auf Städte-Seite nach den ersten 3 Listings
+- [x] **"Ihr Büro in {Stadt} — in 2 Minuten" CTA-Banner** — Auf Städte-Seite nach den ersten 4 Listings, dunkles Design
 
 ### Nice-to-Have (Zukunft)
 - [ ] Anbieter-Dashboard (Listings verwalten)
