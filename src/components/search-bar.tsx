@@ -118,31 +118,34 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
   if (variant === "hero") {
     return (
       <div ref={wrapperRef} className={`relative ${className ?? ""}`}>
-        <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-md sm:gap-3 sm:p-3">
-          <MapPin className="ml-2 h-5 w-5 shrink-0 text-muted-text" />
-          <input
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setIsOpen(true);
-              setSelectedIndex(-1);
-            }}
-            onFocus={() => setIsOpen(true)}
-            onKeyDown={handleKeyDown}
-            placeholder="Stadt, Stadtteil oder Adresse..."
-            autoComplete="off"
-            data-form-type="other"
-            suppressHydrationWarning
-            className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-text"
-          />
-          <button
-            type="button"
-            onClick={handleSearch}
-            className="flex shrink-0 items-center justify-center rounded-lg bg-primary p-2.5 text-white transition-colors hover:bg-accent-blue-hover sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm sm:font-medium"
-          >
-            <span className="hidden sm:inline">Suchen</span>
-            <Search className="h-5 w-5 sm:h-4 sm:w-4" />
-          </button>
+        <div className="rounded-xl bg-white px-4 pb-3 pt-3 shadow-md sm:px-5 sm:pb-3 sm:pt-4">
+          <p className="mb-1.5 text-sm font-semibold text-foreground">Büro finden</p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <MapPin className="h-5 w-5 shrink-0 text-muted-text" />
+            <input
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setIsOpen(true);
+                setSelectedIndex(-1);
+              }}
+              onFocus={() => setIsOpen(true)}
+              onKeyDown={handleKeyDown}
+              placeholder="Stadt, Stadtteil oder Adresse..."
+              autoComplete="off"
+              data-form-type="other"
+              suppressHydrationWarning
+              className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-text"
+            />
+            <button
+              type="button"
+              onClick={handleSearch}
+              className="flex shrink-0 items-center justify-center rounded-lg bg-primary p-2.5 text-white transition-colors hover:bg-accent-blue-hover sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm sm:font-medium"
+            >
+              <span className="hidden sm:inline">Suchen</span>
+              <Search className="h-5 w-5 sm:h-4 sm:w-4" />
+            </button>
+          </div>
         </div>
         {dropdown}
       </div>

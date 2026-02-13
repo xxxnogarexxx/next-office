@@ -56,9 +56,6 @@ export default function HomePage() {
 
               {/* Search bar — desktop only */}
               <div className="mt-8 hidden w-full max-w-lg lg:block">
-                <p className="mb-2 text-sm font-medium text-foreground">
-                  Büro finden
-                </p>
                 <SearchBar variant="hero" />
               </div>
 
@@ -111,15 +108,7 @@ export default function HomePage() {
 
           {/* Mobile search bar — card overlapping bottom of image */}
           <div className="relative z-10 mx-auto -mt-12 w-[85%] max-w-sm pb-6 lg:hidden">
-            <div className="rounded-2xl bg-white px-4 pb-3 pt-4 shadow-lg">
-              <p className="mb-2 text-sm font-medium text-foreground">
-                Büro finden
-              </p>
-              <SearchBar
-                variant="hero"
-                className="[&>div:first-child]:bg-transparent [&>div:first-child]:p-0 [&>div:first-child]:shadow-none [&>div:first-child]:rounded-none"
-              />
-            </div>
+            <SearchBar variant="hero" />
             <div className="mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm text-body">
               <span>Beliebte Städte:</span>
               {cities.slice(0, 4).map((city) => (
