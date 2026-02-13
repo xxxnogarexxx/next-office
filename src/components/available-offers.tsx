@@ -63,7 +63,7 @@ export function AvailableOffers({
                   className="hidden shrink-0 border-foreground bg-foreground px-3 text-xs text-white hover:bg-foreground/90 hover:text-white sm:inline-flex"
                   onClick={() => onSelectOffer(offer)}
                 >
-                  Angebot erhalten
+                  Anfragen
                 </Button>
               </div>
 
