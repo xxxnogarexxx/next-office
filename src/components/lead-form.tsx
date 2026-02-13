@@ -20,7 +20,7 @@ interface LeadFormProps {
   listingId?: string;
   listingName?: string;
   citySlug?: string;
-  variant?: "sidebar" | "inline" | "contact";
+  variant?: "sidebar" | "inline" | "contact" | "dialog";
 }
 
 export function LeadForm({
@@ -114,13 +114,13 @@ export function LeadForm({
     return (
       <div
         className={`flex flex-col gap-4 ${
-          variant === "contact"
+          variant === "contact" || variant === "dialog"
             ? ""
             : variant === "sidebar"
               ? "rounded-lg border bg-white p-6"
               : "mx-auto max-w-md rounded-lg border bg-white p-6"
         }`}
-        style={{ minHeight: 380 }}
+        style={{ minHeight: variant === "dialog" ? undefined : 380 }}
       />
     );
   }
@@ -147,7 +147,7 @@ export function LeadForm({
       onSubmit={handleSubmit}
       autoComplete="off"
       className={`flex flex-col gap-4 transform-gpu ${
-        variant === "contact"
+        variant === "contact" || variant === "dialog"
           ? ""
           : variant === "sidebar"
             ? "rounded-lg border bg-white p-6"
@@ -184,7 +184,7 @@ export function LeadForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="lead_tel">Telefon</Label>
+          <Label htmlFor="lead_tel">Telefon *</Label>
           <Input
             id="lead_tel"
             name="lead_tel"
@@ -192,6 +192,7 @@ export function LeadForm({
             inputMode="tel"
             placeholder="+49 123 456789"
             autoComplete="one-time-code"
+            required
           />
         </div>
         <div className="space-y-2">

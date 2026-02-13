@@ -59,7 +59,8 @@ export function AvailableOffers({
 
                 <Button
                   size="sm"
-                  className="shrink-0"
+                  variant="outline"
+                  className="shrink-0 border-foreground bg-foreground text-white hover:bg-foreground/90 hover:text-white"
                   onClick={() => onSelectOffer(offer)}
                 >
                   Angebot erhalten
