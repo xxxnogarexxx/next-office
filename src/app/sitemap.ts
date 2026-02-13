@@ -26,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/ueber-uns`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 
   const cityPages: MetadataRoute.Sitemap = cities.map((city) => ({
