@@ -149,8 +149,8 @@ export default function AboutPage() {
           {/* Image */}
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
             <Image
-              src="/hero-office.jpg"
-              alt="Modernes Büro — NextOffice"
+              src="/about-office.jpg"
+              alt="Modernes Coworking-Büro mit Personen an Arbeitsplätzen"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
