@@ -68,16 +68,16 @@ export default function CitySearchPage() {
                 onClick={() => setFormOpen(true)}
                 className="group w-full rounded-2xl border border-blue-100 bg-blue-50/60 p-5 text-left transition-all hover:border-blue-200 hover:bg-blue-50 hover:shadow-md sm:p-6"
               >
-                <div className="flex items-center gap-5">
+                <div className="flex items-start gap-4 sm:items-center sm:gap-5">
                   <Image
                     src="/team-benjamin.jpg"
                     alt="Benjamin Plass"
                     width={56}
                     height={56}
-                    className="hidden shrink-0 rounded-full object-cover sm:block"
+                    className="mt-0.5 h-10 w-10 shrink-0 rounded-full object-cover sm:mt-0 sm:h-14 sm:w-14"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-foreground sm:text-xl">
+                    <h3 className="text-base font-bold text-foreground sm:text-xl">
                       Ihr Büro in {cityName} — in 2 Minuten anfragen
                     </h3>
                     <p className="mt-1 text-sm text-body">
