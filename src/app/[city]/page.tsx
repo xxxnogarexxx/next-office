@@ -66,7 +66,7 @@ export default function CitySearchPage() {
             <div className="my-4">
               <button
                 onClick={() => setFormOpen(true)}
-                className="group w-full rounded-2xl border border-blue-100 bg-blue-50/60 p-5 text-left transition-all hover:border-blue-200 hover:bg-blue-50 hover:shadow-md sm:p-6"
+                className="group w-full rounded-2xl border-2 border-blue-200 bg-blue-50 p-5 text-left shadow-sm transition-all hover:border-blue-300 hover:shadow-md sm:p-6"
               >
                 <div className="flex items-start gap-4 sm:items-center sm:gap-5">
                   <Image
