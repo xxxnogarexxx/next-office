@@ -51,8 +51,7 @@
 ### Suche & Filter
 - [x] Suchleiste mit Autocomplete (Stadt-Navigation)
 - [x] Hero-Suchleiste — "Wo suchen Sie?" Label im Container, Mobile: Icon-Only Button, Desktop: "Suchen" Text
-- [~] Filter-Buttons (Alle Preise, Teamgröße, Ausstattung, Sofort verfügbar) — nur UI
-- [ ] Echte Filter-Logik (Preis-Range, Kapazität, Ausstattung)
+- [ ] Filter-Buttons + echte Filter-Logik (Preis-Range, Kapazität, Ausstattung) — UI entfernt, Komponente vorhanden
 - [ ] Volltextsuche über alle Listings
 - [ ] Sortierung (Preis, Größe, Relevanz)
 

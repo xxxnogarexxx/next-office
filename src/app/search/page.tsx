@@ -4,7 +4,6 @@ import { useState } from "react";
 import { listings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
-import { SearchFilters } from "@/components/search-filters";
 import { Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,8 +13,6 @@ export default function SearchPage() {
 
   return (
     <div className="flex h-[calc(100dvh-5rem)] flex-col">
-      <SearchFilters />
-
       <div className="relative flex flex-1 overflow-hidden">
         {/* Listing cards */}
         <div

@@ -6,7 +6,6 @@ import Image from "next/image";
 import { getCityBySlug, getListingsByCity, listings as allListings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
-import { SearchFilters } from "@/components/search-filters";
 import { LeadForm } from "@/components/lead-form";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Map, ArrowRight, Shield, Zap, BadgeCheck, Star } from "lucide-react";
@@ -32,18 +31,6 @@ export default function CitySearchPage() {
 
   return (
     <div className="flex h-[calc(100dvh-5rem)] flex-col">
-      {/* City header */}
-      <div className="border-b bg-white px-4 py-3">
-        <h1 className="text-xl font-bold">
-          Büro {cityName}
-        </h1>
-        <p className="text-sm text-body">
-          {displayListings.length} Büros in {cityName} verfügbar
-        </p>
-      </div>
-
-      <SearchFilters />
-
       <div className="relative flex flex-1 overflow-hidden">
         {/* Listing cards */}
         <div
@@ -51,6 +38,16 @@ export default function CitySearchPage() {
             showMap ? "hidden lg:block" : ""
           }`}
         >
+          {/* City header */}
+          <div className="mb-4">
+            <h1 className="text-xl font-bold">
+              Büro mieten in {cityName}
+            </h1>
+            <p className="text-sm text-body">
+              {displayListings.length} Büros in {cityName} verfügbar
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {firstBatch.map((listing) => (
               <ListingCard
