@@ -233,7 +233,7 @@ export function LeadForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message">Nachricht</Label>
+        <Label htmlFor="message">Nachricht <span className="font-normal text-muted-text">(optional)</span></Label>
         <Textarea
           id="message"
           name="message"
