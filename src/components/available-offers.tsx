@@ -60,7 +60,7 @@ export function AvailableOffers({
                 <Button
                   size="sm"
                   variant="outline"
-                  className="hidden shrink-0 border-foreground bg-foreground text-white hover:bg-foreground/90 hover:text-white sm:inline-flex"
+                  className="hidden shrink-0 border-foreground bg-foreground px-3 text-xs text-white hover:bg-foreground/90 hover:text-white sm:inline-flex"
                   onClick={() => onSelectOffer(offer)}
                 >
                   Angebot erhalten
