@@ -6,9 +6,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const navLinks = [
-  { href: "/search", label: "Büros finden" },
-];
+const navLinks: { href: string; label: string }[] = [];
 
 export function Header() {
   const [open, setOpen] = useState(false);
