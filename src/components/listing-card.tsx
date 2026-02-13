@@ -128,7 +128,7 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
       : listing.capacityMax !== null
         ? `bis ${listing.capacityMax} Personen`
         : listing.capacityMin !== null
-          ? `ab ${listing.capacityMin} Personen`
+          ? "1–50+ Personen"
           : "Auf Anfrage";
 
   const priceText =

@@ -48,7 +48,7 @@ export function ListingPageClient({
               ? `${listing.capacityMin}–${listing.capacityMax} Personen`
               : listing.capacityMax !== null
                 ? `bis ${listing.capacityMax} Personen`
-                : "Kapazität auf Anfrage"}
+                : "1–50+ Personen"}
             {listing.noticePeriod ? ` · ${listing.noticePeriod}` : ""}
           </p>
 

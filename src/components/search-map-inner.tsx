@@ -383,7 +383,7 @@ export default function SearchMapInner({
                       ? `${activeListing.capacityMin}–${activeListing.capacityMax} Pers.`
                       : activeListing.capacityMax !== null
                         ? `bis ${activeListing.capacityMax} Pers.`
-                        : `ab ${activeListing.capacityMin} Pers.`}
+                        : `1–50+ Pers.`}
                   </span>
                 )}
                 {activeListing.priceFrom !== null && (

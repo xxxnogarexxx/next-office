@@ -215,7 +215,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
                     ? `${listing.capacityMin}–${listing.capacityMax} Personen`
                     : listing.capacityMax !== null
                       ? `bis ${listing.capacityMax} Personen`
-                      : `ab ${listing.capacityMin} Personen`,
+                      : `1–50+ Personen`,
                 } : null,
                 {
                   icon: Euro,
