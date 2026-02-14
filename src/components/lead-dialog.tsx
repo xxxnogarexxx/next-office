@@ -61,6 +61,7 @@ export function LeadDialog({
 
         {/* Client logos */}
         <div className="px-6 pb-3">
+          <p className="mb-2 text-center text-[11px] text-muted-text">Vertrauen uns bereits</p>
           <div className="flex items-center justify-center gap-6 opacity-40 grayscale">
             <Image src="/logo-zalando.svg" alt="Zalando" width={80} height={20} className="h-4 w-auto" />
             <Image src="/logo-canon.svg" alt="Canon" width={80} height={20} className="h-4 w-auto" />

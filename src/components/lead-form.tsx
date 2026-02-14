@@ -256,11 +256,6 @@ export function LeadForm({
         {submitting ? "Wird gesendet..." : "Anfrage senden"}
       </Button>
 
-      {variant !== "dialog" && (
-        <p className="text-center text-xs text-muted-text">
-          Kostenlos & unverbindlich. Antwort in unter 30 Minuten.
-        </p>
-      )}
     </form>
   );
 }
