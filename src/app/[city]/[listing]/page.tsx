@@ -114,11 +114,13 @@ export default async function ListingDetailPage({ params }: PageProps) {
     jsonLd.priceRange = `ab ${listing.priceFrom} €/Monat`;
   }
 
+  const lat = listing.latitude ?? 0;
+  const lng = listing.longitude ?? 0;
   const similarListings = getListingsByCity(listing.citySlug)
     .filter((l) => l.id !== listing.id)
     .sort((a, b) => {
-      const distA = Math.hypot(a.latitude - listing.latitude, a.longitude - listing.longitude);
-      const distB = Math.hypot(b.latitude - listing.latitude, b.longitude - listing.longitude);
+      const distA = Math.hypot((a.latitude ?? 0) - lat, (a.longitude ?? 0) - lng);
+      const distB = Math.hypot((b.latitude ?? 0) - lat, (b.longitude ?? 0) - lng);
       return distA - distB;
     })
     .slice(0, 3);
