@@ -176,7 +176,7 @@
 ### UX & Conversion
 - [ ] **Bottom-of-List Kontaktformular** — Wenn User auf Städte-/Suchseite komplett runtergescrollt hat (alles gesehen, noch nicht kontaktiert), nochmal ein Kontaktformular/CTA anzeigen
 - [ ] **"Weitere Büros" nur Partner anzeigen** — `isPartner` Feld in Listings, "Partner?" Spalte in CSV (`spaces-to-fill.csv` bereits vorbereitet), ähnliche Büros nur aus Partner-Pool
-- [ ] **Chatbot** — KI-gestützter Chat (Fragen beantworten, Leads generieren)
+- [ ] **🔴 Chatbot (Lead-Qualifizierung)** — KI-gestützter Chat auf allen Seiten. Qualifiziert Leads (Stadt, Teamgröße, Budget, Zeitrahmen), beantwortet Fragen zu Listings, leitet qualifizierte Anfragen ans CRM weiter. Höchste Priorität im Backlog.
 - [ ] **Rückruf-Popup** — Nach X Sekunden: "Brauchen Sie Hilfe?" Popup
 - [ ] **Heyflow-Funnel** — Step-by-Step Fragebogen (Teamgröße → Budget → Stadt → Kontaktdaten)
 - [x] **"Ihr Büro in {Stadt} — in 2 Minuten" CTA-Banner** — Auf Städte-Seite nach den ersten 4 Listings, dunkles Design

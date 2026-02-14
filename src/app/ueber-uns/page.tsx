@@ -233,11 +233,11 @@ export default function AboutPage() {
                     +49 30 200042000
                   </a>
                   <a
-                    href="mailto:info@next-office.io"
+                    href="mailto:anfrage@next-office.io"
                     className="flex items-center gap-2.5 text-sm font-medium text-foreground transition-colors hover:text-blue-600"
                   >
                     <Mail className="h-4 w-4 text-muted-text" />
-                    info@next-office.io
+                    anfrage@next-office.io
                   </a>
                   <p className="flex items-center gap-2.5 text-sm text-muted-text">
                     <Clock className="h-4 w-4" />

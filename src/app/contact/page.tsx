@@ -178,11 +178,11 @@ export default function ContactPage() {
                   +49 30 200042000
                 </a>
                 <a
-                  href="mailto:info@next-office.io"
+                  href="mailto:anfrage@next-office.io"
                   className="flex w-full items-center justify-center gap-2 rounded-lg border bg-white px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
                 >
                   <Mail className="h-4 w-4" />
-                  info@next-office.io
+                  anfrage@next-office.io
                 </a>
               </div>
 
