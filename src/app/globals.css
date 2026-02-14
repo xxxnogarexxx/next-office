@@ -3,11 +3,6 @@
 @import "shadcn/tailwind.css";
 @plugin "@tailwindcss/typography";
 
-/* Prevent Radix Dialog from shifting layout when it toggles body scrollbar */
-html, body {
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-}
 
 @custom-variant dark (&:is(.dark *));
 

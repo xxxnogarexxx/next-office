@@ -8,11 +8,10 @@ import { cities } from "@/lib/listings";
 
 interface SearchBarProps {
   className?: string;
-  size?: "default" | "lg";
   variant?: "default" | "hero";
 }
 
-export function SearchBar({ className, size = "default", variant = "default" }: SearchBarProps) {
+export function SearchBar({ className, variant = "default" }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -31,50 +30,6 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
     router.push(`/${slug}`);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (selectedIndex >= 0 && filtered[selectedIndex]) {
-        navigate(filtered[selectedIndex].slug);
-      } else if (filtered.length === 1) {
-        navigate(filtered[0].slug);
-      } else if (query.length > 0) {
-        // If typed text matches a city, go there
-        const match = cities.find(
-          (c) => c.name.toLowerCase() === query.toLowerCase()
-        );
-        if (match) {
-          navigate(match.slug);
-        } else {
-          router.push("/search");
-        }
-      } else {
-        router.push("/search");
-      }
-    } else if (e.key === "Escape") {
-      setIsOpen(false);
-    }
-  }
-
-  // Close on outside click
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  const inputHeight = size === "lg" ? "h-12 text-base" : "h-10 text-sm";
-
   function handleSearch() {
     if (selectedIndex >= 0 && filtered[selectedIndex]) {
       navigate(filtered[selectedIndex].slug);
@@ -90,6 +45,32 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
       router.push("/search");
     }
   }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    } else if (e.key === "Escape") {
+      setIsOpen(false);
+    }
+  }
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   const dropdown = isOpen && filtered.length > 0 && (
     <div className="absolute top-full left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border bg-white shadow-lg">
@@ -168,7 +149,7 @@ export function SearchBar({ className, size = "default", variant = "default" }: 
         autoComplete="off"
         data-form-type="other"
         suppressHydrationWarning
-        className={`pl-10 bg-white ${inputHeight}`}
+        className="pl-10 bg-white h-10 text-sm"
       />
       {dropdown}
     </div>

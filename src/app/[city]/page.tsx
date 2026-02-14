@@ -6,9 +6,8 @@ import Image from "next/image";
 import { getCityBySlug, getListingsByCity, listings as allListings } from "@/lib/listings";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
-import { LeadForm } from "@/components/lead-form";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Map, ArrowRight, Shield, Zap, BadgeCheck, Star } from "lucide-react";
+import { LeadDialog } from "@/components/lead-dialog";
+import { Map, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const CTA_POSITION = 4; // Insert CTA after 4th listing
@@ -133,51 +132,14 @@ export default function CitySearchPage() {
         </div>
       </div>
 
-      {/* Lead form dialog — outside layout to prevent reflow */}
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-md" showCloseButton={false}>
-          <div className="px-6 pt-6 pb-0">
-            <div className="flex items-start justify-between">
-              <div>
-                <DialogTitle className="text-xl">Kostenloses Angebot erhalten</DialogTitle>
-                <DialogDescription className="mt-1 text-sm text-body">
-                  Büro in {cityName}
-                </DialogDescription>
-              </div>
-              <button onClick={() => setFormOpen(false)} className="rounded-md p-1.5 hover:bg-gray-100">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-              </button>
-            </div>
-            <div className="mt-4 flex items-center justify-between rounded-lg bg-green-50 px-3 py-2 text-xs text-green-700">
-              <span className="flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> 100% kostenlos</span>
-              <span className="flex items-center gap-1"><Zap className="h-3.5 w-3.5" /> Antwort in 30 Min.</span>
-              <span className="flex items-center gap-1"><BadgeCheck className="h-3.5 w-3.5" /> Preisgarantie</span>
-            </div>
-          </div>
-          <div className="px-6 pb-6">
-            <LeadForm variant="dialog" citySlug={citySlug} />
-          </div>
-          <div className="px-6 pb-3">
-            <div className="flex items-center justify-center gap-6 opacity-40 grayscale">
-              <Image src="/logo-zalando.svg" alt="Zalando" width={80} height={20} className="h-4 w-auto" />
-              <Image src="/logo-canon.svg" alt="Canon" width={80} height={20} className="h-4 w-auto" />
-              <Image src="/logo-fresenius.svg" alt="Fresenius" width={80} height={20} className="h-4 w-auto" />
-            </div>
-          </div>
-          <div className="border-t bg-gray-50 px-6 py-3">
-            <div className="flex items-center gap-3">
-              <Image src="/team-benjamin.jpg" alt="Benjamin Plass" width={36} height={36} className="rounded-full object-cover" />
-              <div className="flex-1">
-                <p className="text-xs font-semibold">Benjamin Plass</p>
-                <p className="text-[11px] text-muted-text">Ihr persönlicher Berater</p>
-              </div>
-              <div className="flex items-center gap-0.5 text-amber-400">
-                {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-current" />)}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Lead form dialog */}
+      <LeadDialog
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        title="Kostenloses Angebot erhalten"
+        subtitle={`Büro in ${cityName}`}
+        citySlug={citySlug}
+      />
     </div>
   );
 }

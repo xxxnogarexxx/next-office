@@ -55,6 +55,19 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
 }) {
+  // Prevent layout shift: Radix injects a <style> that adds margin-right to body
+  // to compensate for scrollbar removal. We override it with a MutationObserver.
+  React.useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (document.body.hasAttribute("data-scroll-locked")) {
+        document.body.style.setProperty("margin-right", "0px", "important")
+        document.body.style.setProperty("overflow", "hidden")
+      }
+    })
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-scroll-locked"] })
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />

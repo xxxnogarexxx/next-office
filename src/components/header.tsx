@@ -6,8 +6,6 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const navLinks: { href: string; label: string }[] = [];
-
 export function Header() {
   const [open, setOpen] = useState(false);
 
@@ -25,15 +23,6 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-body transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
           <Button asChild className="h-auto px-6 py-2.5 text-base">
             <Link href="/contact">Schnellangebot</Link>
           </Button>
