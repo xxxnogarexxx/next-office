@@ -174,6 +174,7 @@
 - [ ] **Analytics** — GA4 + Meta Pixel nach Launch
 
 ### UX & Conversion
+- [ ] **Bottom-of-List Kontaktformular** — Wenn User auf Städte-/Suchseite komplett runtergescrollt hat (alles gesehen, noch nicht kontaktiert), nochmal ein Kontaktformular/CTA anzeigen
 - [ ] **Chatbot** — KI-gestützter Chat (Fragen beantworten, Leads generieren)
 - [ ] **Rückruf-Popup** — Nach X Sekunden: "Brauchen Sie Hilfe?" Popup
 - [ ] **Heyflow-Funnel** — Step-by-Step Fragebogen (Teamgröße → Budget → Stadt → Kontaktdaten)
