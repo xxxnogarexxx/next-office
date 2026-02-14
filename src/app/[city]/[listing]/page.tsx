@@ -116,6 +116,11 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
   const similarListings = getListingsByCity(listing.citySlug)
     .filter((l) => l.id !== listing.id)
+    .sort((a, b) => {
+      const distA = Math.hypot(a.latitude - listing.latitude, a.longitude - listing.longitude);
+      const distB = Math.hypot(b.latitude - listing.latitude, b.longitude - listing.longitude);
+      return distA - distB;
+    })
     .slice(0, 3);
 
   // Generate offers from listing data
@@ -315,7 +320,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
         {similarListings.length > 0 && (
           <div className="mt-16 mb-8">
             <h2 className="text-xl font-semibold">
-              Weitere Büros in {listing.city}
+              Weitere Büros in der Nähe
             </h2>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {similarListings.map((l) => (

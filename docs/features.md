@@ -175,6 +175,7 @@
 
 ### UX & Conversion
 - [ ] **Bottom-of-List Kontaktformular** — Wenn User auf Städte-/Suchseite komplett runtergescrollt hat (alles gesehen, noch nicht kontaktiert), nochmal ein Kontaktformular/CTA anzeigen
+- [ ] **"Weitere Büros" nur Partner anzeigen** — `isPartner` Feld in Listings, "Partner?" Spalte in CSV (`spaces-to-fill.csv` bereits vorbereitet), ähnliche Büros nur aus Partner-Pool
 - [ ] **Chatbot** — KI-gestützter Chat (Fragen beantworten, Leads generieren)
 - [ ] **Rückruf-Popup** — Nach X Sekunden: "Brauchen Sie Hilfe?" Popup
 - [ ] **Heyflow-Funnel** — Step-by-Step Fragebogen (Teamgröße → Budget → Stadt → Kontaktdaten)
