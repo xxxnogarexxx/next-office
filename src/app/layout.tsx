@@ -71,6 +71,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" suppressHydrationWarning>
+      <head>
+        <link rel="dns-prefetch" href="https://api.mapbox.com" />
+        <link rel="dns-prefetch" href="https://tiles.mapbox.com" />
+        <link rel="dns-prefetch" href="https://events.mapbox.com" />
+        <link rel="preconnect" href="https://api.mapbox.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://tiles.mapbox.com" crossOrigin="anonymous" />
+      </head>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <TrackingProvider>
           <div className="overflow-x-clip">
