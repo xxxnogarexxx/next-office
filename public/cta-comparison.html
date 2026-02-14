@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTA Banner Vergleich</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; padding: 40px 20px; }
+  h2 { text-align: center; margin-bottom: 40px; font-size: 24px; }
+  .container { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+  .label { font-size: 14px; font-weight: 600; color: #666; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .cta {
+    width: 100%; padding: 20px 24px; text-align: left;
+    display: flex; align-items: center; gap: 20px; cursor: pointer;
+    transition: all 0.2s; border: none;
+  }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .content { flex: 1; min-width: 0; }
+  .title { font-size: 18px; font-weight: 700; }
+  .desc { font-size: 14px; margin-top: 4px; }
+  .btn { border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; white-space: nowrap; border: none; cursor: pointer; }
+
+  /* Blue version */
+  .cta-blue { border-radius: 12px; border: 2px solid #bfdbfe; background: #eff6ff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .cta-blue:hover { border-color: #93c5fd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .cta-blue .title { color: #111; }
+  .cta-blue .desc { color: #555; }
+  .cta-blue .btn { background: #2563eb; color: white; }
+
+  /* Black version — using oklch(0.141 0.005 285.823) = foreground color */
+  .cta-black { border-radius: 12px; background: oklch(0.141 0.005 285.823); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .cta-black:hover { background: oklch(0.2 0.005 285.823); }
+  .cta-black .title { color: white; }
+  .cta-black .desc { color: #9ca3af; }
+  .cta-black .btn { background: white; color: #111827; }
+</style>
+</head>
+<body>
+<h2>CTA Banner — Vergleich</h2>
+<div class="container">
+  <div>
+    <div class="label">Option A — Blau (alt)</div>
+    <button class="cta cta-blue">
+      <div class="avatar"><img src="/team-benjamin.jpg" alt="Benjamin"></div>
+      <div class="content">
+        <div class="title">Ihr Büro in Berlin — in 2 Minuten.</div>
+        <div class="desc">Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100% kostenlos und unverbindlich.</div>
+      </div>
+      <div class="btn">Jetzt anfragen →</div>
+    </button>
+  </div>
+
+  <div>
+    <div class="label">Option B — Schwarz (aktuell) ✓</div>
+    <button class="cta cta-black">
+      <div class="avatar"><img src="/team-benjamin.jpg" alt="Benjamin"></div>
+      <div class="content">
+        <div class="title">Ihr Büro in Berlin — in 2 Minuten.</div>
+        <div class="desc">Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100% kostenlos und unverbindlich.</div>
+      </div>
+      <div class="btn">Jetzt anfragen →</div>
+    </button>
+  </div>
+</div>
+</body>
+</html>

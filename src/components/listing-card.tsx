@@ -4,7 +4,6 @@ import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Users, Euro, ChevronLeft, ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import type { Listing } from "@/lib/types";
 
 interface ListingCardProps {
@@ -139,7 +138,7 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
   return (
     <Link
       href={`/${listing.citySlug}/${listing.slug}`}
-      className="group block overflow-hidden rounded-lg border bg-white transition-shadow hover:shadow-md"
+      className="group block overflow-hidden rounded-xl border bg-white transition-shadow hover:shadow-md"
       onMouseEnter={() => onHover?.(listing.id)}
       onMouseLeave={() => onHover?.(null)}
     >
@@ -172,20 +171,6 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
           </div>
         </div>
 
-        {listing.amenities.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {listing.amenities.slice(0, 3).map((amenity) => (
-              <Badge key={amenity} variant="secondary" className="text-xs">
-                {amenity}
-              </Badge>
-            ))}
-            {listing.amenities.length > 3 && (
-              <Badge variant="secondary" className="text-xs">
-                +{listing.amenities.length - 3}
-              </Badge>
-            )}
-          </div>
-        )}
       </div>
     </Link>
   );
