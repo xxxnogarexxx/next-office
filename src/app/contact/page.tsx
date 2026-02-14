@@ -99,9 +99,6 @@ export default function ContactPage() {
                 <LeadForm variant="contact" />
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-text">
-                Kostenlos & unverbindlich. Antwort in unter 30 Minuten.
-              </p>
             </div>
 
             {/* Client logos */}
@@ -219,9 +216,6 @@ export default function ContactPage() {
                 ))}
               </div>
 
-              <p className="mt-4 text-xs text-muted-text">
-                Typische Dauer: 24–48 Stunden
-              </p>
             </div>
 
             {/* Benefits */}

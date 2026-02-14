@@ -135,7 +135,7 @@ export function LeadForm({
         <CheckCircle className="h-10 w-10 text-success" />
         <h3 className="text-lg font-semibold">Anfrage gesendet!</h3>
         <p className="text-sm text-body">
-          Wir melden uns innerhalb von 24 Stunden bei Ihnen.
+          Wir melden uns innerhalb von 30 Minuten bei Ihnen.
         </p>
       </div>
     );
@@ -257,7 +257,7 @@ export function LeadForm({
       </Button>
 
       <p className="text-center text-xs text-muted-text">
-        Kostenlos & unverbindlich. Wir melden uns innerhalb von 24h.
+        Kostenlos & unverbindlich. Antwort in unter 30 Minuten.
       </p>
     </form>
   );

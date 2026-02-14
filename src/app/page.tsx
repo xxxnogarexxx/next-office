@@ -256,7 +256,7 @@ export default function HomePage() {
               {
                 icon: Clock,
                 title: "Schnell & einfach",
-                desc: "Anfrage in 2 Minuten stellen. Wir finden passende Büros und melden uns innerhalb von 24 Stunden.",
+                desc: "Anfrage in 2 Minuten stellen. Wir finden passende Büros und melden uns innerhalb von 30 Minuten.",
               },
               {
                 icon: TrendingUp,
