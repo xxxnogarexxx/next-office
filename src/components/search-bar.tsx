@@ -18,6 +18,32 @@ export function SearchBar({ className, variant = "default" }: SearchBarProps) {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  // Remove password-manager / NordVPN extension injections that cause shaking
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    function cleanExtensionJunk(root: Element) {
+      root.querySelectorAll("[data-np-uid], [data-lastpass-icon-root], [class^='np-'], iframe:not([title])").forEach(
+        (el) => el.remove()
+      );
+      for (const attr of Array.from(root.attributes)) {
+        if (attr.name.startsWith("data-np") || attr.name.startsWith("data-lp") || attr.name.startsWith("data-dashlane")) {
+          root.removeAttribute(attr.name);
+        }
+      }
+    }
+
+    cleanExtensionJunk(wrapper);
+
+    const observer = new MutationObserver(() => {
+      cleanExtensionJunk(wrapper);
+    });
+
+    observer.observe(wrapper, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-np-autofill-form-type", "data-np-watching", "data-np-checked"] });
+    return () => observer.disconnect();
+  }, []);
+
   const filtered = query.length > 0
     ? cities.filter((city) =>
         city.name.toLowerCase().includes(query.toLowerCase())
