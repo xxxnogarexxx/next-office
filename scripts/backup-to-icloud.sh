@@ -3,7 +3,7 @@
 # Excludes node_modules, .next, and other build artifacts
 
 BACKUP_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/claude-config/backups/next-office"
-SOURCE_DIR="$HOME/Developer/next-office"
+SOURCE_DIR="$HOME/projects/next-office"
 
 mkdir -p "$BACKUP_DIR"
 
