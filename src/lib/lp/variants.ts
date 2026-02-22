@@ -2,8 +2,9 @@
  * Variant component registry and resolver.
  *
  * This module maps VariantId values to their React components.
- * Each variant is dynamically imported so Next.js code-splits them
- * into separate bundles — critical for LP page performance.
+ * Next.js automatically code-splits at the route level — each LP page
+ * is a separate bundle, so variant components are never loaded together
+ * with main site code.
  *
  * Architecture note: The registry is intentionally a static map.
  * No database lookups, no runtime assignment logic.
@@ -16,15 +17,12 @@
  *   3. Add an entry here in VARIANT_REGISTRY
  */
 
-import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 import type { LPVariantProps, VariantId } from "./types";
+import DefaultVariant from "@/components/lp/variants/default-variant";
 
 export const VARIANT_REGISTRY: Record<VariantId, ComponentType<LPVariantProps>> = {
-  default: dynamic(
-    () => import("@/components/lp/variants/default-variant"),
-    { ssr: true }
-  ),
+  default: DefaultVariant,
 };
 
 /**

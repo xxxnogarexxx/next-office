@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { TrackingProvider } from "@/components/tracking-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -64,6 +61,13 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Root layout — bare shell.
+ *
+ * Renders html/body/fonts only. Header, Footer, and tracking are
+ * handled by group-level layouts: (main)/layout.tsx and (lp)/layout.tsx.
+ * Both route groups inherit this shell.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -79,13 +83,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://tiles.mapbox.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
-        <TrackingProvider>
-          <div className="overflow-x-clip">
-            <Header />
-            <main suppressHydrationWarning>{children}</main>
-            <Footer />
-          </div>
-        </TrackingProvider>
+        {children}
       </body>
     </html>
   );
