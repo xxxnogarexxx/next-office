@@ -20,9 +20,11 @@
 import type { ComponentType } from "react";
 import type { LPVariantProps, VariantId } from "./types";
 import DefaultVariant from "@/components/lp/variants/default-variant";
+import ImprovedListingVariant from "@/components/lp/variants/improved-listing-variant";
 
 export const VARIANT_REGISTRY: Record<VariantId, ComponentType<LPVariantProps>> = {
   default: DefaultVariant,
+  "improved-listing": ImprovedListingVariant,
 };
 
 /**

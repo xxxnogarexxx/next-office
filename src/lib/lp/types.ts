@@ -29,4 +29,4 @@ export interface LPVariantProps {
  * Union of all supported variant IDs.
  * Expand this type as new variants are built in Phases 3-6.
  */
-export type VariantId = "default";
+export type VariantId = "default" | "improved-listing";
