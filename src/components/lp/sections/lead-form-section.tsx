@@ -8,6 +8,44 @@ import { FormField, LPButton, Section } from "@/components/lp/ui";
 import { getLPCities } from "@/lib/lp/cities";
 import type { LPCity } from "@/lib/lp/types";
 
+// Augment Window to support gtag.js (loaded by Plan 06 tracking infrastructure).
+// Gracefully no-ops when gtag.js is not yet loaded.
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+/**
+ * Fire Google Ads conversion tag and GA4 custom event on successful form submission.
+ *
+ * Guards against gtag not being loaded (Plan 06 loads gtag.js; this code runs safely
+ * even before that plan is executed). Uses crypto.randomUUID() as a dedup key.
+ *
+ * @param gclid - Google click ID for attribution (null if not present)
+ */
+function fireConversionEvent(gclid: string | null) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") {
+    return;
+  }
+
+  // Google Ads conversion tag — Conversion ID/Label configured in Google Ads dashboard
+  // Real values must be set via environment variables in production (see Plan 06)
+  window.gtag("event", "conversion", {
+    send_to: "AW-XXXXXXXXXX/XXXXXXXXXX", // placeholder — replace with real AW-CONVERSION_ID/LABEL
+    value: 1.0,
+    currency: "EUR",
+    transaction_id: crypto.randomUUID(), // dedup key to prevent duplicate conversions
+  });
+
+  // GA4 custom event for funnel analysis and cross-channel reporting
+  window.gtag("event", "lp_form_submit", {
+    event_category: "conversion",
+    event_label: "lp_lead_form",
+    gclid: gclid ?? undefined,
+  });
+}
+
 export interface LeadFormSectionProps {
   city: LPCity;
   searchParams: Record<string, string | undefined>;
@@ -215,6 +253,10 @@ export function LeadFormSection({
         setSubmitting(false);
         return;
       }
+
+      // Fire Google Ads conversion tag + GA4 event before redirecting.
+      // gclid read from searchParams — middleware cookies act as server-side fallback (see /api/lp-leads).
+      fireConversionEvent(searchParams.gclid ?? null);
 
       // Redirect to thank-you page — use values.city (could differ from city prop)
       router.push(`/lp/${values.city}/danke`);
