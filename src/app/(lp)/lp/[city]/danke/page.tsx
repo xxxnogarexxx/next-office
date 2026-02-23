@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { getLPCity } from "@/lib/lp/cities";
 import type { Metadata } from "next";
+import { ConversionTracker } from "./conversion-tracker";
 
 interface PageProps {
   params: Promise<{ city: string }>;
@@ -25,7 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * Shown after successful lead form submission. Sets expectations for
  * response time and personalizes confirmation text with the city name.
  *
- * TRACK-02: Google Ads conversion tag fires here (Plan 06).
+ * TRACK-02: Google Ads conversion tag fires here via <ConversionTracker />.
+ * ConversionTracker is a client component island — the page itself remains
+ * a server component for optimal performance.
  *
  * robots: noindex — conversion confirmation pages should not be indexed.
  */
@@ -36,6 +39,9 @@ export default async function DankePage({ params }: PageProps) {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-16">
+      {/* Client island: fires Google Ads conversion + GA4 event on load */}
+      <ConversionTracker />
+
       <div className="mx-auto max-w-lg text-center">
         {/* Checkmark icon */}
         <div className="mb-6 flex justify-center">
