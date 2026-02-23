@@ -63,6 +63,7 @@ export function HeroSection({
 
   return (
     <section
+      id="hero"
       aria-label="Hero"
       className="relative overflow-hidden bg-gradient-to-b from-primary/5 via-primary/[0.02] to-background py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8"
     >

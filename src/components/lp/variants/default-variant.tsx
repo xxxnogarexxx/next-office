@@ -1,123 +1,70 @@
 "use client"
 
 import type { LPVariantProps } from "@/lib/lp/types"
-import {
-  LPButton,
-  Section,
-  LPCard,
-  LPCardContent,
-  LPBadge,
-  FormField,
-} from "@/components/lp/ui"
+import { HeroSection } from "@/components/lp/sections/hero-section"
+import { SocialProofBar } from "@/components/lp/sections/social-proof-bar"
+import { HowItWorksSection } from "@/components/lp/sections/how-it-works-section"
+import { BenefitsSection } from "@/components/lp/sections/benefits-section"
+import { PainPointSection } from "@/components/lp/sections/pain-point-section"
+import { TestimonialsSection } from "@/components/lp/sections/testimonials-section"
+import { CityStatsSection } from "@/components/lp/sections/city-stats-section"
+import { LeadFormSection } from "@/components/lp/sections/lead-form-section"
+import { FAQSection } from "@/components/lp/sections/faq-section"
+import { TrustSection } from "@/components/lp/sections/trust-section"
+import { StickyCTA } from "@/components/lp/sections/sticky-cta"
+import { useScrollTracking } from "@/components/lp/tracking/use-scroll-tracking"
 
 /**
- * Default LP variant — component showcase.
+ * Default LP variant — conversion-optimized single-scroll landing page.
  *
- * Validates that all LP UI primitives render correctly within the
- * routing architecture and provides a visual reference for the design
- * direction. Not a real landing page — a proof-of-concept placeholder.
+ * Assembles all Phase 2 section components in conversion-optimized order
+ * for B2B coworking office space inquiries:
+ *   Hero → Social Proof → How It Works → Benefits → Pain Point →
+ *   Testimonials → City Stats → Lead Form → FAQ → Trust → Sticky CTA
  *
- * Will be replaced/augmented by real LP variants in Phases 3-6.
- *
- * "use client" — required because FormField uses "use client".
+ * "use client" — required because:
+ *   - useScrollTracking is a React hook
+ *   - FAQSection and LeadFormSection contain client-side state
+ *   - StickyCTA uses IntersectionObserver
  */
-export default function DefaultVariant({ city }: LPVariantProps) {
+export default function DefaultVariant({ city, searchParams }: LPVariantProps) {
+  // Activate scroll milestone (25/50/75/100%) and time-on-page tracking
+  useScrollTracking()
+
   return (
     <>
-      {/* 1. Hero section */}
-      <Section background="white">
-        <div className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
-          <LPBadge variant="trust">Kostenlos &amp; unverbindlich</LPBadge>
+      {/* 1. Hero — above the fold, keyword mirroring, primary CTA */}
+      <HeroSection city={city} searchParams={searchParams} />
 
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Büro mieten in {city.name}
-          </h1>
+      {/* 2. Social Proof Bar — trust metrics + client logos immediately after hero */}
+      <SocialProofBar />
 
-          <p className="text-lg text-muted-foreground">
-            Vergleichen Sie {city.listingCount} flexible Office Spaces.
-            Kostenlose Beratung, beste Preise.
-          </p>
+      {/* 3. How It Works — explain the 3-step broker process */}
+      <HowItWorksSection />
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <LPButton variant="cta" size="xl">
-              Jetzt kostenlos beraten lassen
-            </LPButton>
-            <LPButton variant="ghost">Mehr erfahren</LPButton>
-          </div>
-        </div>
-      </Section>
+      {/* 4. Benefits — why NextOffice over searching alone */}
+      <BenefitsSection />
 
-      {/* 2. Features section */}
-      <Section background="surface">
-        <div className="flex flex-col gap-8">
-          <h2 className="text-2xl font-bold text-center text-foreground">
-            Warum NextOffice?
-          </h2>
+      {/* 5. Pain Point — agitate the problem, CTA links to #anfrage */}
+      <PainPointSection />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <LPCard variant="elevated">
-              <LPCardContent>
-                <h3 className="text-base font-semibold text-foreground mb-2">
-                  Persönliche Beratung
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Unsere Experten finden das perfekte Büro für Ihr Team.
-                </p>
-              </LPCardContent>
-            </LPCard>
+      {/* 6. Testimonials — deepen social proof with client quotes */}
+      <TestimonialsSection />
 
-            <LPCard variant="elevated">
-              <LPCardContent>
-                <h3 className="text-base font-semibold text-foreground mb-2">
-                  Kostenloser Service
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Unser Service ist für Sie komplett kostenlos.
-                </p>
-              </LPCardContent>
-            </LPCard>
+      {/* 7. City Stats — city-specific office market data */}
+      <CityStatsSection city={city} />
 
-            <LPCard variant="elevated">
-              <LPCardContent>
-                <h3 className="text-base font-semibold text-foreground mb-2">
-                  Schnelle Ergebnisse
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Erhalten Sie passende Angebote innerhalb von 24 Stunden.
-                </p>
-              </LPCardContent>
-            </LPCard>
-          </div>
-        </div>
-      </Section>
+      {/* 8. Lead Form — primary lead capture (section variant, id="anfrage") */}
+      <LeadFormSection city={city} searchParams={searchParams} variant="section" />
 
-      {/* 3. Placeholder form section */}
-      <Section background="white">
-        <div className="max-w-md mx-auto flex flex-col gap-6">
-          <h2 className="text-2xl font-bold text-center text-foreground">
-            Jetzt Büro anfragen
-          </h2>
+      {/* 9. FAQ — objection handling near the form */}
+      <FAQSection />
 
-          <div className="flex flex-col gap-4">
-            <FormField
-              type="text"
-              label="Ihr Name"
-              name="name"
-              placeholder="Max Mustermann"
-            />
-            <FormField
-              type="email"
-              label="E-Mail"
-              name="email"
-              placeholder="team@firma.de"
-            />
-          </div>
+      {/* 10. Trust — final credibility reinforcement before footer */}
+      <TrustSection />
 
-          <LPButton variant="primary" className="w-full">
-            Anfrage senden
-          </LPButton>
-        </div>
-      </Section>
+      {/* 11. Sticky CTA — floating bar visible when hero scrolls out of view */}
+      <StickyCTA />
     </>
   )
 }
