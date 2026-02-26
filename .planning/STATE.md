@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T01:58:27.623Z"
+last_updated: "2026-02-26T02:02:49.605Z"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 ## Current Position
 
 Phase: 3 of 6 (Lead Pipeline Hardening)
-Plan: 1 of 3 in current phase (complete)
+Plan: 2 of 3 in current phase (complete)
 Status: Phase 3 In Progress
-Last activity: 2026-02-26 — Completed Phase 3 Plan 01: Lead service module (SEC-07 through SEC-11, REL-04 through REL-06)
+Last activity: 2026-02-26 — Completed Phase 3 Plan 02: Route wiring + CSRF endpoint + form integration (SEC-07 through SEC-11, REL-04 through REL-06)
 
 Progress: [█████░░░░░] ~40%
 
@@ -50,6 +50,7 @@ Progress: [█████░░░░░] ~40%
 *Updated after each plan completion*
 | Phase 02-infrastructure-foundations P01 | 2 | 2 tasks | 5 files |
 | Phase 03-lead-pipeline-hardening P01 | 4min | 2 tasks | 7 files |
+| Phase 03-lead-pipeline-hardening P02 | 2min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 03-01]: Scoped Supabase access uses anon key + RLS (not service role) for lead inserts — principle of least privilege
 - [Phase 03-01]: Duplicate lead detection returns idempotent 200 { success: true, deduplicated: true } — not a 409
 - [Phase 03-01]: escapeHtml defined once in email.ts — single source of truth, all other files import from there
+- [Phase 03-02]: handleCsrfToken returns { csrfToken: token } — forms read data.csrfToken not data.token
+- [Phase 03-02]: Route files reduced from 167/233 lines to 5 lines — zero business logic in route handlers, thin delegation to shared service
 
 ### Pending Todos
 
@@ -96,5 +99,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 3 Plan 01 (03-01). Lead service module complete (SEC-07 to SEC-11, REL-04 to REL-06). Phase 3 in progress.
+Stopped at: Completed Phase 3 Plan 02 (03-02). Route wiring + CSRF endpoint + form integration complete. Phase 3 in progress (plan 3 of 3 remaining).
 Resume file: None
