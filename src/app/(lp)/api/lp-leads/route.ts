@@ -24,7 +24,64 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * UTM and company data are stored in the message field as structured prefix
  * to maintain compatibility with the existing leads table schema.
  */
+
+// HTML escape utility — prevents XSS in broker notification emails
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Simple in-memory rate limiter
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 10;
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): { limited: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now >= entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { limited: false };
+  }
+
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
+    return { limited: true, retryAfter };
+  }
+
+  return { limited: false };
+}
+
+// Periodic cleanup of stale entries (every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now >= entry.resetAt) rateLimitMap.delete(ip);
+  }
+}, 5 * 60_000);
+
 export async function POST(request: Request) {
+  // Rate limiting
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown";
+  const rateCheck = checkRateLimit(ip);
+  if (rateCheck.limited) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte versuchen Sie es später erneut." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateCheck.retryAfter) },
+      }
+    );
+  }
+
   try {
     const body = await request.json();
 
@@ -125,10 +182,10 @@ export async function POST(request: Request) {
       }
     }
 
-    // UTM info row for email (broker context)
+    // UTM info row for email (broker context) — all user fields escaped
     const utmRow =
       body.utm_source || body.utm_term
-        ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Quelle</td><td style="padding:4px 0">${[body.utm_source, body.utm_medium, body.utm_term].filter(Boolean).join(" / ")}</td></tr>`
+        ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Quelle</td><td style="padding:4px 0">${[body.utm_source, body.utm_medium, body.utm_term].filter(Boolean).map((s) => escapeHtml(s)).join(" / ")}</td></tr>`
         : "";
 
     // Send email notification (fire-and-forget — don't block response)
@@ -136,7 +193,7 @@ export async function POST(request: Request) {
       .send({
         from: "NextOffice <noreply@next-office.io>",
         to: process.env.NOTIFICATION_EMAIL!,
-        subject: `[LP] ${body.team_size ? `${body.team_size} AP` : "? AP"} – ${
+        subject: `[LP] ${body.team_size ? `${escapeHtml(String(body.team_size))} AP` : "? AP"} – ${
           body.start_date
             ? new Date(body.start_date).toLocaleDateString("de-DE", {
                 day: "2-digit",
@@ -144,21 +201,21 @@ export async function POST(request: Request) {
                 year: "2-digit",
               })
             : "?"
-        } – ${body.city || "?"}${companyDisplay ? ` – ${companyDisplay}` : ""}`,
+        } – ${escapeHtml(body.city || "?")}${companyDisplay ? ` – ${escapeHtml(companyDisplay)}` : ""}`,
         html: `
           <div style="font-family:sans-serif;max-width:500px">
             <h2 style="margin:0 0 16px">Neue LP-Anfrage</h2>
             <table style="border-collapse:collapse;font-size:14px;width:100%">
-              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Name</td><td style="padding:4px 0;font-weight:600">${body.name}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0;color:#64748b">E-Mail</td><td style="padding:4px 0"><a href="mailto:${body.email}">${body.email}</a></td></tr>
-              ${companyDisplay ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Firma</td><td style="padding:4px 0;font-weight:600">${companyDisplay}</td></tr>` : ""}
-              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Telefon</td><td style="padding:4px 0"><a href="tel:${body.phone}">${body.phone}</a></td></tr>
-              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Teamgröße</td><td style="padding:4px 0">${body.team_size} Personen</td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Name</td><td style="padding:4px 0;font-weight:600">${escapeHtml(body.name || "")}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#64748b">E-Mail</td><td style="padding:4px 0"><a href="mailto:${encodeURIComponent(body.email)}">${escapeHtml(body.email || "")}</a></td></tr>
+              ${companyDisplay ? `<tr><td style="padding:4px 12px 4px 0;color:#64748b">Firma</td><td style="padding:4px 0;font-weight:600">${escapeHtml(companyDisplay)}</td></tr>` : ""}
+              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Telefon</td><td style="padding:4px 0"><a href="tel:${encodeURIComponent(body.phone)}">${escapeHtml(body.phone || "")}</a></td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Teamgröße</td><td style="padding:4px 0">${escapeHtml(String(body.team_size))} Personen</td></tr>
               <tr><td style="padding:4px 12px 4px 0;color:#64748b">Einzugsdatum</td><td style="padding:4px 0">${new Date(body.start_date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" })}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Stadt</td><td style="padding:4px 0">${body.city}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#64748b">Stadt</td><td style="padding:4px 0">${escapeHtml(body.city || "")}</td></tr>
               ${utmRow}
             </table>
-            ${body.message ? `<p style="margin:16px 0 0;padding:12px;background:#f8fafc;border-radius:8px;font-size:14px">${body.message}</p>` : ""}
+            ${body.message ? `<p style="margin:16px 0 0;padding:12px;background:#f8fafc;border-radius:8px;font-size:14px">${escapeHtml(body.message)}</p>` : ""}
             <p style="margin:24px 0 0;font-size:12px;color:#94a3b8">LP via next-office.io</p>
           </div>
         `,

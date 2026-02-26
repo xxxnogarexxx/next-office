@@ -95,6 +95,15 @@ function PinMarker({ isActive }: { isActive: boolean }) {
   );
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Helper to manage a single transit layer (ubahn or sbahn)
 function setupTransitLayer(
   map: mapboxgl.Map,
@@ -140,12 +149,13 @@ function setupTransitLayer(
     if (popupRef.current) popupRef.current.remove();
     const colour = feature.properties?.colour || "#888";
     const ref = feature.properties?.ref || "";
+    const safeColour = /^#[0-9a-fA-F]{3,8}$/.test(colour) ? colour : "#888888";
     popupRef.current = new mapboxgl.Popup({
       closeButton: false, closeOnClick: false,
       className: "transit-line-tooltip", offset: 12,
     })
       .setLngLat(e.lngLat)
-      .setHTML(`<span style="background:${colour};color:white;padding:2px 8px;border-radius:4px;font-weight:600;font-size:13px;">${ref}</span>`)
+      .setHTML(`<span style="background:${escapeHtml(safeColour)};color:white;padding:2px 8px;border-radius:4px;font-weight:600;font-size:13px;">${escapeHtml(ref)}</span>`)
       .addTo(map);
   };
 
