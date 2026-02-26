@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  VISITOR_COOKIE_NAME,
+  VISITOR_COOKIE_MAX_AGE,
+  UTM_COOKIE_PREFIX,
+  UTM_COOKIE_MAX_AGE,
+  UTM_KEYS,
+  generateVisitorId,
+} from "@/lib/tracking/visitor";
 
 /**
  * Server-side cookie tracking for Google Ads click IDs.
@@ -91,6 +99,38 @@ export function middleware(request: NextRequest) {
         secure: true,
         sameSite: "lax",
         maxAge: MAX_AGE,
+        path: "/",
+      });
+    }
+  }
+
+  // --- visitor_id (CAP-01) ---
+  // Preserve existing visitor_id on return visits. Generate a new UUID only
+  // when no _no_vid cookie is present (first visit).
+  const existingVisitorId = request.cookies.get(VISITOR_COOKIE_NAME)?.value;
+  if (!existingVisitorId) {
+    response.cookies.set(VISITOR_COOKIE_NAME, generateVisitorId(), {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: VISITOR_COOKIE_MAX_AGE,
+      path: "/",
+    });
+  }
+
+  // --- UTM parameters (CAP-02) ---
+  // Set a cookie for each UTM parameter present in the query string.
+  // Only sets cookies when the parameter is present — no blank cookies.
+  // Does NOT overwrite existing UTM cookies (first-touch attribution model):
+  // once a UTM cookie is set, it persists for 30 days unless a new UTM arrives.
+  for (const key of UTM_KEYS) {
+    const value = params.get(key);
+    if (value) {
+      response.cookies.set(`${UTM_COOKIE_PREFIX}${key}`, value, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: UTM_COOKIE_MAX_AGE,
         path: "/",
       });
     }
