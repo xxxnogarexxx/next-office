@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T11:48:17.674Z"
+last_updated: "2026-02-26T16:25:50Z"
 progress:
   total_phases: 2
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 6
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 8 — Visitor & UTM Capture
+**Current focus:** Phase 9 — Enhanced Conversions
 
 ## Current Position
 
-Phase: 8 of 12 (Visitor & UTM Capture)
-Plan: 3 of 3 in current phase — complete
+Phase: 9 of 12 (Enhanced Conversions)
+Plan: 1 of 3 in current phase — complete
 Status: In progress
-Last activity: 2026-02-26 — Phase 8 Plan 03 complete (visitor_id UUID FK + UTM columns wired into lead pipeline, LP tracking provider fires visit on mount, CAP-04 + CAP-05)
+Last activity: 2026-02-26 — Phase 9 Plan 01 complete (allow_enhanced_conversions in gtag, hashEmail utility, email_hash stored in leads table, EC-01 + EC-03)
 
-Progress: [████░░░░░░] 30%
+Progress: [█████░░░░░] 35%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4 (v1.1)
-- Average duration: 2.3 min
-- Total execution time: 9 min
+- Total plans completed: 6 (v1.1)
+- Average duration: 2.2 min
+- Total execution time: ~13 min
 
 **By Phase:**
 
@@ -42,6 +42,7 @@ Progress: [████░░░░░░] 30%
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
 | 08-visitor-utm-capture | 3 | 7 min | 2.3 min |
+| 09-enhanced-conversions | 1/3 | 1 min | 1 min |
 
 *Updated after each plan completion*
 
@@ -69,6 +70,10 @@ Progress: [████░░░░░░] 30%
 - Cookie values preferred over body values for UTMs at lead submission time (first-touch attribution set on landing, cookies are canonical)
 - visitorUuid passed as second param to insertLead() — ValidatedLeadData stays focused on form payload, not server-resolved values
 - LPTrackingProvider fires visit tracking on mount (fire-and-forget) so visitor row exists before user submits form
+- allow_enhanced_conversions applied only to Google Ads gtag config — not GA4 (per Google spec)
+- hashEmail normalizes before hashing: trim + lowercase (Google Enhanced Conversions requirement)
+- emailHash param is optional in insertLead — backward-compatible with existing callers
+- No migration needed for email_hash — column already exists from migration 005_leads_extension.sql
 
 ### Pending Todos
 
@@ -83,5 +88,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 08-03-PLAN.md — visitor_id UUID FK + UTM columns wired into lead pipeline; LP tracking provider fires POST /api/track/visit on mount (CAP-04, CAP-05)
+Stopped at: Completed 09-01-PLAN.md — allow_enhanced_conversions in Google Ads gtag config, hashEmail utility created, email_hash stored in leads table (EC-01, EC-03)
 Resume file: None

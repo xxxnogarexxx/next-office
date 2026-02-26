@@ -27,7 +27,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 
 - [x] **Phase 7: Database Foundation** - Supabase schema for all tracking tables with RLS (completed 2026-02-26)
 - [x] **Phase 8: Visitor & UTM Capture** - Middleware generates visitor_id, captures UTMs, links visitors to leads (completed 2026-02-26)
-- [ ] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution
+- [ ] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution (1/3 plans complete)
 - [ ] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry
 - [ ] **Phase 11: Server-Side Event Proxy** - GA4 Measurement Protocol fallback for ad blocker resilience
 - [ ] **Phase 12: Monitoring & Observability** - Health endpoint and conversion metrics for pipeline visibility
@@ -76,7 +76,7 @@ Plans:
   4. The gtag conversion event and the lead API submission carry the same transaction_id value, visible in network requests
 **Plans**: 3 plans
 Plans:
-- [ ] 09-01-PLAN.md -- Enhanced Conversions gtag config + server-side SHA-256 email hashing (EC-01, EC-03)
+- [x] 09-01-PLAN.md -- Enhanced Conversions gtag config + server-side SHA-256 email hashing (EC-01, EC-03)
 - [ ] 09-02-PLAN.md -- Server-side transaction_id: migration, validation, supabase wiring (EC-04)
 - [ ] 09-03-PLAN.md -- Client-side user_data email + shared transaction_id for both forms + danke page (EC-02, EC-04)
 
@@ -123,8 +123,8 @@ Plans:
 | 5. UX and Reliability | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 6. SEO and Analytics | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 7. Database Foundation | v1.1 | 2/2 | Complete | 2026-02-26 |
-| 8. Visitor & UTM Capture | 3/3 | Complete   | 2026-02-26 | - |
-| 9. Enhanced Conversions | v1.1 | 0/? | Not started | - |
+| 8. Visitor & UTM Capture | v1.1 | 3/3 | Complete | 2026-02-26 |
+| 9. Enhanced Conversions | v1.1 | 1/3 | In progress | - |
 | 10. Offline Conversion Pipeline | v1.1 | 0/? | Not started | - |
 | 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
 | 12. Monitoring & Observability | v1.1 | 0/? | Not started | - |
