@@ -74,7 +74,11 @@ Plans:
   2. On form submission, a `gtag('set', 'user_data', { email })` call fires before the conversion event in the network log
   3. The Supabase leads row for a submitted form contains a SHA-256 hashed email value (hex string, lowercased)
   4. The gtag conversion event and the lead API submission carry the same transaction_id value, visible in network requests
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 09-01-PLAN.md -- Enhanced Conversions gtag config + server-side SHA-256 email hashing (EC-01, EC-03)
+- [ ] 09-02-PLAN.md -- Server-side transaction_id: migration, validation, supabase wiring (EC-04)
+- [ ] 09-03-PLAN.md -- Client-side user_data email + shared transaction_id for both forms + danke page (EC-02, EC-04)
 
 ### Phase 10: Offline Conversion Pipeline
 **Goal**: When NetHunt CRM marks a deal as qualified or closed, the conversion is automatically matched to a Supabase lead, queued, and uploaded to Google Ads API with retry logic — no manual steps
