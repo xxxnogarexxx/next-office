@@ -95,40 +95,40 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DB-01 | — | Pending |
-| DB-02 | — | Pending |
-| DB-03 | — | Pending |
-| DB-04 | — | Pending |
-| DB-05 | — | Pending |
-| CAP-01 | — | Pending |
-| CAP-02 | — | Pending |
-| CAP-03 | — | Pending |
-| CAP-04 | — | Pending |
-| CAP-05 | — | Pending |
-| EC-01 | — | Pending |
-| EC-02 | — | Pending |
-| EC-03 | — | Pending |
-| EC-04 | — | Pending |
-| OFL-01 | — | Pending |
-| OFL-02 | — | Pending |
-| OFL-03 | — | Pending |
-| OFL-04 | — | Pending |
-| OFL-05 | — | Pending |
-| OFL-06 | — | Pending |
-| OFL-07 | — | Pending |
-| OFL-08 | — | Pending |
-| OFL-09 | — | Pending |
-| SSP-01 | — | Pending |
-| SSP-02 | — | Pending |
-| SSP-03 | — | Pending |
-| MON-01 | — | Pending |
-| MON-02 | — | Pending |
+| DB-01 | Phase 7 | Pending |
+| DB-02 | Phase 7 | Pending |
+| DB-03 | Phase 7 | Pending |
+| DB-04 | Phase 7 | Pending |
+| DB-05 | Phase 7 | Pending |
+| CAP-01 | Phase 8 | Pending |
+| CAP-02 | Phase 8 | Pending |
+| CAP-03 | Phase 8 | Pending |
+| CAP-04 | Phase 8 | Pending |
+| CAP-05 | Phase 8 | Pending |
+| EC-01 | Phase 9 | Pending |
+| EC-02 | Phase 9 | Pending |
+| EC-03 | Phase 9 | Pending |
+| EC-04 | Phase 9 | Pending |
+| OFL-01 | Phase 10 | Pending |
+| OFL-02 | Phase 10 | Pending |
+| OFL-03 | Phase 10 | Pending |
+| OFL-04 | Phase 10 | Pending |
+| OFL-05 | Phase 10 | Pending |
+| OFL-06 | Phase 10 | Pending |
+| OFL-07 | Phase 10 | Pending |
+| OFL-08 | Phase 10 | Pending |
+| OFL-09 | Phase 10 | Pending |
+| SSP-01 | Phase 11 | Pending |
+| SSP-02 | Phase 11 | Pending |
+| SSP-03 | Phase 11 | Pending |
+| MON-01 | Phase 12 | Pending |
+| MON-02 | Phase 12 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28 ⚠️
+- Mapped to phases: 28
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-26*
-*Last updated: 2026-02-26 after initial definition*
+*Last updated: 2026-02-26 — traceability complete after roadmap creation*

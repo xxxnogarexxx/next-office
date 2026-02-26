@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Ad Tracking & Offline Conversion Pipeline
-status: defining_requirements
-last_updated: "2026-02-26T15:00:00.000Z"
+status: ready_to_plan
+last_updated: "2026-02-26T16:00:00.000Z"
 progress:
-  total_phases: 0
+  total_phases: 6
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,14 +18,31 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** v1.1 Ad Tracking & Offline Conversion Pipeline
+**Current focus:** Phase 7 — Database Foundation
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-02-26 — Milestone v1.1 started
+Phase: 7 of 12 (Database Foundation)
+Plan: 0 of ? in current phase
+Status: Ready to plan
+Last activity: 2026-02-26 — v1.1 roadmap created, 28 requirements mapped to 6 phases
+
+Progress: [░░░░░░░░░░] 0%
+
+## Performance Metrics
+
+**Velocity:**
+- Total plans completed: 0 (v1.1)
+- Average duration: —
+- Total execution time: —
+
+**By Phase:**
+
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| v1.1 phases: not started | — | — | — |
+
+*Updated after each plan completion*
 
 ## Accumulated Context
 
@@ -33,9 +50,9 @@ Last activity: 2026-02-26 — Milestone v1.1 started
 
 - Direct CRM webhook from NetHunt (cutting out n8n for conversion flow)
 - Queue + cron processing (Supabase Edge Function, every 15 min) over immediate upload
-- Google Ads only for v1.1 (Meta CAPI deferred)
-- Cookie consent banner deferred
-- All 5 tracking layers in scope: offline pipeline, Enhanced Conversions, UTM capture, visitor tracking, server-side proxy
+- Google Ads only for v1.1 (Meta CAPI deferred to v2)
+- Cookie consent banner deferred — legal review needed
+- Phase 9 (Enhanced Conversions) depends on Phase 7 only — can run parallel to Phase 8
 
 ### Pending Todos
 
@@ -49,5 +66,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Defining v1.1 requirements
+Stopped at: Roadmap created — ready to plan Phase 7
 Resume file: None
