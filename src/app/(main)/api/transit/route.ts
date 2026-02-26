@@ -1,10 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const ALLOWED_QUERY_TYPES = {
+  "listing-pois": (lat: number, lng: number) =>
+    `[out:json][timeout:15];(node["station"="subway"](around:1500,${lat},${lng});node["railway"="station"]["station"="light_rail"](around:2000,${lat},${lng});node["highway"="bus_stop"](around:800,${lat},${lng}););out body;`,
+} as const;
+
+function parseCoord(value: string | null): number | null {
+  if (!value) return null;
+  const num = Number(value);
+  if (!Number.isFinite(num)) return null;
+  return num;
+}
+
 export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get("query");
-  if (!query) {
-    return NextResponse.json({ elements: [] });
+  const type = request.nextUrl.searchParams.get("type");
+  const latParam = request.nextUrl.searchParams.get("lat");
+  const lngParam = request.nextUrl.searchParams.get("lng");
+
+  if (!type || !(type in ALLOWED_QUERY_TYPES)) {
+    return NextResponse.json({ error: "Ungultige Eingabe" }, { status: 400 });
   }
+
+  const lat = parseCoord(latParam);
+  const lng = parseCoord(lngParam);
+
+  if (lat === null || lng === null) {
+    return NextResponse.json({ error: "Ungultige Eingabe" }, { status: 400 });
+  }
+
+  const queryFn = ALLOWED_QUERY_TYPES[type as keyof typeof ALLOWED_QUERY_TYPES];
+  const query = queryFn(lat, lng);
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);

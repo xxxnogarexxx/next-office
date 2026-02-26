@@ -5,10 +5,23 @@ interface OverpassElement {
   members?: { type: string; geometry?: { lat: number; lon: number }[] }[];
 }
 
+function parseCoord(value: string | null): number | null {
+  if (!value) return null;
+  const num = Number(value);
+  if (!Number.isFinite(num)) return null;
+  return num;
+}
+
 export async function GET(request: NextRequest) {
-  const lat = request.nextUrl.searchParams.get("lat");
-  const lng = request.nextUrl.searchParams.get("lng");
-  if (!lat || !lng) return NextResponse.json({ type: "FeatureCollection", features: [] });
+  const latParam = request.nextUrl.searchParams.get("lat");
+  const lngParam = request.nextUrl.searchParams.get("lng");
+
+  const lat = parseCoord(latParam);
+  const lng = parseCoord(lngParam);
+
+  if (lat === null || lng === null) {
+    return NextResponse.json({ error: "Ungultige Eingabe" }, { status: 400 });
+  }
 
   const query = `[out:json][timeout:25];(relation["type"="route"]["route"="subway"](around:10000,${lat},${lng});relation["type"="route"]["route"~"light_rail|train"]["operator"~"S-Bahn"](around:10000,${lat},${lng}););out geom;`;
 
