@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cities } from "@/lib/cities";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2 } from "lucide-react";
 
 interface LeadFormProps {
   listingId?: string;
@@ -39,6 +39,13 @@ export function LeadForm({
 
   // Render form only on client to prevent hydration mismatch
   useEffect(() => setMounted(true), []);
+
+  // Reset form state when navigating between cities to prevent stale state (REL-02)
+  useEffect(() => {
+    setSubmitted(false);
+    setError(false);
+    setSubmitting(false);
+  }, [citySlug]);
 
   // Fetch CSRF token on mount — non-blocking, form is immediately interactive
   useEffect(() => {
@@ -134,7 +141,11 @@ export function LeadForm({
               : "mx-auto max-w-md rounded-lg border bg-white p-6"
         }`}
         style={{ minHeight: variant === "dialog" ? undefined : 380 }}
-      />
+        aria-busy="true"
+        role="status"
+      >
+        <span className="sr-only">Formular wird geladen...</span>
+      </div>
     );
   }
 
@@ -186,7 +197,7 @@ export function LeadForm({
           <Input
             id="lead_mail"
             name="lead_mail"
-            type="text"
+            type="email"
             inputMode="email"
             placeholder="max@firma.de"
             autoComplete="one-time-code"
@@ -265,7 +276,7 @@ export function LeadForm({
       )}
 
       <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-        <Send className="mr-2 h-4 w-4" />
+        {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
         {submitting ? "Wird gesendet..." : "Anfrage senden"}
       </Button>
 
