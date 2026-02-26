@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-last_updated: "2026-02-26T02:46:00Z"
+last_updated: "2026-02-26T02:47:42Z"
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 11
+  completed_plans: 11
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 ## Current Position
 
 Phase: 4 of 6 (Performance Architecture)
-Plan: 1 of 2 in current phase (complete)
-Status: Phase 4 In Progress
-Last activity: 2026-02-26 — Completed Phase 4 Plan 01: Cities module extraction, listings-card.json payload split, transit API hardening (PERF-01, PERF-06, PERF-07, PERF-08)
+Plan: 3 of 3 in current phase (complete — all Phase 4 plans done)
+Status: Phase 4 Complete
+Last activity: 2026-02-26 — Completed Phase 4 Plan 03: IntersectionObserver-gated Mapbox lazy load + carousel on-demand photo rendering (PERF-04, PERF-05)
 
-Progress: [██████░░░░] ~50%
+Progress: [████████░░] ~70%
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [██████░░░░] ~50%
 | Phase 03-lead-pipeline-hardening P01 | 4min | 2 tasks | 7 files |
 | Phase 03-lead-pipeline-hardening P02 | 2min | 2 tasks | 6 files |
 | Phase 04-performance-architecture P01 | 5min | 2 tasks | 9 files |
+| Phase 04-performance-architecture P03 | 1min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,7 @@ Recent decisions affecting current work:
 - [Phase 04-01]: ListingCard type in types.ts has 14 fields — listing-card.tsx accepts ListingCard not Listing (safe narrowing)
 - [Phase 04-01]: sitemap.ts intentionally kept importing from @/lib/listings — needs both cities and full listings, runs server-side only
 - [Phase 04-01]: Transit API retry only on 5xx/network errors — 4xx (Overpass client errors) not retried
+- [Phase 04-03]: rootMargin: 200px on IntersectionObserver starts Mapbox load before viewport; minHeight: 560 prevents CLS; loaded Set pattern defers carousel photos to on-navigation rendering
 
 ### Pending Todos
 
@@ -104,5 +106,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 4 Plan 01 (04-01). Cities module extraction + listings-card.json split + transit API hardening complete. Phase 4 in progress (plan 2 of 2 remaining).
+Stopped at: Completed Phase 4 Plan 03 (04-03). Mapbox IntersectionObserver gate + carousel on-demand photo rendering complete. Phase 4 fully complete — all 3 plans done.
 Resume file: None
