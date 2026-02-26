@@ -81,9 +81,8 @@ export async function upsertVisitor(
 
   // Step 1: Insert new visitor row. Silently ignore conflict on visitor_id —
   // if the visitor already exists, the existing row (with original UTMs) is preserved.
-  await client
-    .from("visitors")
-    .insert({
+  try {
+    const { error: insertError } = await client.from("visitors").insert({
       visitor_id: data.visitorId,
       gclid: data.gclid,
       utm_source: data.utmSource,
@@ -96,11 +95,16 @@ export async function upsertVisitor(
       landing_page: data.landingPage,
       referrer: data.referrer,
       // first_seen_at and last_seen_at use DB DEFAULT now()
-    })
-    .throwOnError()
-    .catch(() => {
-      // Conflict on visitor_id — visitor already exists. Continue to step 2.
     });
+    // insertError here means either a conflict (visitor_id already exists — expected)
+    // or an unexpected DB error. Either way, continue to step 2.
+    if (insertError && !insertError.message.includes("duplicate")) {
+      // Log unexpected insert errors (not duplicate key violations)
+      console.error("[tracking/visit] insert error (non-conflict):", insertError);
+    }
+  } catch {
+    // Conflict on visitor_id — visitor already exists. Continue to step 2.
+  }
 
   // Step 2: Always update last_seen_at (works for both new and returning visitors).
   const { error } = await client
