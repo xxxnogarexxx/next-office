@@ -196,6 +196,18 @@ export default function SearchMapInner({
     (l): l is typeof l & { latitude: number; longitude: number } =>
       l.latitude !== null && l.longitude !== null
   );
+
+  if (process.env.NODE_ENV === "development") {
+    const excluded = allListings.filter(
+      (l) => l.latitude === null || l.longitude === null
+    );
+    if (excluded.length > 0) {
+      console.warn(
+        `[SearchMap] ${excluded.length} listing(s) excluded from map (missing coordinates):`,
+        excluded.map((l) => l.id)
+      );
+    }
+  }
   const mapRef = useRef<MapRef>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const didFit = useRef(false);
