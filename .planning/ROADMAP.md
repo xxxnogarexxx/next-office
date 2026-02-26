@@ -102,7 +102,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Listing and blog pages include BreadcrumbList structured data — Rich Results Test shows breadcrumb for a listing URL
   5. robots.txt blocks /api/ and /lp/ — Googlebot cannot index lead API responses or LP routes
   6. /contact is present in the sitemap — sitemap.xml includes the contact URL
-**Plans**: TBD
+**Plans**: 3 plans
+- [ ] 06-01-PLAN.md — GA4 tracking on main site, lead form conversion event, font latin-ext, search page h1 (SEO-01, SEO-07, SEO-10, SEO-11)
+- [ ] 06-02-PLAN.md — Homepage metadata + Organization schema, OG tags for ueber-uns/fuer-anbieter, robots.txt disallow, sitemap /contact, legal page canonicals (SEO-02, SEO-03, SEO-04, SEO-06, SEO-08, SEO-09, QW-04)
+- [ ] 06-03-PLAN.md — BreadcrumbList on listing and blog pages, JSON-LD script escaping, blog dateModified (SEO-05, QW-02, QW-03)
 
 ## Progress
 
