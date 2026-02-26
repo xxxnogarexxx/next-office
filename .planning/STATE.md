@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T11:41:20Z"
+last_updated: "2026-02-26T11:41:48Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -23,25 +23,25 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 8 of 12 (Visitor & UTM Capture)
-Plan: 2 of 3 in current phase — complete
+Plan: 3 of 3 in current phase — complete
 Status: In progress
-Last activity: 2026-02-26 — Phase 8 Plan 02 complete (POST /api/track/visit endpoint + upsertVisitor() with service role Supabase, CAP-03)
+Last activity: 2026-02-26 — Phase 8 Plan 03 complete (visitor_id UUID FK + UTM columns wired into lead pipeline, LP tracking provider fires visit on mount, CAP-04 + CAP-05)
 
-Progress: [███░░░░░░░] 22%
+Progress: [████░░░░░░] 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3 (v1.1)
-- Average duration: 2 min
-- Total execution time: 6 min
+- Total plans completed: 4 (v1.1)
+- Average duration: 2.3 min
+- Total execution time: 9 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
-| 08-visitor-utm-capture | 2 | 4 min | 2 min |
+| 08-visitor-utm-capture | 3 | 7 min | 2.3 min |
 
 *Updated after each plan completion*
 
@@ -65,6 +65,10 @@ Progress: [███░░░░░░░] 22%
 - Two-step INSERT+UPDATE for visitor upsert — preserves first-touch UTMs (INSERT ignores conflict, UPDATE always sets last_seen_at)
 - UTM cookie names are _no_utm_source (not _no_utm_utm_source) — UTM_KEYS uses short form, middleware reads utm_${key} from query string
 - Tracking failures return HTTP 200 with { success: false } — tracking errors must not degrade user experience
+- resolveVisitorUuid uses service role client inline (not shared factory) — visitors table has no anon SELECT RLS policy
+- Cookie values preferred over body values for UTMs at lead submission time (first-touch attribution set on landing, cookies are canonical)
+- visitorUuid passed as second param to insertLead() — ValidatedLeadData stays focused on form payload, not server-resolved values
+- LPTrackingProvider fires visit tracking on mount (fire-and-forget) so visitor row exists before user submits form
 
 ### Pending Todos
 
@@ -79,5 +83,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 08-02-PLAN.md — POST /api/track/visit endpoint with service role Supabase upsert (CAP-03)
+Stopped at: Completed 08-03-PLAN.md — visitor_id UUID FK + UTM columns wired into lead pipeline; LP tracking provider fires POST /api/track/visit on mount (CAP-04, CAP-05)
 Resume file: None
