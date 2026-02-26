@@ -82,7 +82,7 @@ Each task was committed atomically:
 1. **Task 1: Create visitors and tracking_events tables with RLS** - `c98adee` (feat)
 2. **Task 2: Create conversions and conversion_queue tables with RLS** - `6a5464f` (feat)
 
-**Plan metadata:** (docs commit pending)
+**Plan metadata:** `b927462` (docs: complete plan)
 
 ## Files Created/Modified
 
