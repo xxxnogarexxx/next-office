@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T16:25:50Z"
+last_updated: "2026-02-26T16:30:58.167Z"
 progress:
-  total_phases: 2
+  total_phases: 5
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 9 of 12 (Enhanced Conversions)
-Plan: 1 of 3 in current phase — complete
+Plan: 2 of 3 in current phase — complete
 Status: In progress
-Last activity: 2026-02-26 — Phase 9 Plan 01 complete (allow_enhanced_conversions in gtag, hashEmail utility, email_hash stored in leads table, EC-01 + EC-03)
+Last activity: 2026-02-26 — Phase 9 Plan 02 complete (transaction_id column migration, ValidatedLeadData extended, insertLead writes transaction_id — EC-04 server half)
 
 Progress: [█████░░░░░] 35%
 
@@ -42,7 +42,7 @@ Progress: [█████░░░░░] 35%
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
 | 08-visitor-utm-capture | 3 | 7 min | 2.3 min |
-| 09-enhanced-conversions | 1/3 | 1 min | 1 min |
+| 09-enhanced-conversions | 2/3 | 2 min | 1 min |
 
 *Updated after each plan completion*
 
@@ -74,6 +74,7 @@ Progress: [█████░░░░░] 35%
 - hashEmail normalizes before hashing: trim + lowercase (Google Enhanced Conversions requirement)
 - emailHash param is optional in insertLead — backward-compatible with existing callers
 - No migration needed for email_hash — column already exists from migration 005_leads_extension.sql
+- [Phase 09-enhanced-conversions]: transaction_id stored as TEXT (max 36 chars) and written to leads table via ValidatedLeadData — no insertLead signature change
 
 ### Pending Todos
 
@@ -88,5 +89,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 09-01-PLAN.md — allow_enhanced_conversions in Google Ads gtag config, hashEmail utility created, email_hash stored in leads table (EC-01, EC-03)
+Stopped at: Completed 09-02-PLAN.md — transaction_id column migration, ValidatedLeadData extended, insertLead writes transaction_id (EC-04 server half)
 Resume file: None
