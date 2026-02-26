@@ -82,7 +82,6 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
             src={photo}
             alt={`${name} ${i + 1}`}
             fill
-            unoptimized
             className={`object-cover transition-opacity duration-300 ${
               i === current ? "opacity-100" : "opacity-0"
             }`}

@@ -34,8 +34,21 @@ export function CityListingsClient({
   useEffect(() => {
     isDesktop.current = window.matchMedia("(min-width: 1024px)").matches;
     if (isDesktop.current) {
-      const id = requestIdleCallback(() => setMapReady(true));
-      return () => cancelIdleCallback(id);
+      // Gate on window.load so Mapbox doesn't compete with initial render,
+      // then wait for idle to avoid creating long tasks during TBT window.
+      let idleId: number;
+      const mountMap = () => {
+        idleId = requestIdleCallback(() => setMapReady(true));
+      };
+      if (document.readyState === "complete") {
+        mountMap();
+      } else {
+        window.addEventListener("load", mountMap, { once: true });
+      }
+      return () => {
+        window.removeEventListener("load", mountMap);
+        cancelIdleCallback(idleId);
+      };
     }
   }, []);
 

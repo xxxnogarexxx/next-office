@@ -21,8 +21,19 @@ export function SearchListingsClient({ listings }: SearchListingsClientProps) {
   useEffect(() => {
     isDesktop.current = window.matchMedia("(min-width: 1024px)").matches;
     if (isDesktop.current) {
-      const id = requestIdleCallback(() => setMapReady(true));
-      return () => cancelIdleCallback(id);
+      let idleId: number;
+      const mountMap = () => {
+        idleId = requestIdleCallback(() => setMapReady(true));
+      };
+      if (document.readyState === "complete") {
+        mountMap();
+      } else {
+        window.addEventListener("load", mountMap, { once: true });
+      }
+      return () => {
+        window.removeEventListener("load", mountMap);
+        cancelIdleCallback(idleId);
+      };
     }
   }, []);
 
