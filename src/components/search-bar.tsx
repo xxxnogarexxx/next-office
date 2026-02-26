@@ -99,12 +99,20 @@ export function SearchBar({ className, variant = "default" }: SearchBarProps) {
   }, []);
 
   const dropdown = isOpen && filtered.length > 0 && (
-    <div className="absolute top-full left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border bg-white shadow-lg">
+    <div
+      id="search-city-listbox"
+      role="listbox"
+      aria-label="Städte"
+      className="absolute top-full left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border bg-white shadow-lg"
+    >
       {filtered.map((city, i) => (
-        <button
+        <div
           key={city.slug}
+          role="option"
+          id={`search-city-option-${i}`}
+          aria-selected={i === selectedIndex}
           onClick={() => navigate(city.slug)}
-          className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-surface ${
+          className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-surface cursor-pointer ${
             i === selectedIndex ? "bg-surface" : ""
           }`}
         >
@@ -117,7 +125,7 @@ export function SearchBar({ className, variant = "default" }: SearchBarProps) {
               {city.listingCount} Büros
             </span>
           </div>
-        </button>
+        </div>
       ))}
     </div>
   );
@@ -142,6 +150,12 @@ export function SearchBar({ className, variant = "default" }: SearchBarProps) {
               autoComplete="off"
               data-form-type="other"
               suppressHydrationWarning
+              role="combobox"
+              aria-expanded={isOpen && filtered.length > 0}
+              aria-controls="search-city-listbox"
+              aria-activedescendant={selectedIndex >= 0 ? `search-city-option-${selectedIndex}` : undefined}
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
               className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-text"
             />
             <button
@@ -175,6 +189,12 @@ export function SearchBar({ className, variant = "default" }: SearchBarProps) {
         autoComplete="off"
         data-form-type="other"
         suppressHydrationWarning
+        role="combobox"
+        aria-expanded={isOpen && filtered.length > 0}
+        aria-controls="search-city-listbox"
+        aria-activedescendant={selectedIndex >= 0 ? `search-city-option-${selectedIndex}` : undefined}
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
         className="pl-10 bg-white h-10 text-sm"
       />
       {dropdown}
