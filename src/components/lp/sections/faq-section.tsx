@@ -46,7 +46,6 @@ export function FAQSection({ className }: FAQSectionProps) {
       {/* FAQPage structured data */}
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 

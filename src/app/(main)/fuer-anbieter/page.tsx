@@ -7,7 +7,6 @@ import {
   BarChart3,
   Phone,
   Mail,
-  Clock,
   CheckCircle2,
 } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";

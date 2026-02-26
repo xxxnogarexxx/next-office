@@ -95,9 +95,10 @@ function SpacePinMap({ spaces, hoveredSpaceId, onPinClick }: SpacePinMapProps) {
       map.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 400 })
     }
 
+    const currentMarkers = markersRef.current
     return () => {
-      markersRef.current.forEach(({ marker }) => marker.remove())
-      markersRef.current.clear()
+      currentMarkers.forEach(({ marker }) => marker.remove())
+      currentMarkers.clear()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapLoaded, spaces])

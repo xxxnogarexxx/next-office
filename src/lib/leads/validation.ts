@@ -42,7 +42,6 @@ export function validateCookieValue(
 
   // Reject HTML-injection and non-printable characters explicitly
   if (/<|>|"|'/.test(value)) return null;
-  // eslint-disable-next-line no-control-regex
   if (/[\x00-\x1f\x7f]/.test(value)) return null;
 
   // Must match safe cookie value pattern

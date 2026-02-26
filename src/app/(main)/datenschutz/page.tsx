@@ -93,7 +93,7 @@ export default function DatenschutzPage() {
             Unsere Website verwendet Cookies. Cookies sind kleine Textdateien,
             die im Internetbrowser bzw. vom Internetbrowser auf dem
             Computersystem eines Nutzers gespeichert werden. Die meisten der von
-            uns verwendeten Cookies sind sogenannte „Session-Cookies", die nach
+            uns verwendeten Cookies sind sogenannte „Session-Cookies“, die nach
             Ende Ihres Besuchs automatisch gelöscht werden. Andere Cookies
             bleiben auf Ihrem Endgerät gespeichert, bis Sie diese löschen.
           </p>

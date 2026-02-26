@@ -102,6 +102,7 @@ export function LPTrackingProvider({ children }: { children: ReactNode }) {
       } catch {
         // sessionStorage may be unavailable (private browsing restrictions)
       }
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reading browser state on mount
       setData(fresh);
     } else {
       // No URL params — try to restore from sessionStorage

@@ -42,6 +42,7 @@ export function TrackingProvider({ children }: { children: ReactNode }) {
     const wbraid = params.get("wbraid");
 
     if (gclid || gbraid || wbraid) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reading browser state on mount
       setData({
         gclid,
         gbraid,

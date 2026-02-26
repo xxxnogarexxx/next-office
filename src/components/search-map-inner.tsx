@@ -229,7 +229,7 @@ export default function SearchMapInner({
     let cancelled = false;
     fetchTransitLines(center.lat, center.lng).then((d) => { if (!cancelled) setTransitLines(d); }).catch(() => {});
     return () => { cancelled = true; };
-  }, [center?.lat, center?.lng]);
+  }, [center]);
 
   // U-Bahn layer
   useEffect(() => {
@@ -274,7 +274,7 @@ export default function SearchMapInner({
     if (center && mapRef.current) {
       mapRef.current.flyTo({ center: [center.lng, center.lat], zoom: CITY_ZOOM, duration: 800 });
     }
-  }, [center?.lat, center?.lng]);
+  }, [center]);
 
   // Fit bounds (search page)
   const handleLoad = useCallback(() => {
@@ -301,7 +301,8 @@ export default function SearchMapInner({
     }
     setOverlayActive((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };

@@ -182,7 +182,7 @@ export async function handleLeadSubmission(
 // ---------------------------------------------------------------------------
 
 export async function handleCsrfToken(
-  _request: Request
+  _: Request
 ): Promise<NextResponse> {
   const { token, cookieValue } = generateCsrfToken();
 

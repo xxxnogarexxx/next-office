@@ -44,14 +44,20 @@ export function LeadForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   // Render form only on client to prevent hydration mismatch
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
+
   // Reset form state when navigating between cities to prevent stale state (REL-02)
+  /* eslint-disable react-hooks/set-state-in-effect -- intentional reset on city change */
   useEffect(() => {
     setSubmitted(false);
     setError(false);
     setSubmitting(false);
   }, [citySlug]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Fetch CSRF token on mount — non-blocking, form is immediately interactive
   useEffect(() => {
@@ -89,9 +95,6 @@ export function LeadForm({
     observer.observe(form, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-np-autofill-form-type", "data-np-watching", "data-np-checked"] });
     return () => observer.disconnect();
   }, [mounted]);
-
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
