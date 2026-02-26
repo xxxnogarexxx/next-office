@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-last_updated: "2026-02-26T02:47:42Z"
+status: unknown
+last_updated: "2026-02-26T02:52:12.567Z"
 progress:
-  total_phases: 6
-  completed_phases: 3
+  total_phases: 4
+  completed_phases: 4
   total_plans: 11
   completed_plans: 11
 ---
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 4 — Performance Architecture
+**Current focus:** Phase 5 — SEO &amp; Content (next)
 
 ## Current Position
 
 Phase: 4 of 6 (Performance Architecture)
 Plan: 3 of 3 in current phase (complete — all Phase 4 plans done)
 Status: Phase 4 Complete
-Last activity: 2026-02-26 — Completed Phase 4 Plan 03: IntersectionObserver-gated Mapbox lazy load + carousel on-demand photo rendering (PERF-04, PERF-05)
+Last activity: 2026-02-26 — Completed Phase 4 Plan 02: City/search server components + client islands + generateStaticParams for SSG (PERF-02, PERF-03)
 
 Progress: [████████░░] ~70%
 
@@ -53,6 +53,7 @@ Progress: [████████░░] ~70%
 | Phase 03-lead-pipeline-hardening P02 | 2min | 2 tasks | 6 files |
 | Phase 04-performance-architecture P01 | 5min | 2 tasks | 9 files |
 | Phase 04-performance-architecture P03 | 1min | 2 tasks | 2 files |
+| Phase 04-performance-architecture P02 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [Phase 04-01]: sitemap.ts intentionally kept importing from @/lib/listings — needs both cities and full listings, runs server-side only
 - [Phase 04-01]: Transit API retry only on 5xx/network errors — 4xx (Overpass client errors) not retried
 - [Phase 04-03]: rootMargin: 200px on IntersectionObserver starts Mapbox load before viewport; minHeight: 560 prevents CLS; loaded Set pattern defers carousel photos to on-navigation rendering
+- [Phase 04-02]: SearchMap/SearchMapInner updated to accept ListingCard[] — all map popup fields present in ListingCard, TypeScript passes with zero errors
+- [Phase 04-02]: generateStaticParams on both city page and listing detail page — all dynamic route segments now SSG at build time
 
 ### Pending Todos
 
@@ -106,5 +109,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 4 Plan 03 (04-03). Mapbox IntersectionObserver gate + carousel on-demand photo rendering complete. Phase 4 fully complete — all 3 plans done.
+Stopped at: Completed Phase 4 Plan 02 (04-02). City/search server components + client islands + generateStaticParams on city and listing pages. PERF-02 and PERF-03 satisfied.
 Resume file: None

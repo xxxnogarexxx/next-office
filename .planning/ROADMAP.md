@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Security Hardening** - Close the critical attack surface (P0 vulnerabilities in Overpass proxy, XSS, email injection, rate limiting) (completed 2026-02-26)
 - [x] **Phase 2: Infrastructure Foundations** - Env validation, observability, CI/CD, security headers, health endpoint (completed 2026-02-26)
 - [x] **Phase 3: Lead Pipeline Hardening** - All lead-specific security and reliability (CSRF, input validation, scoped keys, deduplication, consolidation) (completed 2026-02-26)
-- [ ] **Phase 4: Performance Architecture** - Server components refactor, listings payload split, static generation, lazy loading
+- [x] **Phase 4: Performance Architecture** - Server components refactor, listings payload split, static generation, lazy loading (completed 2026-02-26)
 - [ ] **Phase 5: UX and Reliability** - Error pages, map/navigation bugs, accessibility, loading states, hydration fixes
 - [ ] **Phase 6: SEO and Analytics** - Tracking, metadata, structured data, robots, sitemap, font
 
@@ -112,6 +112,6 @@ Note: Phases 2 and 3 both depend on Phase 1 and are independent of each other â€
 | 1. Security Hardening | 2/2 | Complete   | 2026-02-26 |
 | 2. Infrastructure Foundations | 4/4 | Complete   | 2026-02-26 |
 | 3. Lead Pipeline Hardening | 2/2 | Complete    | 2026-02-26 |
-| 4. Performance Architecture | 2/3 | In Progress|  |
+| 4. Performance Architecture | 3/3 | Complete   | 2026-02-26 |
 | 5. UX and Reliability | 0/TBD | Not started | - |
 | 6. SEO and Analytics | 0/TBD | Not started | - |
