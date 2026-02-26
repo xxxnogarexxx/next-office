@@ -44,7 +44,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A push to main triggers the CI pipeline — lint and build failures block merge
   5. GET /api/health returns 200 with a JSON body confirming environment readiness
 **Plans**: 4 plans
-- [ ] 02-01-PLAN.md — Env validation, .env.example, health check, Google Ads validation (DEV-01, DEV-02, DEV-05, DEV-07)
+- [x] 02-01-PLAN.md — Env validation, .env.example, health check, Google Ads validation (DEV-01, DEV-02, DEV-05, DEV-07)
 - [ ] 02-02-PLAN.md — Security headers, CORS, X-Powered-By removal (SEC-06, QW-01, DEV-06)
 - [ ] 02-03-PLAN.md — Sentry error monitoring with source maps (DEV-03)
 - [ ] 02-04-PLAN.md — CI/CD pipeline with GitHub Actions (DEV-04)
@@ -108,7 +108,7 @@ Note: Phases 2 and 3 both depend on Phase 1 and are independent of each other �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Security Hardening | 2/2 | Complete   | 2026-02-26 |
-| 2. Infrastructure Foundations | 2/4 | In Progress|  |
+| 2. Infrastructure Foundations | 3/4 | In Progress|  |
 | 3. Lead Pipeline Hardening | 0/TBD | Not started | - |
 | 4. Performance Architecture | 0/TBD | Not started | - |
 | 5. UX and Reliability | 0/TBD | Not started | - |

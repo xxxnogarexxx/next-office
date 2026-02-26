@@ -3,11 +3,11 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T01:17:00.000Z"
+last_updated: "2026-02-26T01:18:04.652Z"
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 7
+  total_plans: 6
   completed_plans: 5
 ---
 
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 Phase: 2 of 6 (Infrastructure Foundations)
 Plan: 4 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-26 — Completed Phase 2 Plan 04: GitHub Actions CI pipeline (DEV-04)
+Last activity: 2026-02-26 — Completed Phase 2 Plan 01: Env validation, health check, Google Ads placeholder guard (DEV-01, DEV-02, DEV-05, DEV-07)
 
 Progress: [████░░░░░░] ~30%
 
@@ -48,6 +48,7 @@ Progress: [████░░░░░░] ~30%
 - Trend: Stable
 
 *Updated after each plan completion*
+| Phase 02-infrastructure-foundations P01 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - [02-02]: Middleware matcher broadened to include /api/ routes — isApiRoute check routes CORS vs tracking cookie logic
 - [02-04]: Single job CI (not parallel) — small codebase, runner overhead outweighs parallelization
 - [02-04]: Placeholder env vars for NEXT_PUBLIC_* in CI — Next.js bakes them at build time, placeholders allow CI build to succeed without secrets
+- [Phase 02-01]: env.ts uses zero external dependencies — plain TypeScript only, no zod/joi
+- [Phase 02-01]: Health check always returns HTTP 200 (ok or degraded) — avoids false load balancer failures
+- [Phase 02-01]: Google Ads placeholder validation is console.warn only — vars are optional, app runs without them
 
 ### Pending Todos
 
@@ -83,5 +87,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 2 Plan 04 (DEV-04). GitHub Actions CI pipeline complete.
+Stopped at: Completed Phase 2 Plan 01 (DEV-01, DEV-02, DEV-05, DEV-07). Env validation, health check, Google Ads placeholder guard complete.
 Resume file: None

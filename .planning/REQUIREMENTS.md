@@ -50,13 +50,13 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### DevOps / Infrastructure
 
-- [ ] **DEV-01**: Runtime env var validation fails fast on startup with clear error messages (D1)
-- [ ] **DEV-02**: .env.example documents all required environment variables (D2)
+- [x] **DEV-01**: Runtime env var validation fails fast on startup with clear error messages (D1)
+- [x] **DEV-02**: .env.example documents all required environment variables (D2)
 - [ ] **DEV-03**: Sentry error monitoring captures client and server errors with source maps (D3)
 - [x] **DEV-04**: CI/CD pipeline runs lint + build on push (D4)
-- [ ] **DEV-05**: Health check endpoint at /api/health returns 200 with basic diagnostics (D5)
+- [x] **DEV-05**: Health check endpoint at /api/health returns 200 with basic diagnostics (D5)
 - [x] **DEV-06**: CORS policy restricts API routes to allowed origins (D6)
-- [ ] **DEV-07**: Placeholder Google Ads conversion values replaced or validated against env vars (D7)
+- [x] **DEV-07**: Placeholder Google Ads conversion values replaced or validated against env vars (D7)
 
 ### SEO / Analytics
 
@@ -168,13 +168,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-10 | Phase 5 | Pending |
 | UX-11 | Phase 5 | Pending |
 | UX-12 | Phase 5 | Pending |
-| DEV-01 | Phase 2 | Pending |
-| DEV-02 | Phase 2 | Pending |
+| DEV-01 | Phase 2 | Complete |
+| DEV-02 | Phase 2 | Complete |
 | DEV-03 | Phase 2 | Pending |
 | DEV-04 | Phase 2 | Complete |
-| DEV-05 | Phase 2 | Pending |
+| DEV-05 | Phase 2 | Complete |
 | DEV-06 | Phase 2 | Complete |
-| DEV-07 | Phase 2 | Pending |
+| DEV-07 | Phase 2 | Complete |
 | SEO-01 | Phase 6 | Pending |
 | SEO-02 | Phase 6 | Pending |
 | SEO-03 | Phase 6 | Pending |
