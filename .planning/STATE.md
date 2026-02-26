@@ -32,18 +32,18 @@ Progress: [██░░░░░░░░] ~10%
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: ~2min
-- Total execution time: ~2min
+- Total plans completed: 2
+- Average duration: ~2.5min
+- Total execution time: ~5min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-security-hardening | 1 | ~2min | ~2min |
+| 01-security-hardening | 2 | ~5min | ~2.5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2min)
+- Last 5 plans: 01-01 (2min), 01-02 (3min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -61,6 +61,9 @@ Recent decisions affecting current work:
 - [01-01]: Error responses for security violations use generic "Ungultige Eingabe" — avoid leaking validation details
 - [01-01]: parseCoord() duplicated per-file (3 Overpass routes) — no shared module, keeps files self-contained
 - [01-01]: Hex-only colour validation for transit popups — simpler regex, covers all real OSM colour values
+- [01-02]: All user-submitted fields HTML-escaped in broker emails — no exceptions, including href values (encodeURIComponent) and display text (escapeHtml)
+- [01-02]: Rate limit 10 req/min/IP, in-memory Map, no persistence across restarts — sufficient for abuse protection
+- [01-02]: escapeHtml duplicated per route file — consolidation deferred to Phase 3 REL-04
 
 ### Pending Todos
 
@@ -73,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 1 Plan 01 (SEC-01, SEC-02, SEC-03). Ready for next plan in Phase 1.
+Stopped at: Completed Phase 1 Plan 02 (SEC-04, SEC-05). Ready for next plan in Phase 1.
 Resume file: None

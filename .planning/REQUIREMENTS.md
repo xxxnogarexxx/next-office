@@ -12,8 +12,8 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [x] **SEC-01**: Overpass API proxy is parameterized — no arbitrary user-controlled queries forwarded (S1)
 - [x] **SEC-02**: lat/lng params validated as numbers before Overpass QL interpolation (S2)
 - [x] **SEC-03**: Transit popup HTML-escapes all OpenStreetMap tag values before rendering (S3)
-- [ ] **SEC-04**: Notification email templates HTML-escape all user-provided fields (S4)
-- [ ] **SEC-05**: Lead endpoints enforce per-IP rate limiting (S5)
+- [x] **SEC-04**: Notification email templates HTML-escape all user-provided fields (S4)
+- [x] **SEC-05**: Lead endpoints enforce per-IP rate limiting (S5)
 - [ ] **SEC-06**: Security headers configured (CSP, X-Frame-Options, HSTS, Referrer-Policy) (S6)
 - [ ] **SEC-07**: Lead form endpoints have CSRF protection (S7)
 - [ ] **SEC-08**: Email validation uses RFC-compliant check on both main and LP routes (S8)
@@ -139,8 +139,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-01 | Phase 1 | Complete |
 | SEC-02 | Phase 1 | Complete |
 | SEC-03 | Phase 1 | Complete |
-| SEC-04 | Phase 1 | Pending |
-| SEC-05 | Phase 1 | Pending |
+| SEC-04 | Phase 1 | Complete |
+| SEC-05 | Phase 1 | Complete |
 | SEC-06 | Phase 2 | Pending |
 | SEC-07 | Phase 3 | Pending |
 | SEC-08 | Phase 3 | Pending |
