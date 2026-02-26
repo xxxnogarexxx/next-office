@@ -13,21 +13,33 @@ interface ListingCardProps {
 
 function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
   const [current, setCurrent] = useState(0);
+  // Track which photos have been navigated to (for preloading visited ones)
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]));
   const total = photos.length;
   const touchStart = useRef<number | null>(null);
   const touchDelta = useRef(0);
 
+  const goTo = useCallback((index: number) => {
+    setCurrent(index);
+    setLoaded((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
+
   const prev = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrent((c) => (c === 0 ? total - 1 : c - 1));
-  }, [total]);
+    goTo(current === 0 ? total - 1 : current - 1);
+  }, [current, total, goTo]);
 
   const next = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrent((c) => (c === total - 1 ? 0 : c + 1));
-  }, [total]);
+    goTo(current === total - 1 ? 0 : current + 1);
+  }, [current, total, goTo]);
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     touchStart.current = e.touches[0].clientX;
@@ -43,14 +55,14 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
     if (Math.abs(touchDelta.current) > 40) {
       e.preventDefault();
       if (touchDelta.current < 0) {
-        setCurrent((c) => (c === total - 1 ? c : c + 1));
+        goTo(current === total - 1 ? current : current + 1);
       } else {
-        setCurrent((c) => (c === 0 ? c : c - 1));
+        goTo(current === 0 ? current : current - 1);
       }
     }
     touchStart.current = null;
     touchDelta.current = 0;
-  }, [total]);
+  }, [current, total, goTo]);
 
   return (
     <div
@@ -59,19 +71,25 @@ function ImageCarousel({ photos, name }: { photos: string[]; name: string }) {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {photos.map((photo, i) => (
-        <Image
-          key={photo}
-          src={photo}
-          alt={`${name} ${i + 1}`}
-          fill
-          className={`object-cover transition-opacity duration-300 ${
-            i === current ? "opacity-100" : "opacity-0"
-          }`}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={i === 0}
-        />
-      ))}
+      {photos.map((photo, i) => {
+        // Only render Image elements for the current photo and previously navigated ones
+        const shouldRender = loaded.has(i);
+        if (!shouldRender) return null;
+
+        return (
+          <Image
+            key={photo}
+            src={photo}
+            alt={`${name} ${i + 1}`}
+            fill
+            className={`object-cover transition-opacity duration-300 ${
+              i === current ? "opacity-100" : "opacity-0"
+            }`}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={i === 0}
+          />
+        );
+      })}
 
       {/* Arrows — desktop only */}
       {total > 1 && (
