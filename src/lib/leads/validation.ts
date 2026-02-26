@@ -75,6 +75,7 @@ export interface ValidatedLeadData {
   wbraid: string | null;
   landing_page: string | null;
   referrer: string | null;
+  transaction_id: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -269,6 +270,19 @@ export function validateLeadPayload(
     referrer = b.referrer;
   }
 
+  // --- transaction_id: optional, UUID format, max 36 chars ---
+  let transaction_id: string | null = null;
+  if (
+    b.transaction_id !== undefined &&
+    b.transaction_id !== null &&
+    b.transaction_id !== ""
+  ) {
+    if (typeof b.transaction_id !== "string" || b.transaction_id.length > 36) {
+      return { valid: false, error: "Ungültige Transaktions-ID." };
+    }
+    transaction_id = b.transaction_id;
+  }
+
   return {
     valid: true,
     data: {
@@ -292,6 +306,7 @@ export function validateLeadPayload(
       wbraid,
       landing_page,
       referrer,
+      transaction_id,
     },
   };
 }
