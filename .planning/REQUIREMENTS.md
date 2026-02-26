@@ -60,17 +60,17 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### SEO / Analytics
 
-- [ ] **SEO-01**: GA4/GTM tracking active on all main site pages (A1)
+- [x] **SEO-01**: GA4/GTM tracking active on all main site pages (A1)
 - [ ] **SEO-02**: Default OG image exists and is set in root metadata (A2)
 - [ ] **SEO-03**: Homepage has explicit page-level metadata export (A3)
 - [ ] **SEO-04**: Homepage includes Organization structured data (A4)
 - [ ] **SEO-05**: Listing and blog pages include BreadcrumbList structured data (A5)
 - [ ] **SEO-06**: /contact page included in sitemap (A6)
-- [ ] **SEO-07**: Main site lead form fires conversion tracking event on submission (A7)
+- [x] **SEO-07**: Main site lead form fires conversion tracking event on submission (A7)
 - [ ] **SEO-08**: ueber-uns and fuer-anbieter pages have specific OG tags (A8)
 - [ ] **SEO-09**: robots.txt blocks /api/ and /lp/ routes from crawlers (A9)
-- [ ] **SEO-10**: Search page has semantic h1 heading (A10)
-- [ ] **SEO-11**: Font includes latin-ext subset for German characters (A11)
+- [x] **SEO-10**: Search page has semantic h1 heading (A10)
+- [x] **SEO-11**: Font includes latin-ext subset for German characters (A11)
 
 ### Reliability
 
@@ -175,17 +175,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEV-05 | Phase 2 | Complete |
 | DEV-06 | Phase 2 | Complete |
 | DEV-07 | Phase 2 | Complete |
-| SEO-01 | Phase 6 | Pending |
+| SEO-01 | Phase 6 | Complete |
 | SEO-02 | Phase 6 | Pending |
 | SEO-03 | Phase 6 | Pending |
 | SEO-04 | Phase 6 | Pending |
 | SEO-05 | Phase 6 | Pending |
 | SEO-06 | Phase 6 | Pending |
-| SEO-07 | Phase 6 | Pending |
+| SEO-07 | Phase 6 | Complete |
 | SEO-08 | Phase 6 | Pending |
 | SEO-09 | Phase 6 | Pending |
-| SEO-10 | Phase 6 | Pending |
-| SEO-11 | Phase 6 | Pending |
+| SEO-10 | Phase 6 | Complete |
+| SEO-11 | Phase 6 | Complete |
 | REL-01 | Phase 5 | Complete |
 | REL-02 | Phase 5 | Complete |
 | REL-03 | Phase 5 | Complete |

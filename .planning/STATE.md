@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T05:49:59.189Z"
+last_updated: "2026-02-26T06:08:23.501Z"
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 5
-  total_plans: 14
-  completed_plans: 14
+  total_plans: 17
+  completed_plans: 16
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 5 — SEO &amp; Content (next)
+**Current focus:** Phase 6 — SEO and Analytics (in progress)
 
 ## Current Position
 
-Phase: 5 of 6 (UX and Reliability — COMPLETE)
-Plan: 3 of 3 in current phase (05-03 complete)
-Status: Phase 5 Complete — Ready for Phase 6
-Last activity: 2026-02-26 — Completed Phase 5 Plan 03: ARIA listbox on search bar, focus trap + scroll lock on photo gallery, aria-label on lead dialog close button, dev-only map coordinate warning (UX-07, UX-09, UX-12, REL-01, REL-03). SEC-12 deferred to post-launch.
+Phase: 6 of 6 (SEO and Analytics — IN PROGRESS)
+Plan: 1 of 3 in current phase (06-01 complete)
+Status: Phase 6 Plan 1 Complete — Ready for 06-02
+Last activity: 2026-02-26 — Completed Phase 6 Plan 01: GA4 tracking on main site via GTMScript, generate_lead event on lead form submission, latin-ext font subset, semantic h1 on search page (SEO-01, SEO-07, SEO-10, SEO-11).
 
-Progress: [█████████░] ~90%
+Progress: [█████████░] ~93%
 
 ## Performance Metrics
 
@@ -57,6 +57,8 @@ Progress: [█████████░] ~90%
 | Phase 05-ux-and-reliability P01 | 2min | 2 tasks | 6 files |
 | Phase 05-ux-and-reliability P02 | 1min | 2 tasks | 2 files |
 | Phase 05-ux-and-reliability P03 | 5min | 2 tasks | 4 files |
+| Phase 06-seo-and-analytics P01 | 4min | 2 tasks | 4 files |
+| Phase 06-seo-and-analytics P02 | 2min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -112,6 +114,9 @@ Recent decisions affecting current work:
 - [Phase 05-03]: Lucide React icons already emit aria-hidden automatically via library internals — no manual fix needed for decorative Lucide icons
 - [Phase 05-03]: Search dropdown options changed from button to div role=option inside div role=listbox — correct ARIA listbox semantics
 - [Phase 05-03]: Focus trap uses position:fixed + top:-scrollY scroll lock pattern — preserves scroll position on gallery close
+- [Phase 06-01]: GTMScript placed outside TrackingProvider as sibling — server component, not affected by client context
+- [Phase 06-01]: window.gtag typeof guard enables graceful degradation — form still submits without GA4 loaded
+- [Phase 06-01]: h1 text is 'Büros finden' — generic enough for all search contexts
 
 ### Pending Todos
 
@@ -124,5 +129,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 5 Plan 03 (05-03). ARIA listbox on search bar, focus trap + scroll lock on photo gallery, aria-label on lead dialog close button, dev-only map coordinate warnings. UX-07, UX-09, UX-12, REL-01, REL-03 satisfied. Phase 5 complete. SEC-12 deferred.
+Stopped at: Completed Phase 6 Plan 01 (06-01). GA4 tracking on main site via GTMScript, generate_lead event on lead form, latin-ext font subset, semantic h1 on search page. SEO-01, SEO-07, SEO-10, SEO-11 satisfied. Phase 6 in progress (1/3 plans done).
 Resume file: None
