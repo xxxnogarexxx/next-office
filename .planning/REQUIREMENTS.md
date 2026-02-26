@@ -35,16 +35,16 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### UX / Frontend
 
-- [ ] **UX-01**: Custom branded 404 page exists with navigation back to site (U1)
-- [ ] **UX-02**: Error boundaries exist for main layout and key pages (U1)
-- [ ] **UX-03**: Invalid city slugs return 404 instead of showing all listings (U2)
+- [x] **UX-01**: Custom branded 404 page exists with navigation back to site (U1)
+- [x] **UX-02**: Error boundaries exist for main layout and key pages (U1)
+- [x] **UX-03**: Invalid city slugs return 404 instead of showing all listings (U2)
 - [x] **UX-04**: Email input uses type="email" and server validates email format (U3)
-- [ ] **UX-05**: Datenschutz page correctly references Mapbox instead of OpenStreetMap (U4)
+- [x] **UX-05**: Datenschutz page correctly references Mapbox instead of OpenStreetMap (U4)
 - [x] **UX-06**: Footer year rendering does not cause hydration mismatch (U5)
 - [ ] **UX-07**: Search bar dropdown has proper ARIA attributes (role="listbox", aria-activedescendant) (U6)
 - [x] **UX-08**: Lead form hydration skeleton shows loading indicator with aria-busy (U7)
 - [ ] **UX-09**: Photo gallery fullscreen has focus trap, body scroll lock, and role="dialog" (U8)
-- [ ] **UX-10**: Zero-result searches show empty state with helpful CTA (U9)
+- [x] **UX-10**: Zero-result searches show empty state with helpful CTA (U9)
 - [x] **UX-11**: Lead form submit button shows spinner during loading (U10)
 - [ ] **UX-12**: Decorative icons have aria-hidden="true" across main site (U11)
 
@@ -156,16 +156,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-06 | Phase 4 | Complete |
 | PERF-07 | Phase 4 | Complete |
 | PERF-08 | Phase 4 | Complete |
-| UX-01 | Phase 5 | Pending |
-| UX-02 | Phase 5 | Pending |
-| UX-03 | Phase 5 | Pending |
+| UX-01 | Phase 5 | Complete |
+| UX-02 | Phase 5 | Complete |
+| UX-03 | Phase 5 | Complete |
 | UX-04 | Phase 5 | Complete |
-| UX-05 | Phase 5 | Pending |
+| UX-05 | Phase 5 | Complete |
 | UX-06 | Phase 5 | Complete |
 | UX-07 | Phase 5 | Pending |
 | UX-08 | Phase 5 | Complete |
 | UX-09 | Phase 5 | Pending |
-| UX-10 | Phase 5 | Pending |
+| UX-10 | Phase 5 | Complete |
 | UX-11 | Phase 5 | Complete |
 | UX-12 | Phase 5 | Pending |
 | DEV-01 | Phase 2 | Complete |

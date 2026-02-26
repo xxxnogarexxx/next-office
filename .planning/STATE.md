@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T04:43:07Z"
+last_updated: "2026-02-26T04:45:00Z"
 progress:
   total_phases: 6
   completed_phases: 4
@@ -54,6 +54,7 @@ Progress: [█████████░] ~80%
 | Phase 04-performance-architecture P01 | 5min | 2 tasks | 9 files |
 | Phase 04-performance-architecture P03 | 1min | 2 tasks | 2 files |
 | Phase 04-performance-architecture P02 | 3min | 2 tasks | 7 files |
+| Phase 05-ux-and-reliability P01 | 2min | 2 tasks | 6 files |
 | Phase 05-ux-and-reliability P02 | 1min | 2 tasks | 2 files |
 
 ## Accumulated Context
@@ -98,6 +99,10 @@ Recent decisions affecting current work:
 - [Phase 04-03]: rootMargin: 200px on IntersectionObserver starts Mapbox load before viewport; minHeight: 560 prevents CLS; loaded Set pattern defers carousel photos to on-navigation rendering
 - [Phase 04-02]: SearchMap/SearchMapInner updated to accept ListingCard[] — all map popup fields present in ListingCard, TypeScript passes with zero errors
 - [Phase 04-02]: generateStaticParams on both city page and listing detail page — all dynamic route segments now SSG at build time
+- [Phase 05-01]: not-found.tsx is a server component (no use client) — renders inside root layout where Tailwind CSS is loaded
+- [Phase 05-01]: error.tsx uses Tailwind classes (unlike global-error.tsx which uses inline styles) — renders inside main layout
+- [Phase 05-01]: city page bails early with notFound() before computing displayListings — no fallback to cardListings for unknown slugs
+- [Phase 05-01]: empty state replaces the grid entirely when listings.length === 0
 - [Phase 05-02]: Email input uses type=email (not type=text + inputMode=email) — native validation and mobile keyboard @ key
 - [Phase 05-02]: suppressHydrationWarning used on footer year div — standard Next.js pattern, simpler than hard-coding year
 - [Phase 05-02]: City slug useEffect resets form state without full remount — avoids flicker while preventing stale state on navigation
@@ -113,5 +118,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 5 Plan 02 (05-02). Lead form email type=email, aria-busy skeleton, Loader2 spinner, footer suppressHydrationWarning, citySlug state reset. UX-04, UX-06, UX-08, UX-11, REL-02 satisfied.
+Stopped at: Completed Phase 5 Plan 01 (05-01). Branded 404 page, main error boundary with Sentry, notFound() guard for city slugs, Datenschutz Mapbox fix, empty-state UX for zero-result searches. UX-01, UX-02, UX-03, UX-05, UX-10 satisfied.
 Resume file: None
