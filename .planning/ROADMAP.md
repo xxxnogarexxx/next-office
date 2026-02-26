@@ -44,7 +44,10 @@ Full archive: `milestones/v1.0-ROADMAP.md`
   3. A conversions row can be created with idempotency key and denormalized attribution data
   4. A conversion_queue row tracks platform, retry count, backoff timing, and dead_letter state
   5. Anonymous (anon) Supabase client cannot read or write to visitors, conversions, conversion_queue, or tracking_events tables
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 07-01-PLAN.md -- New tables (visitors, conversions, conversion_queue, tracking_events) with indexes and RLS
+- [ ] 07-02-PLAN.md -- Extend leads table with visitor_id FK, UTMs, email_hash, consent, conversion_status
 
 ### Phase 8: Visitor & UTM Capture
 **Goal**: Every site visitor receives a persistent visitor_id, UTM parameters are captured into cookies, visit data is recorded in Supabase, and lead submissions carry the visitor's attribution forward
@@ -111,7 +114,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 | 4. Performance Architecture | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 5. UX and Reliability | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 6. SEO and Analytics | v1.0 | 3/3 | Complete | 2026-02-26 |
-| 7. Database Foundation | v1.1 | 0/? | Not started | - |
+| 7. Database Foundation | v1.1 | 0/2 | Planned | - |
 | 8. Visitor & UTM Capture | v1.1 | 0/? | Not started | - |
 | 9. Enhanced Conversions | v1.1 | 0/? | Not started | - |
 | 10. Offline Conversion Pipeline | v1.1 | 0/? | Not started | - |
