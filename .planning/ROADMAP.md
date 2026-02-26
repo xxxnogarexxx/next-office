@@ -25,7 +25,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 
 **Milestone Goal:** Automate Google Ads offline conversion attribution, add Enhanced Conversions for cross-device resilience, capture UTM parameters, track anonymous visitors, and proxy events server-side for ad blocker resilience.
 
-- [ ] **Phase 7: Database Foundation** - Supabase schema for all tracking tables with RLS
+- [x] **Phase 7: Database Foundation** - Supabase schema for all tracking tables with RLS (completed 2026-02-26)
 - [ ] **Phase 8: Visitor & UTM Capture** - Middleware generates visitor_id, captures UTMs, links visitors to leads
 - [ ] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution
 - [ ] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry
@@ -46,8 +46,8 @@ Full archive: `milestones/v1.0-ROADMAP.md`
   5. Anonymous (anon) Supabase client cannot read or write to visitors, conversions, conversion_queue, or tracking_events tables
 **Plans**: 2 plans
 Plans:
-- [ ] 07-01-PLAN.md -- New tables (visitors, conversions, conversion_queue, tracking_events) with indexes and RLS
-- [ ] 07-02-PLAN.md -- Extend leads table with visitor_id FK, UTMs, email_hash, consent, conversion_status
+- [x] 07-01-PLAN.md -- New tables (visitors, conversions, conversion_queue, tracking_events) with indexes and RLS
+- [x] 07-02-PLAN.md -- Extend leads table with visitor_id FK, UTMs, email_hash, consent, conversion_status
 
 ### Phase 8: Visitor & UTM Capture
 **Goal**: Every site visitor receives a persistent visitor_id, UTM parameters are captured into cookies, visit data is recorded in Supabase, and lead submissions carry the visitor's attribution forward
@@ -114,7 +114,7 @@ Plans:
 | 4. Performance Architecture | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 5. UX and Reliability | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 6. SEO and Analytics | v1.0 | 3/3 | Complete | 2026-02-26 |
-| 7. Database Foundation | 1/2 | In Progress|  | - |
+| 7. Database Foundation | v1.1 | 2/2 | Complete | 2026-02-26 |
 | 8. Visitor & UTM Capture | v1.1 | 0/? | Not started | - |
 | 9. Enhanced Conversions | v1.1 | 0/? | Not started | - |
 | 10. Offline Conversion Pipeline | v1.1 | 0/? | Not started | - |
