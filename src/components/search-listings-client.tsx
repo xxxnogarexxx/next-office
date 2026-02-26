@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
 import { Map } from "lucide-react";
@@ -30,15 +31,41 @@ export function SearchListingsClient({ listings }: SearchListingsClientProps) {
             </span>{" "}
             gefunden
           </p>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {listings.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                onHover={setHoveredId}
-              />
-            ))}
-          </div>
+
+          {listings.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <h2 className="text-xl font-semibold text-foreground">
+                Keine Büros gefunden
+              </h2>
+              <p className="mt-2 max-w-sm text-sm text-body">
+                Versuchen Sie eine andere Stadt oder kontaktieren Sie uns für individuelle Anfragen.
+              </p>
+              <div className="mt-6 flex flex-col items-center gap-3">
+                <Link
+                  href="/contact"
+                  className="rounded-lg bg-foreground px-6 py-3 text-sm font-medium text-white hover:bg-foreground/90"
+                >
+                  Kontakt aufnehmen
+                </Link>
+                <Link
+                  href="/"
+                  className="text-sm text-body underline underline-offset-4 hover:text-foreground"
+                >
+                  Alle Städte anzeigen
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {listings.map((listing) => (
+                <ListingCard
+                  key={listing.id}
+                  listing={listing}
+                  onHover={setHoveredId}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Map */}

@@ -120,11 +120,11 @@ export default function DatenschutzPage() {
             6. Eingebundene Dienste Dritter
           </h2>
           <p className="mt-2">
-            Unsere Website nutzt Kartenmaterial von OpenStreetMap. Beim Aufrufen
+            Unsere Website nutzt Kartenmaterial von Mapbox. Beim Aufrufen
             einer Seite mit eingebetteter Karte wird eine Verbindung zu den
-            Servern von OpenStreetMap hergestellt. Dabei kann Ihre IP-Adresse
+            Servern von Mapbox hergestellt. Dabei kann Ihre IP-Adresse
             übertragen werden. Weitere Informationen finden Sie in der
-            Datenschutzerklärung von OpenStreetMap.
+            Datenschutzerklärung von Mapbox unter https://www.mapbox.com/legal/privacy.
           </p>
           <p className="mt-2">
             Wir verwenden Bilder von Unsplash. Beim Laden der Bilder wird eine

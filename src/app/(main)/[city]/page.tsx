@@ -1,6 +1,7 @@
-import { getCityBySlug, getCardListingsByCity, cardListings } from "@/lib/listings";
+import { getCityBySlug, getCardListingsByCity } from "@/lib/listings";
 import { cities } from "@/lib/cities";
 import { CityListingsClient } from "@/components/city-listings-client";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ city: string }>;
@@ -13,18 +14,17 @@ export function generateStaticParams() {
 export default async function CitySearchPage({ params }: PageProps) {
   const { city: citySlug } = await params;
   const city = getCityBySlug(citySlug);
-  const cityListings = getCardListingsByCity(citySlug);
 
-  // If city not found or no listings for this slug, show all listings
-  const displayListings = cityListings.length > 0 ? cityListings : cardListings;
-  const cityName = city?.name ?? citySlug;
+  if (!city) notFound();
+
+  const displayListings = getCardListingsByCity(citySlug);
 
   return (
     <CityListingsClient
       listings={displayListings}
-      cityName={cityName}
+      cityName={city.name}
       citySlug={citySlug}
-      center={city ? { lat: city.latitude, lng: city.longitude } : undefined}
+      center={{ lat: city.latitude, lng: city.longitude }}
     />
   );
 }

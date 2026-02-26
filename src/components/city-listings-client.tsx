@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ListingCard } from "@/components/listing-card";
 import { SearchMap } from "@/components/search-map";
 import { LeadDialog } from "@/components/lead-dialog";
@@ -50,63 +51,90 @@ export function CityListingsClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {firstBatch.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                onHover={setHoveredId}
-              />
-            ))}
-          </div>
-
-          {/* Inline CTA banner */}
-          {displayListings.length > CTA_POSITION && (
-            <div className="my-4">
-              <button
-                onClick={() => setFormOpen(true)}
-                className="group w-full rounded-xl bg-foreground p-5 text-left shadow-md transition-all hover:bg-foreground/90 hover:shadow-lg sm:p-6"
-              >
-                <div className="flex items-start gap-4 sm:items-center sm:gap-5">
-                  <Image
-                    src="/team-benjamin.jpg"
-                    alt="Benjamin Plass"
-                    width={56}
-                    height={56}
-                    className="mt-0.5 h-10 w-10 shrink-0 rounded-full border-2 border-gray-700 object-cover sm:mt-0 sm:h-14 sm:w-14"
+          {displayListings.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <h2 className="text-xl font-semibold text-foreground">
+                Noch keine Büros in {cityName}
+              </h2>
+              <p className="mt-2 max-w-sm text-sm text-body">
+                Wir erweitern unser Angebot stetig. Kontaktieren Sie uns und wir finden Ihr Büro.
+              </p>
+              <div className="mt-6 flex flex-col items-center gap-3">
+                <Link
+                  href="/contact"
+                  className="rounded-lg bg-foreground px-6 py-3 text-sm font-medium text-white hover:bg-foreground/90"
+                >
+                  Kontakt aufnehmen
+                </Link>
+                <Link
+                  href="/search"
+                  className="text-sm text-body underline underline-offset-4 hover:text-foreground"
+                >
+                  Alle Büros durchsuchen
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {firstBatch.map((listing) => (
+                  <ListingCard
+                    key={listing.id}
+                    listing={listing}
+                    onHover={setHoveredId}
                   />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-bold text-white sm:text-xl">
-                      Ihr Büro in {cityName} — in 2 Minuten.
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-400">
-                      Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100% kostenlos und unverbindlich.
-                    </p>
-                  </div>
-                  <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors group-hover:bg-gray-100 sm:flex">
-                    Jetzt anfragen
-                    <ArrowRight className="h-4 w-4" />
-                  </div>
-                </div>
-                {/* Mobile CTA */}
-                <div className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 sm:hidden">
-                  Jetzt anfragen
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-              </button>
-            </div>
-          )}
+                ))}
+              </div>
 
-          {restBatch.length > 0 && (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {restBatch.map((listing) => (
-                <ListingCard
-                  key={listing.id}
-                  listing={listing}
-                  onHover={setHoveredId}
-                />
-              ))}
-            </div>
+              {/* Inline CTA banner */}
+              {displayListings.length > CTA_POSITION && (
+                <div className="my-4">
+                  <button
+                    onClick={() => setFormOpen(true)}
+                    className="group w-full rounded-xl bg-foreground p-5 text-left shadow-md transition-all hover:bg-foreground/90 hover:shadow-lg sm:p-6"
+                  >
+                    <div className="flex items-start gap-4 sm:items-center sm:gap-5">
+                      <Image
+                        src="/team-benjamin.jpg"
+                        alt="Benjamin Plass"
+                        width={56}
+                        height={56}
+                        className="mt-0.5 h-10 w-10 shrink-0 rounded-full border-2 border-gray-700 object-cover sm:mt-0 sm:h-14 sm:w-14"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-bold text-white sm:text-xl">
+                          Ihr Büro in {cityName} — in 2 Minuten.
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-400">
+                          Wir vergleichen alle Anbieter und senden Ihnen bis zu 6 passende Angebote. 100% kostenlos und unverbindlich.
+                        </p>
+                      </div>
+                      <div className="hidden shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors group-hover:bg-gray-100 sm:flex">
+                        Jetzt anfragen
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </div>
+                    {/* Mobile CTA */}
+                    <div className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 sm:hidden">
+                      Jetzt anfragen
+                      <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {restBatch.length > 0 && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {restBatch.map((listing) => (
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      onHover={setHoveredId}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
