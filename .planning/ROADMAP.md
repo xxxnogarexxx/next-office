@@ -59,7 +59,11 @@ Plans:
   3. A Supabase visitors row is created or updated when `/api/track/visit` is called with all tracking fields populated
   4. Submitting the lead form creates a lead row in Supabase with the visitor_id FK pointing to the visitor record
   5. The lead row contains utm_source, utm_medium, utm_campaign, utm_term, and utm_content from the visitor's cookies
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 08-01-PLAN.md -- Extend middleware: visitor_id UUID cookie (CAP-01) + UTM cookies (CAP-02)
+- [ ] 08-02-PLAN.md -- Create /api/track/visit endpoint: upsert visitors row in Supabase (CAP-03)
+- [ ] 08-03-PLAN.md -- Wire visitor_id FK + UTM columns into lead insertion pipeline (CAP-04, CAP-05)
 
 ### Phase 9: Enhanced Conversions
 **Goal**: Lead form submissions pass hashed user email to Google Ads via gtag for cross-device and Safari-compatible conversion attribution

@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T11:07:40.965Z"
+last_updated: "2026-02-26T11:35:42Z"
 progress:
   total_phases: 1
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 7 — Database Foundation
+**Current focus:** Phase 8 — Visitor & UTM Capture
 
 ## Current Position
 
-Phase: 7 of 12 (Database Foundation)
-Plan: 2 of 2 in current phase — PHASE COMPLETE
+Phase: 8 of 12 (Visitor & UTM Capture)
+Plan: 1 of 3 in current phase — in progress
 Status: In progress
-Last activity: 2026-02-26 — Phase 7 Plan 02 complete (leads table extended with visitor_id FK, UTMs, email_hash, consent, conversion_status)
+Last activity: 2026-02-26 — Phase 8 Plan 01 complete (_no_vid visitor UUID cookie + _no_utm_* UTM capture in middleware, CAP-01 + CAP-02)
 
-Progress: [██░░░░░░░░] 17%
+Progress: [███░░░░░░░] 22%
 
 ## Performance Metrics
 
@@ -41,6 +41,7 @@ Progress: [██░░░░░░░░] 17%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
+| 08-visitor-utm-capture | 1 | 2 min | 2 min |
 
 *Updated after each plan completion*
 
@@ -58,6 +59,9 @@ Progress: [██░░░░░░░░] 17%
 - Denormalized attribution in conversions (gclid, email_hash, UTMs) to avoid JOINs in async queue processing
 - updated_at trigger applied to leads/conversions/conversion_queue only — visitors uses last_seen_at, tracking_events is append-only (no updated_at column)
 - conversion_status NOT NULL DEFAULT 'new' — all existing leads get 'new' status on migration, ensuring no NULL values in pipeline
+- visitor_id uses 30-day maxAge (not 90) — visitor sessions are tracking windows, not ad attribution windows
+- generateVisitorId() extracted to src/lib/tracking/visitor.ts for testability (crypto.randomUUID(), Edge Runtime safe)
+- UTM cookies follow first-touch attribution model: existing _no_utm_* cookies not overwritten on subsequent visits
 
 ### Pending Todos
 
@@ -72,5 +76,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 07-02-PLAN.md — leads table extended with visitor_id FK, UTMs, email_hash, consent, conversion_status, updated_at trigger
+Stopped at: Completed 08-01-PLAN.md — visitor_id (_no_vid) UUID cookie + UTM capture (_no_utm_*) in Next.js Edge Middleware
 Resume file: None
