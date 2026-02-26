@@ -57,7 +57,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-text">
+        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-text" suppressHydrationWarning>
           © {new Date().getFullYear()} NextOffice. Alle Rechte vorbehalten.
         </div>
       </div>
