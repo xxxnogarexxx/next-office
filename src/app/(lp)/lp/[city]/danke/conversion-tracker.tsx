@@ -12,9 +12,15 @@ import { useEffect, useRef } from "react";
  * Uses a ref guard to ensure the conversion fires only once (React strict mode
  * fires useEffect twice in dev, which would double-count conversions).
  *
- * Reads gclid from sessionStorage (stored by LPTrackingProvider) for attribution.
+ * Reads gclid and transaction_id from sessionStorage (stored by LPTrackingProvider and
+ * lead-form-section respectively) for attribution and deduplication.
+ *
+ * EC-04: Reuses the transaction_id from the form submission (stored by lead-form-section.tsx)
+ * to deduplicate this conversion event against the one fired on form submit. Falls back to a
+ * new UUID only when sessionStorage is unavailable.
+ *
  * This is the primary conversion signal — Plan 02-03 fires on form submit (before redirect),
- * this fires on confirmed page load. Both have dedup keys to prevent double-counting.
+ * this fires on confirmed page load. Both share the same transaction_id to prevent double-counting.
  *
  * Environment variables required in production:
  * - NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID: Google Ads Conversion ID (e.g., "AW-XXXXXXXXXX")
@@ -33,16 +39,23 @@ export function ConversionTracker() {
       return;
     }
 
-    // Read gclid from sessionStorage (set by LPTrackingProvider on initial LP landing)
+    // Read gclid and transaction_id from sessionStorage.
+    // gclid: set by LPTrackingProvider on initial LP landing.
+    // transaction_id: set by lead-form-section.tsx on form submission (EC-04).
     let gclid: string | null = null;
+    let transactionId: string | null = null;
     try {
       const stored = sessionStorage.getItem("_no_lp_tracking");
       if (stored) {
-        const parsed = JSON.parse(stored) as { gclid?: string | null };
+        const parsed = JSON.parse(stored) as {
+          gclid?: string | null;
+          transaction_id?: string | null;
+        };
         gclid = parsed.gclid ?? null;
+        transactionId = parsed.transaction_id ?? null;
       }
     } catch {
-      // sessionStorage unavailable — proceed without gclid
+      // sessionStorage unavailable — proceed without gclid/transactionId
     }
 
     const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID;
@@ -51,6 +64,10 @@ export function ConversionTracker() {
     // Reject placeholder env var values — prevents sending junk conversion data to Google Ads
     const isPlaceholder = (val: string | undefined) =>
       !val || /^[X]+$|^AW-X+$|XXXXXXXXXX|example|placeholder|test/i.test(val);
+
+    // EC-04: Reuse transaction_id from form submission (stored in sessionStorage by lead-form-section).
+    // Falls back to a new UUID if sessionStorage was unavailable.
+    const deduplicationId = transactionId ?? crypto.randomUUID();
 
     // Fire Google Ads conversion tag if configured with real values
     if (conversionId && conversionLabel) {
@@ -63,7 +80,7 @@ export function ConversionTracker() {
           send_to: `${conversionId}/${conversionLabel}`,
           value: 1.0,
           currency: "EUR",
-          transaction_id: crypto.randomUUID(), // dedup key — prevents double-counting with Plan 03 tag
+          transaction_id: deduplicationId,
           gclid: gclid ?? undefined,
         });
       }
@@ -74,6 +91,7 @@ export function ConversionTracker() {
       event_category: "conversion",
       event_label: "danke_page_load",
       gclid: gclid ?? undefined,
+      transaction_id: deduplicationId,
     });
   }, []);
 
