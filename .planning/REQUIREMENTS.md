@@ -61,14 +61,14 @@ Requirements for launch readiness. Each maps to roadmap phases.
 ### SEO / Analytics
 
 - [x] **SEO-01**: GA4/GTM tracking active on all main site pages (A1)
-- [ ] **SEO-02**: Default OG image exists and is set in root metadata (A2)
-- [ ] **SEO-03**: Homepage has explicit page-level metadata export (A3)
-- [ ] **SEO-04**: Homepage includes Organization structured data (A4)
+- [x] **SEO-02**: Default OG image exists and is set in root metadata (A2)
+- [x] **SEO-03**: Homepage has explicit page-level metadata export (A3)
+- [x] **SEO-04**: Homepage includes Organization structured data (A4)
 - [ ] **SEO-05**: Listing and blog pages include BreadcrumbList structured data (A5)
-- [ ] **SEO-06**: /contact page included in sitemap (A6)
+- [x] **SEO-06**: /contact page included in sitemap (A6)
 - [x] **SEO-07**: Main site lead form fires conversion tracking event on submission (A7)
-- [ ] **SEO-08**: ueber-uns and fuer-anbieter pages have specific OG tags (A8)
-- [ ] **SEO-09**: robots.txt blocks /api/ and /lp/ routes from crawlers (A9)
+- [x] **SEO-08**: ueber-uns and fuer-anbieter pages have specific OG tags (A8)
+- [x] **SEO-09**: robots.txt blocks /api/ and /lp/ routes from crawlers (A9)
 - [x] **SEO-10**: Search page has semantic h1 heading (A10)
 - [x] **SEO-11**: Font includes latin-ext subset for German characters (A11)
 
@@ -86,7 +86,7 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [x] **QW-01**: X-Powered-By header removed (P2-19)
 - [ ] **QW-02**: JSON-LD escapes </script> in listing data (P2-2)
 - [ ] **QW-03**: Blog Article schema includes dateModified (P2-22)
-- [ ] **QW-04**: Legal pages have canonical URLs (P2-25)
+- [x] **QW-04**: Legal pages have canonical URLs (P2-25)
 
 ## v2 Requirements
 
@@ -176,14 +176,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEV-06 | Phase 2 | Complete |
 | DEV-07 | Phase 2 | Complete |
 | SEO-01 | Phase 6 | Complete |
-| SEO-02 | Phase 6 | Pending |
-| SEO-03 | Phase 6 | Pending |
-| SEO-04 | Phase 6 | Pending |
+| SEO-02 | Phase 6 | Complete |
+| SEO-03 | Phase 6 | Complete |
+| SEO-04 | Phase 6 | Complete |
 | SEO-05 | Phase 6 | Pending |
-| SEO-06 | Phase 6 | Pending |
+| SEO-06 | Phase 6 | Complete |
 | SEO-07 | Phase 6 | Complete |
-| SEO-08 | Phase 6 | Pending |
-| SEO-09 | Phase 6 | Pending |
+| SEO-08 | Phase 6 | Complete |
+| SEO-09 | Phase 6 | Complete |
 | SEO-10 | Phase 6 | Complete |
 | SEO-11 | Phase 6 | Complete |
 | REL-01 | Phase 5 | Complete |
@@ -195,7 +195,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QW-01 | Phase 2 | Complete |
 | QW-02 | Phase 6 | Pending |
 | QW-03 | Phase 6 | Pending |
-| QW-04 | Phase 6 | Pending |
+| QW-04 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 60 total

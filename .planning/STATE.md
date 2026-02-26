@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T06:08:23.501Z"
+last_updated: "2026-02-26T06:08:55.784Z"
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 17
-  completed_plans: 16
+  completed_plans: 17
 ---
 
 # Project State
@@ -59,6 +59,7 @@ Progress: [█████████░] ~93%
 | Phase 05-ux-and-reliability P03 | 5min | 2 tasks | 4 files |
 | Phase 06-seo-and-analytics P01 | 4min | 2 tasks | 4 files |
 | Phase 06-seo-and-analytics P02 | 2min | 2 tasks | 8 files |
+| Phase 06-seo-and-analytics P03 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -117,6 +118,11 @@ Recent decisions affecting current work:
 - [Phase 06-01]: GTMScript placed outside TrackingProvider as sibling — server component, not affected by client context
 - [Phase 06-01]: window.gtag typeof guard enables graceful degradation — form still submits without GA4 loaded
 - [Phase 06-01]: h1 text is 'Büros finden' — generic enough for all search contexts
+- [Phase 06-02]: OG image uses /hero-office.jpg for all pages — already in public/, metadataBase in root layout resolves it to absolute URL
+- [Phase 06-02]: Legal pages retain robots: {index: false} alongside canonical — canonical handles duplicate URL signals while noindex prevents direct indexing
+- [Phase 06-03]: BreadcrumbList added as separate script tag — keeps schemas independently valid and simpler to maintain
+- [Phase 06-03]: JSON-LD XSS escape: .replace(/</g, '\u003c') on all dangerouslySetInnerHTML JSON-LD output — Unicode escape valid in JSON, prevents </script> injection
+- [Phase 06-03]: dateModified falls back to date when frontmatter field absent — no breaking change for existing blog posts
 
 ### Pending Todos
 
@@ -129,5 +135,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 6 Plan 01 (06-01). GA4 tracking on main site via GTMScript, generate_lead event on lead form, latin-ext font subset, semantic h1 on search page. SEO-01, SEO-07, SEO-10, SEO-11 satisfied. Phase 6 in progress (1/3 plans done).
+Stopped at: Completed Phase 6 Plan 02 (06-02). Homepage OG metadata + Organization JSON-LD, robots.txt disallow /api/ and /lp/, /contact in sitemap, OG tags on ueber-uns/fuer-anbieter, canonical URLs on legal pages. SEO-02, SEO-03, SEO-04, SEO-06, SEO-08, SEO-09, QW-04 satisfied. Phase 6 in progress (2/3 plans done).
 Resume file: None
