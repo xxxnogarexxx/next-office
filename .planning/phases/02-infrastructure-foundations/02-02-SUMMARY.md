@@ -68,7 +68,7 @@ Each task was committed atomically:
 1. **Task 1: Add security headers and remove X-Powered-By** - `9769f10` (feat)
 2. **Task 2: Add CORS enforcement on API routes** - `e95ceee` (feat)
 
-**Plan metadata:** (docs commit to follow)
+**Plan metadata:** `aec2c8a` (docs: complete plan)
 
 ## Files Created/Modified
 - `next.config.ts` - Added poweredByHeader: false, headers() async function with CSP, X-Frame-Options, HSTS, Referrer-Policy, X-Content-Type-Options, Permissions-Policy applied to all routes
@@ -94,6 +94,15 @@ None - no external service configuration required.
 - Security headers and CORS baseline complete
 - All API routes now protected by CORS allowlist
 - Ready for remaining Phase 02 plans (environment variables, observability, etc.)
+
+## Self-Check: PASSED
+
+- FOUND: next.config.ts
+- FOUND: src/middleware.ts
+- FOUND: .planning/phases/02-infrastructure-foundations/02-02-SUMMARY.md
+- FOUND: commit 9769f10 (Task 1)
+- FOUND: commit e95ceee (Task 2)
+- FOUND: commit aec2c8a (docs)
 
 ---
 *Phase: 02-infrastructure-foundations*
