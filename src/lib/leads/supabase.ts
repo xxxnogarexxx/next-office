@@ -116,11 +116,13 @@ export async function resolveVisitorUuid(
 // Lead insert
 // Maps ValidatedLeadData to the leads table columns.
 // Accepts an optional visitorUuid (resolved from _no_vid cookie via visitors table).
+// Accepts an optional emailHash (SHA-256 hex of normalized email, for EC-03).
 // ---------------------------------------------------------------------------
 
 export async function insertLead(
   data: ValidatedLeadData,
-  visitorUuid?: string | null
+  visitorUuid?: string | null,
+  emailHash?: string | null
 ): Promise<{ success: true } | { success: false; error: string }> {
   const client = createScopedClient(); // anon client is fine for leads INSERT (RLS allows anon insert)
 
@@ -148,6 +150,8 @@ export async function insertLead(
     utm_campaign: data.utm_campaign,
     utm_term: data.utm_term,
     utm_content: data.utm_content,
+    // NEW: SHA-256 email hash for Enhanced Conversions (EC-03)
+    email_hash: emailHash ?? null,
   });
 
   if (error) {

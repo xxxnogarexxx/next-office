@@ -28,6 +28,7 @@ import { validateLeadPayload, validateCookieValue } from "./validation";
 import { generateCsrfToken, verifyCsrfToken, CSRF_COOKIE_NAME } from "./csrf";
 import { checkDuplicate, insertLead, resolveVisitorUuid } from "./supabase";
 import { sendLeadNotification } from "./email";
+import { hashEmail } from "@/lib/tracking/hash";
 
 // ---------------------------------------------------------------------------
 // Rate limiter — module-level singleton (same pattern as existing route files)
@@ -176,6 +177,10 @@ export async function handleLeadSubmission(
     utm_content,
   };
 
+  // Step 5d: Compute SHA-256 email hash for Enhanced Conversions (EC-03).
+  // Google Ads uses this for cross-device attribution and offline conversion matching.
+  const emailHash = hashEmail(data.email);
+
   // Step 6: Duplicate detection (only when both phone and city are present)
   if (resolvedData.phone && resolvedData.city) {
     const isDuplicate = await checkDuplicate(
@@ -189,7 +194,7 @@ export async function handleLeadSubmission(
   }
 
   // Step 7: Insert lead into Supabase
-  const insertResult = await insertLead(resolvedData, visitorUuid);
+  const insertResult = await insertLead(resolvedData, visitorUuid, emailHash);
   if (!insertResult.success) {
     return NextResponse.json(
       { error: "Fehler beim Speichern." },
