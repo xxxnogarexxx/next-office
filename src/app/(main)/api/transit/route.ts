@@ -12,6 +12,36 @@ function parseCoord(value: string | null): number | null {
   return num;
 }
 
+async function fetchWithRetry(
+  url: string,
+  init: RequestInit,
+  retries = 1,
+  backoffMs = 2000
+): Promise<Response> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    try {
+      const res = await fetch(url, { ...init, signal: controller.signal });
+      clearTimeout(timeout);
+      if (res.ok || res.status < 500) return res; // Don't retry client errors
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, backoffMs));
+        continue;
+      }
+      return res; // Return last failed response
+    } catch (err) {
+      clearTimeout(timeout);
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, backoffMs));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw new Error("Unreachable");
+}
+
 export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type");
   const latParam = request.nextUrl.searchParams.get("lat");
@@ -31,34 +61,32 @@ export async function GET(request: NextRequest) {
   const queryFn = ALLOWED_QUERY_TYPES[type as keyof typeof ALLOWED_QUERY_TYPES];
   const query = queryFn(lat, lng);
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12000);
-
   try {
-    const res = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      body: `data=${encodeURIComponent(query)}`,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeout);
+    const res = await fetchWithRetry(
+      "https://overpass-api.de/api/interpreter",
+      {
+        method: "POST",
+        body: `data=${encodeURIComponent(query)}`,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
 
     if (!res.ok) {
       return NextResponse.json(
         { elements: [], error: `Overpass returned ${res.status}` },
-        { status: 502 }
+        { status: 502, headers: { "Cache-Control": "no-store" } }
       );
     }
 
     const data = await res.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "public, max-age=3600" },
+    });
   } catch (err) {
-    clearTimeout(timeout);
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
       { elements: [], error: message },
-      { status: 502 }
+      { status: 502, headers: { "Cache-Control": "no-store" } }
     );
   }
 }
