@@ -15,11 +15,11 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [x] **SEC-04**: Notification email templates HTML-escape all user-provided fields (S4)
 - [x] **SEC-05**: Lead endpoints enforce per-IP rate limiting (S5)
 - [x] **SEC-06**: Security headers configured (CSP, X-Frame-Options, HSTS, Referrer-Policy) (S6)
-- [ ] **SEC-07**: Lead form endpoints have CSRF protection (S7)
-- [ ] **SEC-08**: Email validation uses RFC-compliant check on both main and LP routes (S8)
-- [ ] **SEC-09**: Cookie values (gclid/gbraid/wbraid) validated for format and length (S9)
-- [ ] **SEC-10**: Lead inserts use scoped Supabase access instead of service role key (S10)
-- [ ] **SEC-11**: Lead request bodies validated for input size and field types (S11)
+- [x] **SEC-07**: Lead form endpoints have CSRF protection (S7)
+- [x] **SEC-08**: Email validation uses RFC-compliant check on both main and LP routes (S8)
+- [x] **SEC-09**: Cookie values (gclid/gbraid/wbraid) validated for format and length (S9)
+- [x] **SEC-10**: Lead inserts use scoped Supabase access instead of service role key (S10)
+- [x] **SEC-11**: Lead request bodies validated for input size and field types (S11)
 - [ ] **SEC-12**: Mapbox token restricted to allowed URLs in dashboard (S12)
 
 ### Performance
@@ -77,9 +77,9 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [ ] **REL-01**: Listings without coordinates handled gracefully on map (visible indicator or excluded with logging)
 - [ ] **REL-02**: Rapid city page navigation does not cause hydration mismatch in lead form
 - [ ] **REL-03**: localStorage exceptions caught gracefully — transit cache degrades to fetch without error
-- [ ] **REL-04**: Lead API routes consolidated into shared service (single source of truth)
-- [ ] **REL-05**: Email sending does not block lead API response path
-- [ ] **REL-06**: Duplicate leads detected by phone + city before insert
+- [x] **REL-04**: Lead API routes consolidated into shared service (single source of truth)
+- [x] **REL-05**: Email sending does not block lead API response path
+- [x] **REL-06**: Duplicate leads detected by phone + city before insert
 
 ### Quick Wins
 
@@ -142,11 +142,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-04 | Phase 1 | Complete |
 | SEC-05 | Phase 1 | Complete |
 | SEC-06 | Phase 2 | Complete |
-| SEC-07 | Phase 3 | Pending |
-| SEC-08 | Phase 3 | Pending |
-| SEC-09 | Phase 3 | Pending |
-| SEC-10 | Phase 3 | Pending |
-| SEC-11 | Phase 3 | Pending |
+| SEC-07 | Phase 3 | Complete |
+| SEC-08 | Phase 3 | Complete |
+| SEC-09 | Phase 3 | Complete |
+| SEC-10 | Phase 3 | Complete |
+| SEC-11 | Phase 3 | Complete |
 | SEC-12 | Phase 5 | Pending |
 | PERF-01 | Phase 4 | Pending |
 | PERF-02 | Phase 4 | Pending |
@@ -189,9 +189,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REL-01 | Phase 5 | Pending |
 | REL-02 | Phase 5 | Pending |
 | REL-03 | Phase 5 | Pending |
-| REL-04 | Phase 3 | Pending |
-| REL-05 | Phase 3 | Pending |
-| REL-06 | Phase 3 | Pending |
+| REL-04 | Phase 3 | Complete |
+| REL-05 | Phase 3 | Complete |
+| REL-06 | Phase 3 | Complete |
 | QW-01 | Phase 2 | Complete |
 | QW-02 | Phase 6 | Pending |
 | QW-03 | Phase 6 | Pending |

@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T01:35:39.341Z"
+last_updated: "2026-02-26T01:58:27.623Z"
 progress:
-  total_phases: 2
+  total_phases: 3
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 2 — Infrastructure Foundations
+**Current focus:** Phase 3 — Lead Pipeline Hardening
 
 ## Current Position
 
-Phase: 2 of 6 (Infrastructure Foundations)
-Plan: 4 of 4 in current phase (all complete)
-Status: Phase 2 Complete
-Last activity: 2026-02-26 — Completed Phase 2 Plan 03: Sentry error monitoring with source maps (DEV-03)
+Phase: 3 of 6 (Lead Pipeline Hardening)
+Plan: 1 of 3 in current phase (complete)
+Status: Phase 3 In Progress
+Last activity: 2026-02-26 — Completed Phase 3 Plan 01: Lead service module (SEC-07 through SEC-11, REL-04 through REL-06)
 
-Progress: [████░░░░░░] ~35%
+Progress: [█████░░░░░] ~40%
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [████░░░░░░] ~35%
 
 *Updated after each plan completion*
 | Phase 02-infrastructure-foundations P01 | 2 | 2 tasks | 5 files |
+| Phase 03-lead-pipeline-hardening P01 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,10 @@ Recent decisions affecting current work:
 - [02-03]: tunnelRoute: '/monitoring' proxies Sentry events through app domain — no extra CSP change needed
 - [02-03]: sourcemaps.deleteSourcemapsAfterUpload used instead of wiping.enabled — API changed in @sentry/nextjs@10
 - [02-03]: global-error.tsx uses inline styles (not Tailwind) — renders outside layout tree where CSS may not be loaded
+- [Phase 03-01]: CSRF secret derived from SUPABASE_SERVICE_ROLE_KEY — avoids new required env var, documented in csrf.ts
+- [Phase 03-01]: Scoped Supabase access uses anon key + RLS (not service role) for lead inserts — principle of least privilege
+- [Phase 03-01]: Duplicate lead detection returns idempotent 200 { success: true, deduplicated: true } — not a 409
+- [Phase 03-01]: escapeHtml defined once in email.ts — single source of truth, all other files import from there
 
 ### Pending Todos
 
@@ -91,5 +96,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 2 Plan 03 (DEV-03). Sentry error monitoring with source maps complete. All 4 Phase 2 plans done — Phase 2 complete.
+Stopped at: Completed Phase 3 Plan 01 (03-01). Lead service module complete (SEC-07 to SEC-11, REL-04 to REL-06). Phase 3 in progress.
 Resume file: None
