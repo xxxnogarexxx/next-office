@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T16:30:58.167Z"
+last_updated: "2026-02-26T16:35:51.870Z"
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
   completed_plans: 8
 ---
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 ## Current Position
 
-Phase: 9 of 12 (Enhanced Conversions)
-Plan: 2 of 3 in current phase — complete
-Status: In progress
-Last activity: 2026-02-26 — Phase 9 Plan 02 complete (transaction_id column migration, ValidatedLeadData extended, insertLead writes transaction_id — EC-04 server half)
+Phase: 9 of 12 (Enhanced Conversions) — COMPLETE
+Plan: 3 of 3 in current phase — complete
+Status: Phase 09 complete, ready for Phase 10
+Last activity: 2026-02-26 — Phase 9 Plan 03 complete (EC-02 user_data email + EC-04 shared transaction_id wired to both lead forms and danke page)
 
-Progress: [█████░░░░░] 35%
+Progress: [██████░░░░] 40%
 
 ## Performance Metrics
 
@@ -42,7 +42,7 @@ Progress: [█████░░░░░] 35%
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
 | 08-visitor-utm-capture | 3 | 7 min | 2.3 min |
-| 09-enhanced-conversions | 2/3 | 2 min | 1 min |
+| 09-enhanced-conversions | 3/3 | 4 min | 1.3 min |
 
 *Updated after each plan completion*
 
@@ -75,6 +75,8 @@ Progress: [█████░░░░░] 35%
 - emailHash param is optional in insertLead — backward-compatible with existing callers
 - No migration needed for email_hash — column already exists from migration 005_leads_extension.sql
 - [Phase 09-enhanced-conversions]: transaction_id stored as TEXT (max 36 chars) and written to leads table via ValidatedLeadData — no insertLead signature change
+- [Phase 09-enhanced-conversions]: Email passed raw (trimmed+lowercased) to gtag user_data — Google hashes internally per Enhanced Conversions spec
+- [Phase 09-enhanced-conversions]: transaction_id stored in existing _no_lp_tracking sessionStorage blob — avoids proliferating keys, keeps tracking data co-located
 
 ### Pending Todos
 
@@ -89,5 +91,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 09-02-PLAN.md — transaction_id column migration, ValidatedLeadData extended, insertLead writes transaction_id (EC-04 server half)
+Stopped at: Completed 09-03-PLAN.md — EC-02 user_data email + EC-04 shared transaction_id wired to both lead forms and danke page. Phase 09 (Enhanced Conversions) complete.
 Resume file: None

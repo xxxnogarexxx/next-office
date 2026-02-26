@@ -26,7 +26,7 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 ### Enhanced Conversions
 
 - [x] **EC-01**: gtag config includes `allow_enhanced_conversions: true`
-- [ ] **EC-02**: User email is set via `gtag('set', 'user_data', { email })` before the conversion event fires on form submission
+- [x] **EC-02**: User email is set via `gtag('set', 'user_data', { email })` before the conversion event fires on form submission
 - [x] **EC-03**: SHA-256 hashed email (normalized, lowercased) stored in Supabase leads table at form submission
 - [x] **EC-04**: Transaction ID generated at form submission and shared between the online gtag event and the lead API submission for deduplication
 
@@ -106,7 +106,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAP-04 | Phase 8 | Complete |
 | CAP-05 | Phase 8 | Complete |
 | EC-01 | Phase 9 | Complete |
-| EC-02 | Phase 9 | Pending |
+| EC-02 | Phase 9 | Complete |
 | EC-03 | Phase 9 | Complete |
 | EC-04 | Phase 9 | Complete |
 | OFL-01 | Phase 10 | Pending |
