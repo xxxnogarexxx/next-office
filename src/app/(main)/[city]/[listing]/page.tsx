@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { ListingCard } from "@/components/listing-card";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { ListingMap } from "@/components/listing-map";
-import { getListingBySlug, getListingsByCity } from "@/lib/listings";
+import { listings, getListingBySlug, getListingsByCity } from "@/lib/listings";
 import { ListingPageClient } from "./listing-page-client";
 
 interface PageProps {
@@ -63,6 +63,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: `https://next-office.io/${citySlug}/${listingSlug}`,
     },
   };
+}
+
+export function generateStaticParams() {
+  return listings.map((listing) => ({
+    city: listing.citySlug,
+    listing: listing.slug,
+  }));
 }
 
 const amenityIcons: Record<string, React.ElementType> = {
