@@ -152,6 +152,8 @@ export async function insertLead(
     utm_content: data.utm_content,
     // NEW: SHA-256 email hash for Enhanced Conversions (EC-03)
     email_hash: emailHash ?? null,
+    // NEW: Shared transaction ID for gtag/offline dedup (EC-04)
+    transaction_id: data.transaction_id ?? null,
   });
 
   if (error) {
