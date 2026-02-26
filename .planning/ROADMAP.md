@@ -86,7 +86,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Listings without coordinates are handled gracefully on the map — no JavaScript error is thrown and other listings remain visible
   5. The photo gallery fullscreen traps focus and locks body scroll — pressing Tab cycles within the dialog and the page does not scroll behind it
   6. The lead form submit button shows a loading spinner during submission — the user has visual feedback that the request is in flight
-**Plans**: TBD
+**Plans**: 3 plans
+- [ ] 05-01-PLAN.md — Error pages, city 404 routing, Datenschutz fix, zero-result empty states (UX-01, UX-02, UX-03, UX-05, UX-10)
+- [ ] 05-02-PLAN.md — Form UX polish: email type, footer hydration, aria-busy skeleton, submit spinner, lead form reset (UX-04, UX-06, UX-08, UX-11, REL-02)
+- [ ] 05-03-PLAN.md — Accessibility + reliability: ARIA search bar, photo gallery focus trap, decorative icon labels, map coord handling, localStorage resilience, Mapbox token restriction (UX-07, UX-09, UX-12, REL-01, REL-03, SEC-12)
 
 ### Phase 6: SEO and Analytics
 **Goal**: Every main site page has GA4 tracking active, metadata and OG tags are correct on all public pages, structured data meets current schema requirements, and robots/sitemap are accurate.
@@ -113,5 +116,5 @@ Note: Phases 2 and 3 both depend on Phase 1 and are independent of each other �
 | 2. Infrastructure Foundations | 4/4 | Complete   | 2026-02-26 |
 | 3. Lead Pipeline Hardening | 2/2 | Complete    | 2026-02-26 |
 | 4. Performance Architecture | 3/3 | Complete    | 2026-02-26 |
-| 5. UX and Reliability | 0/TBD | Not started | - |
+| 5. UX and Reliability | 0/3 | Not started | - |
 | 6. SEO and Analytics | 0/TBD | Not started | - |
