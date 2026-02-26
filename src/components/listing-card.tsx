@@ -4,10 +4,10 @@ import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Users, Euro, ChevronLeft, ChevronRight } from "lucide-react";
-import type { Listing } from "@/lib/types";
+import type { ListingCard as ListingCardData } from "@/lib/types";
 
 interface ListingCardProps {
-  listing: Listing;
+  listing: ListingCardData;
   onHover?: (id: string | null) => void;
 }
 

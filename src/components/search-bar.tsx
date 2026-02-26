@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { cities } from "@/lib/listings";
+import { cities } from "@/lib/cities";
 
 interface SearchBarProps {
   className?: string;

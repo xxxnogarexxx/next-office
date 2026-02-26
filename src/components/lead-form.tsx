@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cities } from "@/lib/listings";
+import { cities } from "@/lib/cities";
 import { Send, CheckCircle } from "lucide-react";
 
 interface LeadFormProps {

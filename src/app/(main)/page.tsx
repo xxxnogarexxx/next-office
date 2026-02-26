@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Shield, Clock, TrendingUp, Phone, Mail } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { SearchBar } from "@/components/search-bar";
-import { cities } from "@/lib/listings";
+import { cities } from "@/lib/cities";
 import { testimonials } from "@/lib/testimonials";
 
 export default function HomePage() {
