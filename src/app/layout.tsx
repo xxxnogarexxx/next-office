@@ -4,7 +4,7 @@ import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"], // latin-ext adds German umlaut/eszett support (SEO-10)
 });
 
 const SITE_URL = "https://next-office.io";

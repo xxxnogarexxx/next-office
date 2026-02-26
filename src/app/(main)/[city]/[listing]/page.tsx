@@ -181,7 +181,36 @@ export default async function ListingDetailPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Startseite",
+                item: "https://next-office.io",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: `Büros in ${listing.city}`,
+                item: `https://next-office.io/${citySlug}`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: listing.name,
+                item: `https://next-office.io/${citySlug}/${listingSlug}`,
+              },
+            ],
+          }).replace(/</g, "\\u003c"),
+        }}
       />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Back link */}
