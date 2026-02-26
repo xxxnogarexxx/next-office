@@ -6,12 +6,7 @@ Sentry.init({
   // Performance monitoring: sample 10% of transactions in production
   tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
 
-  // Session replay: capture 1% of sessions, 100% of error sessions
-  replaysSessionSampleRate: 0.01,
-  replaysOnErrorSampleRate: 1.0,
-  integrations: [
-    Sentry.replayIntegration(),
-  ],
+  integrations: [],
 
   // Only enable in production (skip in dev to avoid noise)
   enabled: process.env.NODE_ENV === "production",

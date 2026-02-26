@@ -35,13 +35,13 @@ export function GTMScript() {
       {/* Load gtag.js */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${activeId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
 
       {/* Configure gtag with GA4 and optionally Google Ads */}
       <Script
         id="gtag-init"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

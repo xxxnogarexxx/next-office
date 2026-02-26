@@ -34,7 +34,7 @@ export function CityListingsClient({
   useEffect(() => {
     isDesktop.current = window.matchMedia("(min-width: 1024px)").matches;
     if (isDesktop.current) {
-      const id = requestIdleCallback(() => setMapReady(true), { timeout: 200 });
+      const id = requestIdleCallback(() => setMapReady(true));
       return () => cancelIdleCallback(id);
     }
   }, []);
