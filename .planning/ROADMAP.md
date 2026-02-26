@@ -43,7 +43,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A Sentry error in production (client or server) appears in the Sentry dashboard within 60 seconds
   4. A push to main triggers the CI pipeline — lint and build failures block merge
   5. GET /api/health returns 200 with a JSON body confirming environment readiness
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 02-01-PLAN.md — Env validation, .env.example, health check, Google Ads validation (DEV-01, DEV-02, DEV-05, DEV-07)
+- [ ] 02-02-PLAN.md — Security headers, CORS, X-Powered-By removal (SEC-06, QW-01, DEV-06)
+- [ ] 02-03-PLAN.md — Sentry error monitoring with source maps (DEV-03)
+- [ ] 02-04-PLAN.md — CI/CD pipeline with GitHub Actions (DEV-04)
 
 ### Phase 3: Lead Pipeline Hardening
 **Goal**: The lead submission path is hardened end-to-end — CSRF-protected, input-validated, scoped to least privilege, deduplicated, consolidated into one service, and non-blocking for email delivery.
@@ -104,7 +108,7 @@ Note: Phases 2 and 3 both depend on Phase 1 and are independent of each other �
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Security Hardening | 2/2 | Complete   | 2026-02-26 |
-| 2. Infrastructure Foundations | 0/TBD | Not started | - |
+| 2. Infrastructure Foundations | 0/4 | Planned | - |
 | 3. Lead Pipeline Hardening | 0/TBD | Not started | - |
 | 4. Performance Architecture | 0/TBD | Not started | - |
 | 5. UX and Reliability | 0/TBD | Not started | - |
