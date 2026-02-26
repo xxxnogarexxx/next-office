@@ -24,14 +24,14 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### Performance
 
-- [ ] **PERF-01**: Client JS payload reduced — listings data split so search/city pages receive only needed fields (P1)
+- [x] **PERF-01**: Client JS payload reduced — listings data split so search/city pages receive only needed fields (P1)
 - [ ] **PERF-02**: Search and city pages render as server components with client islands for interactivity (P2)
 - [ ] **PERF-03**: City and listing pages use generateStaticParams for static generation (P3)
 - [ ] **PERF-04**: Mapbox GL lazy-loaded on listing detail pages (triggered by viewport) (P4)
 - [ ] **PERF-05**: ListingCard carousel renders only visible photos, remaining lazy-loaded (P5)
-- [ ] **PERF-06**: Transit API has appropriate timeout (30s), retry with backoff, and error handling (P6)
-- [ ] **PERF-07**: /api/transit responses include Cache-Control headers (P7)
-- [ ] **PERF-08**: LeadForm does not import full listings.json — cities extracted to separate module (P8)
+- [x] **PERF-06**: Transit API has appropriate timeout (30s), retry with backoff, and error handling (P6)
+- [x] **PERF-07**: /api/transit responses include Cache-Control headers (P7)
+- [x] **PERF-08**: LeadForm does not import full listings.json — cities extracted to separate module (P8)
 
 ### UX / Frontend
 
@@ -148,14 +148,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-10 | Phase 3 | Complete |
 | SEC-11 | Phase 3 | Complete |
 | SEC-12 | Phase 5 | Pending |
-| PERF-01 | Phase 4 | Pending |
+| PERF-01 | Phase 4 | Complete |
 | PERF-02 | Phase 4 | Pending |
 | PERF-03 | Phase 4 | Pending |
 | PERF-04 | Phase 4 | Pending |
 | PERF-05 | Phase 4 | Pending |
-| PERF-06 | Phase 4 | Pending |
-| PERF-07 | Phase 4 | Pending |
-| PERF-08 | Phase 4 | Pending |
+| PERF-06 | Phase 4 | Complete |
+| PERF-07 | Phase 4 | Complete |
+| PERF-08 | Phase 4 | Complete |
 | UX-01 | Phase 5 | Pending |
 | UX-02 | Phase 5 | Pending |
 | UX-03 | Phase 5 | Pending |

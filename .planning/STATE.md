@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-26T02:06:51.190Z"
+status: in-progress
+last_updated: "2026-02-26T02:46:00Z"
 progress:
-  total_phases: 3
+  total_phases: 6
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 9
+  completed_plans: 9
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 3 — Lead Pipeline Hardening
+**Current focus:** Phase 4 — Performance Architecture
 
 ## Current Position
 
-Phase: 3 of 6 (Lead Pipeline Hardening)
-Plan: 2 of 3 in current phase (complete)
-Status: Phase 3 In Progress
-Last activity: 2026-02-26 — Completed Phase 3 Plan 02: Route wiring + CSRF endpoint + form integration (SEC-07 through SEC-11, REL-04 through REL-06)
+Phase: 4 of 6 (Performance Architecture)
+Plan: 1 of 2 in current phase (complete)
+Status: Phase 4 In Progress
+Last activity: 2026-02-26 — Completed Phase 4 Plan 01: Cities module extraction, listings-card.json payload split, transit API hardening (PERF-01, PERF-06, PERF-07, PERF-08)
 
-Progress: [█████░░░░░] ~40%
+Progress: [██████░░░░] ~50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~1.4min
-- Total execution time: ~7min
+- Total plans completed: 6
+- Average duration: ~1.7min
+- Total execution time: ~12min
 
 **By Phase:**
 
@@ -51,6 +51,7 @@ Progress: [█████░░░░░] ~40%
 | Phase 02-infrastructure-foundations P01 | 2 | 2 tasks | 5 files |
 | Phase 03-lead-pipeline-hardening P01 | 4min | 2 tasks | 7 files |
 | Phase 03-lead-pipeline-hardening P02 | 2min | 2 tasks | 6 files |
+| Phase 04-performance-architecture P01 | 5min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,10 @@ Recent decisions affecting current work:
 - [Phase 03-01]: escapeHtml defined once in email.ts — single source of truth, all other files import from there
 - [Phase 03-02]: handleCsrfToken returns { csrfToken: token } — forms read data.csrfToken not data.token
 - [Phase 03-02]: Route files reduced from 167/233 lines to 5 lines — zero business logic in route handlers, thin delegation to shared service
+- [Phase 04-01]: listings-card.json contains photos field (required by carousel) — actual disk reduction 45% not 80%; Contentful CDN URLs in photos account for 61% of card payload size
+- [Phase 04-01]: ListingCard type in types.ts has 14 fields — listing-card.tsx accepts ListingCard not Listing (safe narrowing)
+- [Phase 04-01]: sitemap.ts intentionally kept importing from @/lib/listings — needs both cities and full listings, runs server-side only
+- [Phase 04-01]: Transit API retry only on 5xx/network errors — 4xx (Overpass client errors) not retried
 
 ### Pending Todos
 
@@ -99,5 +104,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 3 Plan 02 (03-02). Route wiring + CSRF endpoint + form integration complete. Phase 3 in progress (plan 3 of 3 remaining).
+Stopped at: Completed Phase 4 Plan 01 (04-01). Cities module extraction + listings-card.json split + transit API hardening complete. Phase 4 in progress (plan 2 of 2 remaining).
 Resume file: None
