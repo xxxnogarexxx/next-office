@@ -41,12 +41,12 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [x] **UX-04**: Email input uses type="email" and server validates email format (U3)
 - [x] **UX-05**: Datenschutz page correctly references Mapbox instead of OpenStreetMap (U4)
 - [x] **UX-06**: Footer year rendering does not cause hydration mismatch (U5)
-- [ ] **UX-07**: Search bar dropdown has proper ARIA attributes (role="listbox", aria-activedescendant) (U6)
+- [x] **UX-07**: Search bar dropdown has proper ARIA attributes (role="listbox", aria-activedescendant) (U6)
 - [x] **UX-08**: Lead form hydration skeleton shows loading indicator with aria-busy (U7)
-- [ ] **UX-09**: Photo gallery fullscreen has focus trap, body scroll lock, and role="dialog" (U8)
+- [x] **UX-09**: Photo gallery fullscreen has focus trap, body scroll lock, and role="dialog" (U8)
 - [x] **UX-10**: Zero-result searches show empty state with helpful CTA (U9)
 - [x] **UX-11**: Lead form submit button shows spinner during loading (U10)
-- [ ] **UX-12**: Decorative icons have aria-hidden="true" across main site (U11)
+- [x] **UX-12**: Decorative icons have aria-hidden="true" across main site (U11)
 
 ### DevOps / Infrastructure
 
@@ -74,9 +74,9 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### Reliability
 
-- [ ] **REL-01**: Listings without coordinates handled gracefully on map (visible indicator or excluded with logging)
+- [x] **REL-01**: Listings without coordinates handled gracefully on map (visible indicator or excluded with logging)
 - [x] **REL-02**: Rapid city page navigation does not cause hydration mismatch in lead form
-- [ ] **REL-03**: localStorage exceptions caught gracefully — transit cache degrades to fetch without error
+- [x] **REL-03**: localStorage exceptions caught gracefully — transit cache degrades to fetch without error
 - [x] **REL-04**: Lead API routes consolidated into shared service (single source of truth)
 - [x] **REL-05**: Email sending does not block lead API response path
 - [x] **REL-06**: Duplicate leads detected by phone + city before insert
@@ -162,12 +162,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-04 | Phase 5 | Complete |
 | UX-05 | Phase 5 | Complete |
 | UX-06 | Phase 5 | Complete |
-| UX-07 | Phase 5 | Pending |
+| UX-07 | Phase 5 | Complete |
 | UX-08 | Phase 5 | Complete |
-| UX-09 | Phase 5 | Pending |
+| UX-09 | Phase 5 | Complete |
 | UX-10 | Phase 5 | Complete |
 | UX-11 | Phase 5 | Complete |
-| UX-12 | Phase 5 | Pending |
+| UX-12 | Phase 5 | Complete |
 | DEV-01 | Phase 2 | Complete |
 | DEV-02 | Phase 2 | Complete |
 | DEV-03 | Phase 2 | Pending |
@@ -186,9 +186,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEO-09 | Phase 6 | Pending |
 | SEO-10 | Phase 6 | Pending |
 | SEO-11 | Phase 6 | Pending |
-| REL-01 | Phase 5 | Pending |
+| REL-01 | Phase 5 | Complete |
 | REL-02 | Phase 5 | Complete |
-| REL-03 | Phase 5 | Pending |
+| REL-03 | Phase 5 | Complete |
 | REL-04 | Phase 3 | Complete |
 | REL-05 | Phase 3 | Complete |
 | REL-06 | Phase 3 | Complete |

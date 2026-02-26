@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T04:45:00Z"
+last_updated: "2026-02-26T09:00:00Z"
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 13
   completed_plans: 13
 ---
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 5 of 6 (UX and Reliability)
-Plan: 2 of 3 in current phase (05-02 complete)
-Status: Phase 5 In Progress
-Last activity: 2026-02-26 — Completed Phase 5 Plan 02: Lead form email type, aria-busy skeleton, Loader2 spinner, footer suppressHydrationWarning (UX-04, UX-06, UX-08, UX-11, REL-02)
+Phase: 5 of 6 (UX and Reliability — COMPLETE)
+Plan: 3 of 3 in current phase (05-03 complete)
+Status: Phase 5 Complete — Ready for Phase 6
+Last activity: 2026-02-26 — Completed Phase 5 Plan 03: ARIA listbox on search bar, focus trap + scroll lock on photo gallery, aria-label on lead dialog close button, dev-only map coordinate warning (UX-07, UX-09, UX-12, REL-01, REL-03). SEC-12 deferred to post-launch.
 
-Progress: [█████████░] ~80%
+Progress: [█████████░] ~90%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [█████████░] ~80%
 | Phase 04-performance-architecture P02 | 3min | 2 tasks | 7 files |
 | Phase 05-ux-and-reliability P01 | 2min | 2 tasks | 6 files |
 | Phase 05-ux-and-reliability P02 | 1min | 2 tasks | 2 files |
+| Phase 05-ux-and-reliability P03 | 5min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,11 @@ Recent decisions affecting current work:
 - [Phase 05-02]: Email input uses type=email (not type=text + inputMode=email) — native validation and mobile keyboard @ key
 - [Phase 05-02]: suppressHydrationWarning used on footer year div — standard Next.js pattern, simpler than hard-coding year
 - [Phase 05-02]: City slug useEffect resets form state without full remount — avoids flicker while preventing stale state on navigation
+- [Phase 05-03]: SEC-12 (Mapbox token URL restriction) deferred to post-launch — user chose to skip dashboard configuration checkpoint
+- [Phase 05-03]: localStorage resilience for transit cache already implemented (try/catch) — verified existing code correct, no changes needed for REL-03
+- [Phase 05-03]: Lucide React icons already emit aria-hidden automatically via library internals — no manual fix needed for decorative Lucide icons
+- [Phase 05-03]: Search dropdown options changed from button to div role=option inside div role=listbox — correct ARIA listbox semantics
+- [Phase 05-03]: Focus trap uses position:fixed + top:-scrollY scroll lock pattern — preserves scroll position on gallery close
 
 ### Pending Todos
 
@@ -113,10 +119,10 @@ None yet.
 
 ### Blockers/Concerns
 
-None yet.
+- **SEC-12 open (post-launch):** Mapbox access token is not yet URL-restricted. User deferred from Phase 5 Plan 03 — must complete before or shortly after launch to prevent token abuse. See 05-03-SUMMARY.md for exact steps.
 
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 5 Plan 01 (05-01). Branded 404 page, main error boundary with Sentry, notFound() guard for city slugs, Datenschutz Mapbox fix, empty-state UX for zero-result searches. UX-01, UX-02, UX-03, UX-05, UX-10 satisfied.
+Stopped at: Completed Phase 5 Plan 03 (05-03). ARIA listbox on search bar, focus trap + scroll lock on photo gallery, aria-label on lead dialog close button, dev-only map coordinate warnings. UX-07, UX-09, UX-12, REL-01, REL-03 satisfied. Phase 5 complete. SEC-12 deferred.
 Resume file: None
