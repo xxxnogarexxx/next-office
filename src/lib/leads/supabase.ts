@@ -1,0 +1,104 @@
+/**
+ * Scoped Supabase client for lead inserts.
+ *
+ * Uses NEXT_PUBLIC_SUPABASE_ANON_KEY (not the service role key) so that
+ * database access is scoped by Row Level Security (RLS) policies.
+ *
+ * IMPORTANT: RLS must be configured in the Supabase dashboard to allow
+ * anon inserts on the leads table. Without an RLS policy that permits
+ * anon INSERT, all inserts will be rejected with a 403.
+ *
+ * The service role key is intentionally not imported here — any code that
+ * needs admin-level access must import it explicitly from a separate module.
+ */
+
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import type { ValidatedLeadData } from "./validation";
+
+// ---------------------------------------------------------------------------
+// Dedup window
+// ---------------------------------------------------------------------------
+
+const DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// ---------------------------------------------------------------------------
+// Scoped client factory
+// Uses anon key — scoped by RLS, not service role.
+// ---------------------------------------------------------------------------
+
+export function createScopedClient(): SupabaseClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    throw new Error(
+      "Supabase env vars missing: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
+  }
+
+  return createClient(url, anonKey);
+}
+
+// ---------------------------------------------------------------------------
+// Duplicate detection
+// Returns true if a lead with the same phone + city exists within the dedup window.
+// ---------------------------------------------------------------------------
+
+export async function checkDuplicate(
+  phone: string,
+  city: string
+): Promise<boolean> {
+  const client = createScopedClient();
+  const windowStart = new Date(Date.now() - DEDUP_WINDOW_MS).toISOString();
+
+  const { data, error } = await client
+    .from("leads")
+    .select("id")
+    .eq("phone", phone)
+    .eq("city", city)
+    .gte("created_at", windowStart)
+    .limit(1);
+
+  if (error) {
+    // Log but don't block — duplicate check failure is non-fatal.
+    console.error("[leads/supabase] checkDuplicate error:", error);
+    return false;
+  }
+
+  return Array.isArray(data) && data.length > 0;
+}
+
+// ---------------------------------------------------------------------------
+// Lead insert
+// Maps ValidatedLeadData to the leads table columns.
+// ---------------------------------------------------------------------------
+
+export async function insertLead(
+  data: ValidatedLeadData
+): Promise<{ success: true } | { success: false; error: string }> {
+  const client = createScopedClient();
+
+  const { error } = await client.from("leads").insert({
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    team_size: data.team_size,
+    start_date: data.start_date,
+    city: data.city,
+    message: data.message,
+    listing_id: data.listing_id,
+    listing_name: data.listing_name,
+    gclid: data.gclid,
+    gbraid: data.gbraid,
+    wbraid: data.wbraid,
+    landing_page: data.landing_page,
+    referrer: data.referrer,
+  });
+
+  if (error) {
+    console.error("[leads/supabase] insertLead error:", error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
+}
