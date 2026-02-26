@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-26T02:57:40.958Z"
+last_updated: "2026-02-26T04:43:07Z"
 progress:
-  total_phases: 4
+  total_phases: 6
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 13
+  completed_plans: 13
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 4 of 6 (Performance Architecture)
-Plan: 3 of 3 in current phase (complete — all Phase 4 plans done)
-Status: Phase 4 Complete
-Last activity: 2026-02-26 — Completed Phase 4 Plan 02: City/search server components + client islands + generateStaticParams for SSG (PERF-02, PERF-03)
+Phase: 5 of 6 (UX and Reliability)
+Plan: 2 of 3 in current phase (05-02 complete)
+Status: Phase 5 In Progress
+Last activity: 2026-02-26 — Completed Phase 5 Plan 02: Lead form email type, aria-busy skeleton, Loader2 spinner, footer suppressHydrationWarning (UX-04, UX-06, UX-08, UX-11, REL-02)
 
-Progress: [████████░░] ~70%
+Progress: [█████████░] ~80%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [████████░░] ~70%
 | Phase 04-performance-architecture P01 | 5min | 2 tasks | 9 files |
 | Phase 04-performance-architecture P03 | 1min | 2 tasks | 2 files |
 | Phase 04-performance-architecture P02 | 3min | 2 tasks | 7 files |
+| Phase 05-ux-and-reliability P02 | 1min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,9 @@ Recent decisions affecting current work:
 - [Phase 04-03]: rootMargin: 200px on IntersectionObserver starts Mapbox load before viewport; minHeight: 560 prevents CLS; loaded Set pattern defers carousel photos to on-navigation rendering
 - [Phase 04-02]: SearchMap/SearchMapInner updated to accept ListingCard[] — all map popup fields present in ListingCard, TypeScript passes with zero errors
 - [Phase 04-02]: generateStaticParams on both city page and listing detail page — all dynamic route segments now SSG at build time
+- [Phase 05-02]: Email input uses type=email (not type=text + inputMode=email) — native validation and mobile keyboard @ key
+- [Phase 05-02]: suppressHydrationWarning used on footer year div — standard Next.js pattern, simpler than hard-coding year
+- [Phase 05-02]: City slug useEffect resets form state without full remount — avoids flicker while preventing stale state on navigation
 
 ### Pending Todos
 
@@ -109,5 +113,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 4 Plan 02 (04-02). City/search server components + client islands + generateStaticParams on city and listing pages. PERF-02 and PERF-03 satisfied.
+Stopped at: Completed Phase 5 Plan 02 (05-02). Lead form email type=email, aria-busy skeleton, Loader2 spinner, footer suppressHydrationWarning, citySlug state reset. UX-04, UX-06, UX-08, UX-11, REL-02 satisfied.
 Resume file: None
