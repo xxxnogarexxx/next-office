@@ -69,16 +69,63 @@ export async function checkDuplicate(
 }
 
 // ---------------------------------------------------------------------------
+// Visitor UUID resolution
+// Resolves a visitor_id text value (from cookie) to the UUID primary key
+// of the visitors table row.
+//
+// Returns null if:
+// - visitorIdText is null/undefined (no cookie)
+// - No visitors row found with that visitor_id (race condition or stale cookie)
+// - Supabase query fails (non-fatal — lead is created without visitor FK)
+//
+// Uses service role client — visitors table has no anon SELECT RLS policy.
+// ---------------------------------------------------------------------------
+
+export async function resolveVisitorUuid(
+  visitorIdText: string | null
+): Promise<string | null> {
+  if (!visitorIdText) return null;
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceRoleKey) return null;
+
+  const client = createClient(url, serviceRoleKey, {
+    auth: { persistSession: false },
+  });
+
+  const { data, error } = await client
+    .from("visitors")
+    .select("id")
+    .eq("visitor_id", visitorIdText)
+    .single();
+
+  if (error || !data?.id) {
+    // Non-fatal: log and return null. Lead insert will proceed without visitor FK.
+    if (error && error.code !== "PGRST116") {
+      // PGRST116 = "no rows found" — not an error, just a new visitor
+      console.error("[leads/supabase] resolveVisitorUuid error:", error);
+    }
+    return null;
+  }
+
+  return data.id as string;
+}
+
+// ---------------------------------------------------------------------------
 // Lead insert
 // Maps ValidatedLeadData to the leads table columns.
+// Accepts an optional visitorUuid (resolved from _no_vid cookie via visitors table).
 // ---------------------------------------------------------------------------
 
 export async function insertLead(
-  data: ValidatedLeadData
+  data: ValidatedLeadData,
+  visitorUuid?: string | null
 ): Promise<{ success: true } | { success: false; error: string }> {
-  const client = createScopedClient();
+  const client = createScopedClient(); // anon client is fine for leads INSERT (RLS allows anon insert)
 
   const { error } = await client.from("leads").insert({
+    // existing fields
     name: data.name,
     email: data.email,
     phone: data.phone,
@@ -93,6 +140,14 @@ export async function insertLead(
     wbraid: data.wbraid,
     landing_page: data.landing_page,
     referrer: data.referrer,
+    // NEW: visitor attribution (CAP-04)
+    visitor_id: visitorUuid ?? null,
+    // NEW: UTM columns (CAP-05)
+    utm_source: data.utm_source,
+    utm_medium: data.utm_medium,
+    utm_campaign: data.utm_campaign,
+    utm_term: data.utm_term,
+    utm_content: data.utm_content,
   });
 
   if (error) {
