@@ -5,7 +5,7 @@ import MapGL, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapRef } from "react-map-gl/mapbox";
-import type { Listing } from "@/lib/types";
+import type { ListingCard } from "@/lib/types";
 import {
   MAPBOX_TOKEN,
   MAP_STYLE,
@@ -70,7 +70,7 @@ async function fetchTransitLines(lat: number, lng: number): Promise<GeoJSONFC> {
 }
 
 interface SearchMapInnerProps {
-  listings: Listing[];
+  listings: ListingCard[];
   hoveredId: string | null;
   center?: { lat: number; lng: number };
 }
