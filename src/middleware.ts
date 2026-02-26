@@ -124,7 +124,7 @@ export function middleware(request: NextRequest) {
   // Does NOT overwrite existing UTM cookies (first-touch attribution model):
   // once a UTM cookie is set, it persists for 30 days unless a new UTM arrives.
   for (const key of UTM_KEYS) {
-    const value = params.get(key);
+    const value = params.get(`utm_${key}`);
     if (value) {
       response.cookies.set(`${UTM_COOKIE_PREFIX}${key}`, value, {
         httpOnly: true,

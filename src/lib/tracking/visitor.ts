@@ -12,11 +12,11 @@ export const UTM_COOKIE_PREFIX = "_no_utm_";
 export const UTM_COOKIE_MAX_AGE = 30 * 24 * 60 * 60; // 30 days in seconds
 
 export const UTM_KEYS = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_term",
-  "utm_content",
+  "source",
+  "medium",
+  "campaign",
+  "term",
+  "content",
 ] as const;
 
 export type UTMKey = (typeof UTM_KEYS)[number];
