@@ -14,7 +14,7 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [x] **SEC-03**: Transit popup HTML-escapes all OpenStreetMap tag values before rendering (S3)
 - [x] **SEC-04**: Notification email templates HTML-escape all user-provided fields (S4)
 - [x] **SEC-05**: Lead endpoints enforce per-IP rate limiting (S5)
-- [ ] **SEC-06**: Security headers configured (CSP, X-Frame-Options, HSTS, Referrer-Policy) (S6)
+- [x] **SEC-06**: Security headers configured (CSP, X-Frame-Options, HSTS, Referrer-Policy) (S6)
 - [ ] **SEC-07**: Lead form endpoints have CSRF protection (S7)
 - [ ] **SEC-08**: Email validation uses RFC-compliant check on both main and LP routes (S8)
 - [ ] **SEC-09**: Cookie values (gclid/gbraid/wbraid) validated for format and length (S9)
@@ -53,9 +53,9 @@ Requirements for launch readiness. Each maps to roadmap phases.
 - [ ] **DEV-01**: Runtime env var validation fails fast on startup with clear error messages (D1)
 - [ ] **DEV-02**: .env.example documents all required environment variables (D2)
 - [ ] **DEV-03**: Sentry error monitoring captures client and server errors with source maps (D3)
-- [ ] **DEV-04**: CI/CD pipeline runs lint + build on push (D4)
+- [x] **DEV-04**: CI/CD pipeline runs lint + build on push (D4)
 - [ ] **DEV-05**: Health check endpoint at /api/health returns 200 with basic diagnostics (D5)
-- [ ] **DEV-06**: CORS policy restricts API routes to allowed origins (D6)
+- [x] **DEV-06**: CORS policy restricts API routes to allowed origins (D6)
 - [ ] **DEV-07**: Placeholder Google Ads conversion values replaced or validated against env vars (D7)
 
 ### SEO / Analytics
@@ -83,7 +83,7 @@ Requirements for launch readiness. Each maps to roadmap phases.
 
 ### Quick Wins
 
-- [ ] **QW-01**: X-Powered-By header removed (P2-19)
+- [x] **QW-01**: X-Powered-By header removed (P2-19)
 - [ ] **QW-02**: JSON-LD escapes </script> in listing data (P2-2)
 - [ ] **QW-03**: Blog Article schema includes dateModified (P2-22)
 - [ ] **QW-04**: Legal pages have canonical URLs (P2-25)
@@ -141,7 +141,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-03 | Phase 1 | Complete |
 | SEC-04 | Phase 1 | Complete |
 | SEC-05 | Phase 1 | Complete |
-| SEC-06 | Phase 2 | Pending |
+| SEC-06 | Phase 2 | Complete |
 | SEC-07 | Phase 3 | Pending |
 | SEC-08 | Phase 3 | Pending |
 | SEC-09 | Phase 3 | Pending |
@@ -171,9 +171,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEV-01 | Phase 2 | Pending |
 | DEV-02 | Phase 2 | Pending |
 | DEV-03 | Phase 2 | Pending |
-| DEV-04 | Phase 2 | Pending |
+| DEV-04 | Phase 2 | Complete |
 | DEV-05 | Phase 2 | Pending |
-| DEV-06 | Phase 2 | Pending |
+| DEV-06 | Phase 2 | Complete |
 | DEV-07 | Phase 2 | Pending |
 | SEO-01 | Phase 6 | Pending |
 | SEO-02 | Phase 6 | Pending |
@@ -192,7 +192,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REL-04 | Phase 3 | Pending |
 | REL-05 | Phase 3 | Pending |
 | REL-06 | Phase 3 | Pending |
-| QW-01 | Phase 2 | Pending |
+| QW-01 | Phase 2 | Complete |
 | QW-02 | Phase 6 | Pending |
 | QW-03 | Phase 6 | Pending |
 | QW-04 | Phase 6 | Pending |
