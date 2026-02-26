@@ -132,6 +132,15 @@ export function LeadFormSection({
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
+
+  // Fetch CSRF token on mount — non-blocking, form is immediately interactive
+  useEffect(() => {
+    fetch("/api/csrf", { credentials: "same-origin" })
+      .then((res) => res.json())
+      .then((data) => setCsrfToken(data.csrfToken))
+      .catch(() => {}); // Silent fail — CSRF validated server-side
+  }, []);
 
   // Remove any elements/attributes injected by password manager extensions
   // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
@@ -221,7 +230,11 @@ export function LeadFormSection({
     try {
       const res = await fetch("/api/lp-leads", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
+        },
+        credentials: "same-origin",
         body: JSON.stringify({
           // Core fields
           name: values.name,

@@ -32,12 +32,21 @@ export function LeadForm({
   const tracking = useTracking();
   const [submitted, setSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const showCityField = !citySlug && !listingId;
 
   const formRef = useRef<HTMLFormElement>(null);
 
   // Render form only on client to prevent hydration mismatch
   useEffect(() => setMounted(true), []);
+
+  // Fetch CSRF token on mount — non-blocking, form is immediately interactive
+  useEffect(() => {
+    fetch("/api/csrf", { credentials: "same-origin" })
+      .then((res) => res.json())
+      .then((data) => setCsrfToken(data.csrfToken))
+      .catch(() => {}); // Silent fail — CSRF validated server-side
+  }, []);
 
   // Remove any elements/attributes injected by password manager extensions
   // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
@@ -80,7 +89,11 @@ export function LeadForm({
 
     const res = await fetch("/api/leads", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
+      },
+      credentials: "same-origin",
       body: JSON.stringify({
         name: form.get("lead_fullname"),
         email: form.get("lead_mail"),
