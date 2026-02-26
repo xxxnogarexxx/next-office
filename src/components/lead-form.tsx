@@ -103,6 +103,9 @@ export function LeadForm({
 
     const form = new FormData(e.currentTarget);
 
+    // EC-04: Generate shared transaction_id for dedup between gtag and API
+    const transactionId = crypto.randomUUID();
+
     const res = await fetch("/api/leads", {
       method: "POST",
       headers: {
@@ -126,6 +129,8 @@ export function LeadForm({
         wbraid: tracking.wbraid,
         landing_page: tracking.landing_page,
         referrer: tracking.referrer,
+        // EC-04: Shared transaction_id for dedup between gtag and offline conversion upload
+        transaction_id: transactionId,
       }),
     });
 
@@ -138,12 +143,19 @@ export function LeadForm({
 
     setSubmitted(true);
 
-    // Fire GA4 lead conversion event (SEO-07)
+    // Fire GA4 lead conversion event (SEO-07) with Enhanced Conversions (EC-02, EC-04)
     if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      // EC-02: Set user_data with raw email for Enhanced Conversions
+      window.gtag("set", "user_data", {
+        email: (form.get("lead_mail") as string).trim().toLowerCase(),
+      });
+
+      // GA4 lead event with shared transaction_id (EC-04)
       window.gtag("event", "generate_lead", {
         event_category: "lead",
         event_label: citySlug || "general",
         value: 1,
+        transaction_id: transactionId,
       });
     }
   }
