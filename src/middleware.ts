@@ -40,7 +40,7 @@ export function middleware(request: NextRequest) {
       );
       preflightResponse.headers.set(
         "Access-Control-Allow-Headers",
-        "Content-Type"
+        "Content-Type, x-csrf-token"
       );
       preflightResponse.headers.set("Access-Control-Max-Age", "86400");
       return preflightResponse;
