@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 6 — SEO and Analytics (in progress)
+**Current focus:** Phase 6 — SEO and Analytics (COMPLETE)
 
 ## Current Position
 
-Phase: 6 of 6 (SEO and Analytics — IN PROGRESS)
-Plan: 1 of 3 in current phase (06-01 complete)
-Status: Phase 6 Plan 1 Complete — Ready for 06-02
-Last activity: 2026-02-26 — Completed Phase 6 Plan 01: GA4 tracking on main site via GTMScript, generate_lead event on lead form submission, latin-ext font subset, semantic h1 on search page (SEO-01, SEO-07, SEO-10, SEO-11).
+Phase: 6 of 6 (SEO and Analytics — COMPLETE)
+Plan: 3 of 3 in current phase (06-03 complete)
+Status: Phase 6 Complete — All Phases Done
+Last activity: 2026-02-26 — Completed Phase 6 Plan 03: BreadcrumbList on listing and blog pages, XSS-safe JSON-LD escaping, dateModified in Article schema. SEO-05, QW-02, QW-03 satisfied.
 
-Progress: [█████████░] ~93%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -135,5 +135,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed Phase 6 Plan 02 (06-02). Homepage OG metadata + Organization JSON-LD, robots.txt disallow /api/ and /lp/, /contact in sitemap, OG tags on ueber-uns/fuer-anbieter, canonical URLs on legal pages. SEO-02, SEO-03, SEO-04, SEO-06, SEO-08, SEO-09, QW-04 satisfied. Phase 6 in progress (2/3 plans done).
+Stopped at: Completed Phase 6 Plan 03 (06-03). BreadcrumbList on listing and blog pages, XSS-safe JSON-LD escaping via .replace(/</g, "\\u003c"), dateModified in Article schema and BlogPost interface. SEO-05, QW-02, QW-03 satisfied. Phase 6 complete — all 3 plans done.
 Resume file: None
