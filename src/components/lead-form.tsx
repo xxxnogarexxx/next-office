@@ -1,6 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 import { useTracking } from "@/components/tracking-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -128,6 +134,15 @@ export function LeadForm({
     }
 
     setSubmitted(true);
+
+    // Fire GA4 lead conversion event (SEO-07)
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", {
+        event_category: "lead",
+        event_label: citySlug || "general",
+        value: 1,
+      });
+    }
   }
 
   if (!mounted) {

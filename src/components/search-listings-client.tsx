@@ -25,6 +25,7 @@ export function SearchListingsClient({ listings }: SearchListingsClientProps) {
             showMap ? "hidden lg:block" : ""
           }`}
         >
+          <h1 className="px-4 pt-4 text-2xl font-bold sm:text-3xl">Büros finden</h1>
           <p className="mb-4 text-sm text-body">
             <span className="font-semibold text-foreground">
               {listings.length} Büros
