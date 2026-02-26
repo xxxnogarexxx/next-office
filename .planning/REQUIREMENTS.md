@@ -10,7 +10,7 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 ### Database & Schema
 
 - [x] **DB-01**: Visitors table stores anonymous visitor data (visitor_id, click IDs, UTMs, IP hash, user agent, timestamps)
-- [ ] **DB-02**: Leads table extended with visitor_id FK, UTM columns, email_hash, consent fields, and conversion_status
+- [x] **DB-02**: Leads table extended with visitor_id FK, UTM columns, email_hash, consent fields, and conversion_status
 - [x] **DB-03**: Conversions table stores business events with denormalized attribution data and idempotency key
 - [x] **DB-04**: Conversion queue table tracks per-platform upload status with retry count, backoff timing, and dead letter state
 - [x] **DB-05**: RLS policies deny anon access on all new tables (visitors, conversions, conversion_queue, tracking_events)
@@ -96,7 +96,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DB-01 | Phase 7 | Complete |
-| DB-02 | Phase 7 | Pending |
+| DB-02 | Phase 7 | Complete |
 | DB-03 | Phase 7 | Complete |
 | DB-04 | Phase 7 | Complete |
 | DB-05 | Phase 7 | Complete |
