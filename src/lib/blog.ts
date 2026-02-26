@@ -10,6 +10,7 @@ export interface BlogPost {
   excerpt: string;
   coverImage: string;
   date: string;
+  dateModified?: string;
   author: string;
   category: string;
   readingTime: number;
@@ -29,6 +30,7 @@ export function getAllPosts(): BlogPost[] {
       excerpt: data.excerpt as string,
       coverImage: data.coverImage as string,
       date: data.date as string,
+      dateModified: (data.dateModified as string | undefined) || (data.date as string),
       author: data.author as string,
       category: data.category as string,
       readingTime: data.readingTime as number,
