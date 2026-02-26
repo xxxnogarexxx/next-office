@@ -11,8 +11,10 @@
  *   3. CSRF verification (x-csrf-token header + _no_csrf cookie)
  *   4. Payload validation (validateLeadPayload)
  *   5. Tracking cookie resolution (body first, server cookies as fallback, then validateCookieValue)
+ *   5b. Resolve visitor_id cookie to UUID primary key in visitors table (CAP-04)
+ *   5c. Merge UTM values from cookies as authoritative source (CAP-05)
  *   6. Duplicate detection (phone + city, 24h window)
- *   7. Supabase insert
+ *   7. Supabase insert (with visitorUuid and UTMs)
  *   8. Email notification (fire-and-forget)
  *   9. Return { success: true }
  *
@@ -24,7 +26,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { validateLeadPayload, validateCookieValue } from "./validation";
 import { generateCsrfToken, verifyCsrfToken, CSRF_COOKIE_NAME } from "./csrf";
-import { checkDuplicate, insertLead } from "./supabase";
+import { checkDuplicate, insertLead, resolveVisitorUuid } from "./supabase";
 import { sendLeadNotification } from "./email";
 
 // ---------------------------------------------------------------------------
@@ -138,6 +140,27 @@ export async function handleLeadSubmission(
     data.referrer ??
     (cookieStore.get("_no_ref")?.value || null);
 
+  // Step 5b: Resolve visitor_id cookie to UUID primary key in visitors table.
+  // The _no_vid cookie holds the TEXT visitor_id value. We need the UUID `id`
+  // column from the visitors table row to use as FK in leads.
+  // Non-fatal: if resolution fails, lead is inserted without visitor FK.
+  const visitorIdText = cookieStore.get("_no_vid")?.value ?? null;
+  const visitorUuid = await resolveVisitorUuid(visitorIdText);
+
+  // Step 5c: Merge UTM values from cookies as authoritative source.
+  // Cookies (set by middleware on landing) are preferred over body values
+  // because the client may not always send UTMs in the body (e.g., return visits).
+  const utm_source =
+    cookieStore.get("_no_utm_source")?.value || data.utm_source || null;
+  const utm_medium =
+    cookieStore.get("_no_utm_medium")?.value || data.utm_medium || null;
+  const utm_campaign =
+    cookieStore.get("_no_utm_campaign")?.value || data.utm_campaign || null;
+  const utm_term =
+    cookieStore.get("_no_utm_term")?.value || data.utm_term || null;
+  const utm_content =
+    cookieStore.get("_no_utm_content")?.value || data.utm_content || null;
+
   // Merge resolved cookie values back into data
   const resolvedData = {
     ...data,
@@ -146,6 +169,11 @@ export async function handleLeadSubmission(
     wbraid,
     landing_page,
     referrer,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
   };
 
   // Step 6: Duplicate detection (only when both phone and city are present)
@@ -161,7 +189,7 @@ export async function handleLeadSubmission(
   }
 
   // Step 7: Insert lead into Supabase
-  const insertResult = await insertLead(resolvedData);
+  const insertResult = await insertLead(resolvedData, visitorUuid);
   if (!insertResult.success) {
     return NextResponse.json(
       { error: "Fehler beim Speichern." },
