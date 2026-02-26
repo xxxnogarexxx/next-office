@@ -19,7 +19,7 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 
 - [x] **CAP-01**: Middleware generates a visitor_id (UUID) in an HTTP-only cookie on first visit and preserves it on return visits
 - [x] **CAP-02**: Middleware captures UTM parameters (source, medium, campaign, term, content) into HTTP-only cookies
-- [ ] **CAP-03**: Visit recording endpoint (`/api/track/visit`) creates or upserts visitor record in Supabase with all tracking data
+- [x] **CAP-03**: Visit recording endpoint (`/api/track/visit`) creates or upserts visitor record in Supabase with all tracking data
 - [ ] **CAP-04**: Lead form submission links visitor_id cookie to the lead record in Supabase
 - [ ] **CAP-05**: Lead API stores UTM parameters from cookies alongside the lead in Supabase
 
@@ -102,7 +102,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DB-05 | Phase 7 | Complete |
 | CAP-01 | Phase 8 | Complete |
 | CAP-02 | Phase 8 | Complete |
-| CAP-03 | Phase 8 | Pending |
+| CAP-03 | Phase 8 | Complete |
 | CAP-04 | Phase 8 | Pending |
 | CAP-05 | Phase 8 | Pending |
 | EC-01 | Phase 9 | Pending |

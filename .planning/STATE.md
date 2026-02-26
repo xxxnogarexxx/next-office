@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-26T11:35:42Z"
+last_updated: "2026-02-26T11:41:20Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -23,25 +23,25 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 8 of 12 (Visitor & UTM Capture)
-Plan: 1 of 3 in current phase — in progress
+Plan: 2 of 3 in current phase — complete
 Status: In progress
-Last activity: 2026-02-26 — Phase 8 Plan 01 complete (_no_vid visitor UUID cookie + _no_utm_* UTM capture in middleware, CAP-01 + CAP-02)
+Last activity: 2026-02-26 — Phase 8 Plan 02 complete (POST /api/track/visit endpoint + upsertVisitor() with service role Supabase, CAP-03)
 
 Progress: [███░░░░░░░] 22%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2 (v1.1)
+- Total plans completed: 3 (v1.1)
 - Average duration: 2 min
-- Total execution time: 4 min
+- Total execution time: 6 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07-database-foundation | 2 | 4 min | 2 min |
-| 08-visitor-utm-capture | 1 | 2 min | 2 min |
+| 08-visitor-utm-capture | 2 | 4 min | 2 min |
 
 *Updated after each plan completion*
 
@@ -62,6 +62,9 @@ Progress: [███░░░░░░░] 22%
 - visitor_id uses 30-day maxAge (not 90) — visitor sessions are tracking windows, not ad attribution windows
 - generateVisitorId() extracted to src/lib/tracking/visitor.ts for testability (crypto.randomUUID(), Edge Runtime safe)
 - UTM cookies follow first-touch attribution model: existing _no_utm_* cookies not overwritten on subsequent visits
+- Two-step INSERT+UPDATE for visitor upsert — preserves first-touch UTMs (INSERT ignores conflict, UPDATE always sets last_seen_at)
+- UTM cookie names are _no_utm_source (not _no_utm_utm_source) — UTM_KEYS uses short form, middleware reads utm_${key} from query string
+- Tracking failures return HTTP 200 with { success: false } — tracking errors must not degrade user experience
 
 ### Pending Todos
 
@@ -76,5 +79,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 08-01-PLAN.md — visitor_id (_no_vid) UUID cookie + UTM capture (_no_utm_*) in Next.js Edge Middleware
+Stopped at: Completed 08-02-PLAN.md — POST /api/track/visit endpoint with service role Supabase upsert (CAP-03)
 Resume file: None

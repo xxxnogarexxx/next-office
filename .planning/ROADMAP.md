@@ -26,7 +26,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 **Milestone Goal:** Automate Google Ads offline conversion attribution, add Enhanced Conversions for cross-device resilience, capture UTM parameters, track anonymous visitors, and proxy events server-side for ad blocker resilience.
 
 - [x] **Phase 7: Database Foundation** - Supabase schema for all tracking tables with RLS (completed 2026-02-26)
-- [ ] **Phase 8: Visitor & UTM Capture** - Middleware generates visitor_id, captures UTMs, links visitors to leads
+- [x] **Phase 8: Visitor & UTM Capture** - Middleware generates visitor_id, captures UTMs, links visitors to leads (completed 2026-02-26)
 - [ ] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution
 - [ ] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry
 - [ ] **Phase 11: Server-Side Event Proxy** - GA4 Measurement Protocol fallback for ad blocker resilience
@@ -119,7 +119,7 @@ Plans:
 | 5. UX and Reliability | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 6. SEO and Analytics | v1.0 | 3/3 | Complete | 2026-02-26 |
 | 7. Database Foundation | v1.1 | 2/2 | Complete | 2026-02-26 |
-| 8. Visitor & UTM Capture | v1.1 | 0/? | Not started | - |
+| 8. Visitor & UTM Capture | 3/3 | Complete   | 2026-02-26 | - |
 | 9. Enhanced Conversions | v1.1 | 0/? | Not started | - |
 | 10. Offline Conversion Pipeline | v1.1 | 0/? | Not started | - |
 | 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
