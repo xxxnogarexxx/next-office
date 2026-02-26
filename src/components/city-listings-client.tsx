@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ListingCard } from "@/components/listing-card";
@@ -28,6 +28,16 @@ export function CityListingsClient({
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+  const isDesktop = useRef(false);
+
+  useEffect(() => {
+    isDesktop.current = window.matchMedia("(min-width: 1024px)").matches;
+    if (isDesktop.current) {
+      const id = requestIdleCallback(() => setMapReady(true), { timeout: 200 });
+      return () => cancelIdleCallback(id);
+    }
+  }, []);
 
   const firstBatch = displayListings.slice(0, CTA_POSITION);
   const restBatch = displayListings.slice(CTA_POSITION);
@@ -144,17 +154,27 @@ export function CityListingsClient({
             showMap ? "flex" : "hidden lg:flex"
           } h-full w-full flex-1 lg:w-1/2 lg:max-w-[50%]`}
         >
-          <SearchMap
-            listings={displayListings}
-            hoveredId={hoveredId}
-            center={center}
-          />
+          {mapReady ? (
+            <SearchMap
+              listings={displayListings}
+              hoveredId={hoveredId}
+              center={center}
+            />
+          ) : (
+            <div className="relative flex h-full w-full items-center justify-center bg-slate-100">
+              <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+              <p className="z-10 text-sm text-muted-text">Karte wird geladen…</p>
+            </div>
+          )}
         </div>
 
         {/* Mobile map toggle */}
         <div className="fixed bottom-6 left-1/2 z-10 -translate-x-1/2 lg:hidden">
           <Button
-            onClick={() => setShowMap(!showMap)}
+            onClick={() => {
+              if (!mapReady) setMapReady(true);
+              setShowMap(!showMap);
+            }}
             className="gap-2 rounded-full shadow-lg"
           >
             <Map className="h-4 w-4" />

@@ -16,6 +16,7 @@ import {
   PIN_COLOR_ACTIVE,
   PIN_BORDER_COLOR,
 } from "@/lib/map-config";
+import { contentfulImageUrl } from "@/lib/contentful-image";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -392,9 +393,14 @@ export default function SearchMapInner({
             style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 10, minWidth: 260 }}
           >
             {(activeListing.coverPhoto || activeListing.photos[0]) && (
+              /* eslint-disable-next-line @next/next/no-img-element */
               <img
-                src={activeListing.coverPhoto || activeListing.photos[0]}
+                src={contentfulImageUrl(
+                  activeListing.coverPhoto || activeListing.photos[0],
+                  { w: 180, h: 180 },
+                )}
                 alt={activeListing.name}
+                loading="lazy"
                 style={{
                   width: 90,
                   height: 90,

@@ -2,6 +2,7 @@ import type { Listing, ListingCard as ListingCardType, City } from "./types";
 import listingsData from "@/data/listings.json";
 import cardListingsData from "@/data/listings-card.json";
 import { cities, getCityBySlug } from "./cities";
+import { contentfulImageUrl } from "./contentful-image";
 
 export type { Listing, ListingCardType as ListingCard, City };
 export { cities, getCityBySlug };
@@ -10,7 +11,14 @@ export { cities, getCityBySlug };
 export const listings: Listing[] = listingsData as Listing[];
 
 // Card listings — lightweight, used by search/city pages
-export const cardListings: ListingCardType[] = cardListingsData as ListingCardType[];
+const rawCardListings: ListingCardType[] = cardListingsData as ListingCardType[];
+
+// Pre-optimized card listings with Contentful image transforms applied
+export const cardListings: ListingCardType[] = rawCardListings.map((l) => ({
+  ...l,
+  photos: l.photos.slice(0, 5).map((p) => contentfulImageUrl(p, { w: 640, h: 400 })),
+  coverPhoto: l.coverPhoto ? contentfulImageUrl(l.coverPhoto, { w: 640, h: 400 }) : null,
+}));
 
 export function getListingsByCity(citySlug: string): Listing[] {
   return listings.filter((l) => l.citySlug === citySlug);
