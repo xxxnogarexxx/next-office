@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Allgemeine Geschäftsbedingungen",
   robots: { index: false, follow: true },
+  alternates: {
+    canonical: "https://next-office.io/agb",
+  },
 };
 
 export default function AGBPage() {
