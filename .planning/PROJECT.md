@@ -48,7 +48,16 @@ Lead capture must be secure, reliable, and observable. Every form submission mus
 
 ### Active
 
-(None — define next milestone requirements with `/gsd:new-milestone`)
+## Current Milestone: v1.1 Ad Tracking & Offline Conversion Pipeline
+
+**Goal:** Automate Google Ads offline conversion attribution with direct API uploads, add Enhanced Conversions for Safari/cross-device resilience, capture UTM parameters, track anonymous visitors, and proxy events server-side for ad blocker resilience.
+
+**Target features:**
+- Automated offline conversion pipeline (CRM webhook → lead matching → queue → Google Ads API)
+- Enhanced Conversions for Leads (SHA-256 hashed email in gtag + offline uploads)
+- UTM parameter capture in middleware + Supabase
+- Anonymous visitor tracking (pre-lead attribution)
+- Server-side event proxy for ad blocker resilience
 
 ### Out of Scope
 
@@ -72,6 +81,11 @@ Lead capture must be secure, reliable, and observable. Every form submission mus
 - **Data source**: Static JSON files (listings.json, listings-card.json, cities.json) from Contentful
 - **German market**: All user-facing content in German, DSGVO compliance ongoing
 - **Post-launch config tasks**: Sentry credentials (5 env vars), Mapbox token URL restriction
+- **Existing tracking**: Middleware captures gclid/gbraid/wbraid → HTTP-only cookies; TrackingProvider reads URL params; Lead API stores gclid in Supabase; GA4 + gtag conversion on thank-you page
+- **Current conversion pipeline**: Manual gclid copy to NetHunt CRM → n8n → Google Sheets → Google Ads auto-import
+- **Google Ads API**: Developer token approved; Customer ID: 215-246-8876; Manager: 670-646-4060
+- **CRM**: NetHunt CRM — direct webhook to Next.js app (replacing n8n for conversion flow)
+- **Tracking research**: Comprehensive 4-doc research in project-utm-tracking/tracking-research/
 
 ## Constraints
 
@@ -95,5 +109,10 @@ Lead capture must be secure, reliable, and observable. Every form submission mus
 | SEC-12 deferred to post-launch | Dashboard config, not code — user decision | — Pending |
 | DEV-03 credentials deferred | Code wired, needs Sentry project setup | — Pending |
 
+| Direct CRM webhook (cut n8n) | Simpler pipeline, one less moving part, NetHunt supports webhooks natively | — Pending |
+| Queue + cron over immediate upload | Retry logic, resilience when Google API is down | — Pending |
+| Skip Meta CAPI for v1.1 | Google Ads only active channel, reduce scope | — Pending |
+| Skip cookie consent for v1.1 | Defer legal complexity, tracking works but not fully GDPR-complete | — Pending |
+
 ---
-*Last updated: 2026-02-26 after v1.0 milestone*
+*Last updated: 2026-02-26 after v1.1 milestone start*
