@@ -13,7 +13,7 @@ The codebase is functional but has security vulnerabilities, performance bottlen
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Security Hardening** - Close the critical attack surface (P0 vulnerabilities in Overpass proxy, XSS, email injection, rate limiting) (completed 2026-02-26)
-- [ ] **Phase 2: Infrastructure Foundations** - Env validation, observability, CI/CD, security headers, health endpoint
+- [x] **Phase 2: Infrastructure Foundations** - Env validation, observability, CI/CD, security headers, health endpoint (completed 2026-02-26)
 - [ ] **Phase 3: Lead Pipeline Hardening** - All lead-specific security and reliability (CSRF, input validation, scoped keys, deduplication, consolidation)
 - [ ] **Phase 4: Performance Architecture** - Server components refactor, listings payload split, static generation, lazy loading
 - [ ] **Phase 5: UX and Reliability** - Error pages, map/navigation bugs, accessibility, loading states, hydration fixes
@@ -59,7 +59,9 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Lead inserts use a scoped Supabase role, not the service role key — the service role key is absent from lead API handler code
   4. Submitting a duplicate lead (same phone + city within a configured window) returns a deduplicated response rather than inserting a second DB row
   5. The lead API response returns within 500ms regardless of email delivery latency — email sending is non-blocking
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 03-01-PLAN.md — Shared lead service library: validation, CSRF, scoped Supabase, email, dedup, orchestrator (SEC-07, SEC-08, SEC-09, SEC-10, SEC-11, REL-04, REL-05, REL-06)
+- [ ] 03-02-PLAN.md — Wire routes and forms to shared service: thin route delegation, CSRF endpoint, form token flow (SEC-07, SEC-08, SEC-09, SEC-10, SEC-11, REL-04, REL-05, REL-06)
 
 ### Phase 4: Performance Architecture
 **Goal**: Search and city pages are server-rendered, the 588KB listings payload is eliminated from the client bundle, static pages are generated at build time, and Mapbox and carousel images are lazy-loaded.
@@ -109,7 +111,7 @@ Note: Phases 2 and 3 both depend on Phase 1 and are independent of each other �
 |-------|----------------|--------|-----------|
 | 1. Security Hardening | 2/2 | Complete   | 2026-02-26 |
 | 2. Infrastructure Foundations | 4/4 | Complete   | 2026-02-26 |
-| 3. Lead Pipeline Hardening | 0/TBD | Not started | - |
+| 3. Lead Pipeline Hardening | 0/2 | Not started | - |
 | 4. Performance Architecture | 0/TBD | Not started | - |
 | 5. UX and Reliability | 0/TBD | Not started | - |
 | 6. SEO and Analytics | 0/TBD | Not started | - |
