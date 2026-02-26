@@ -48,15 +48,25 @@ export function ConversionTracker() {
     const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID;
     const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL;
 
-    // Fire Google Ads conversion tag if configured
+    // Reject placeholder env var values — prevents sending junk conversion data to Google Ads
+    const isPlaceholder = (val: string | undefined) =>
+      !val || /^[X]+$|^AW-X+$|XXXXXXXXXX|example|placeholder|test/i.test(val);
+
+    // Fire Google Ads conversion tag if configured with real values
     if (conversionId && conversionLabel) {
-      window.gtag("event", "conversion", {
-        send_to: `${conversionId}/${conversionLabel}`,
-        value: 1.0,
-        currency: "EUR",
-        transaction_id: crypto.randomUUID(), // dedup key — prevents double-counting with Plan 03 tag
-        gclid: gclid ?? undefined,
-      });
+      if (isPlaceholder(conversionId) || isPlaceholder(conversionLabel)) {
+        console.warn(
+          "[ConversionTracker] Skipping Google Ads conversion — env vars appear to be placeholders"
+        );
+      } else {
+        window.gtag("event", "conversion", {
+          send_to: `${conversionId}/${conversionLabel}`,
+          value: 1.0,
+          currency: "EUR",
+          transaction_id: crypto.randomUUID(), // dedup key — prevents double-counting with Plan 03 tag
+          gclid: gclid ?? undefined,
+        });
+      }
     }
 
     // Fire GA4 event — tracks confirmed conversion (page loaded) separately from submit attempt
