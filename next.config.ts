@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -59,4 +60,26 @@ const nextConfig: NextConfig = {
   ],
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  // Upload source maps to Sentry for readable stack traces
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+
+  // Only upload source maps during build (not dev)
+  silent: !process.env.CI,
+
+  // Delete source maps after upload (don't expose to browser)
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+  },
+
+  // Tunnel Sentry events through the app to avoid ad blockers
+  tunnelRoute: "/monitoring",
+
+  // Disable Sentry telemetry
+  disableLogger: true,
+
+  // Automatically instrument API routes and server components
+  autoInstrumentServerFunctions: true,
+  autoInstrumentMiddleware: true,
+});
