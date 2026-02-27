@@ -91,6 +91,10 @@ Progress: [█████████░] 91%
 - [Phase 10-03 queue processor]: Missing conversion record → immediate dead_letter (unrecoverable, no data to upload)
 - [Phase 12-01 health tracking]: Four parallel count queries (not GROUP BY) — ensures all four status keys always present in response even when count is 0
 - [Phase 12-01 health tracking]: HTTP 200 always returned from health endpoints — JSON status field carries health signal
+- [Phase 12-02 conversion metrics view]: Regular view (not materialized) — B2B volume is small; real-time accuracy preferred over caching complexity
+- [Phase 12-02 conversion metrics view]: Subquery per table for conversion_queue metrics — avoids cartesian product from joining two unrelated aggregate tables in a single FROM
+- [Phase 12-02 conversion metrics view]: Dual gclid source check (leads.gclid OR visitors.gclid) — captures both direct URL param capture and middleware-set gclid paths
+- [Phase 12-02 conversion metrics view]: COALESCE(numerator / NULLIF(total, 0), 0) pattern — returns 0.0 (not NULL) when tables are empty, preventing division-by-zero
 
 ### Pending Todos
 
@@ -105,5 +109,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 12-01-PLAN.md — GET /api/health/tracking endpoint returning conversion_queue status distribution (healthy/degraded/critical) using service role client.
+Stopped at: Completed 12-02-PLAN.md — conversion_metrics Postgres view returning gclid_capture_rate and upload_success_rate as decimals, queryable via SELECT * FROM conversion_metrics.
 Resume file: None
