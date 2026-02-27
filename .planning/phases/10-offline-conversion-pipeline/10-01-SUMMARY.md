@@ -48,6 +48,7 @@ metrics:
   tasks_completed: 2
   files_created: 3
   files_modified: 0
+requirements-completed: [OFL-01, OFL-02, OFL-03, OFL-04]
 ---
 
 # Phase 10 Plan 01: CRM Webhook — Receive, Validate, Match, Queue Summary
