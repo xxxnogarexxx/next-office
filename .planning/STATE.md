@@ -22,11 +22,11 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 ## Current Position
 
-Phase: 11 of 12 (Server-Side Event Proxy) — COMPLETE (1/1 plan)
+Phase: 11 of 12 (Server-Side Event Proxy) — COMPLETE (2/2 plans)
 Phase: 12 of 12 (Monitoring & Observability) — COMPLETE (2/2 plans)
-Plan: 1 of 1 in Phase 11 — complete (SSP-01/02/03 verified and closed)
-Status: Phase 11 Plan 01 complete — retroactive verification of /api/track/event, ga4-mp.ts, dual-fire deduplication pattern
-Last activity: 2026-02-27 — Phase 11 Plan 01 complete (SSP-01/02/03 verified: POST endpoint, GA4 MP forwarding, shared event_id dual-fire; REQUIREMENTS.md updated to 26/28 satisfied)
+Plan: 2 of 2 in Phase 11 — complete (documentation frontmatter fixes)
+Status: Phase 11 Plan 02 complete — requirements-completed fields added to 09-01, 09-02, 10-01 SUMMARY files; 12-02-SUMMARY.md YAML frontmatter fixed and attribution corrected
+Last activity: 2026-02-27 — Phase 11 Plan 02 complete (SSP-01, SSP-02, SSP-03: 4 SUMMARY files patched for consistent GSD history-digest parsing)
 
 Progress: [█████████░] 91%
 
@@ -98,6 +98,8 @@ Progress: [█████████░] 91%
 - [Phase 12-02 conversion metrics view]: Dual gclid source check (leads.gclid OR visitors.gclid) — captures both direct URL param capture and middleware-set gclid paths
 - [Phase 12-02 conversion metrics view]: COALESCE(numerator / NULLIF(total, 0), 0) pattern — returns 0.0 (not NULL) when tables are empty, preventing division-by-zero
 - [Phase 11-server-side-event-proxy]: No source code written — this plan is verification-only, closing pre-existing SSP implementations against requirements
+- [Phase 11-02 doc fixes]: requirements-completed field is required for consistent GSD history-digest parsing across all SUMMARY files
+- [Phase 11-02 doc fixes]: YAML frontmatter must use proper keys (no # markdown headings inside --- block) — YAML treats # as comments, silently ignoring all nested content
 
 ### Pending Todos
 
@@ -112,5 +114,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 11-01-PLAN.md — SSP-01/02/03 verified and closed in REQUIREMENTS.md; coverage updated to 26/28 satisfied (2/28 pending: CAP-03, CAP-04 Phase 13).
+Stopped at: Completed 11-02-PLAN.md — documentation frontmatter fixes: requirements-completed added to 09-01/09-02/10-01 SUMMARY files; 12-02-SUMMARY.md YAML structure fixed and Sentry attribution corrected to health endpoint.
 Resume file: None
