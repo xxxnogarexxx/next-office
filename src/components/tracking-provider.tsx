@@ -35,6 +35,19 @@ export function useTracking() {
 export function TrackingProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<TrackingData>(empty);
 
+  // Fire visit tracking on page load — records visitor session in Supabase.
+  // Runs once per page load. Errors are non-fatal (tracking must not break UX).
+  // Mirrors LPTrackingProvider behavior so main-site visitors also get a
+  // visitors row, enabling visitor_id FK on leads and gclid attribution.
+  useEffect(() => {
+    fetch("/api/track/visit", {
+      method: "POST",
+      credentials: "same-origin",
+    }).catch((err) => {
+      console.error("[tracking] visit tracking failed:", err);
+    });
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const gclid = params.get("gclid");
@@ -42,6 +55,7 @@ export function TrackingProvider({ children }: { children: ReactNode }) {
     const wbraid = params.get("wbraid");
 
     if (gclid || gbraid || wbraid) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reading browser state on mount
       setData({
         gclid,
         gbraid,
