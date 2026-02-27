@@ -78,6 +78,9 @@ Progress: [████████░░] 50%
 - [Phase 09-enhanced-conversions]: transaction_id stored as TEXT (max 36 chars) and written to leads table via ValidatedLeadData — no insertLead signature change
 - [Phase 09-enhanced-conversions]: Email passed raw (trimmed+lowercased) to gtag user_data — Google hashes internally per Enhanced Conversions spec
 - [Phase 09-enhanced-conversions]: transaction_id stored in existing _no_lp_tracking sessionStorage blob — avoids proliferating keys, keeps tracking data co-located
+- [Phase 10-01 CRM webhook]: Route placed under (main)/api/ route group — no bare src/app/api/ directory exists in this project
+- [Phase 10-01 CRM webhook]: Idempotency via 23505 Postgres error code detection + existing row lookup — prevents duplicate conversions on CRM webhook retries
+- [Phase 10-01 CRM webhook]: matchLeadByEmail uses .single() — PGRST116 on unknown email treated as lead_not_found (200 response)
 - [Phase 10-offline-conversion-pipeline]: Google Ads REST API v18 over npm client library — native fetch sufficient for single-conversion uploads, no new dependencies
 - [Phase 10-offline-conversion-pipeline]: In-memory OAuth2 token cache with 5-min expiry buffer — acceptable for Vercel serverless, token refresh is cheap
 - [Phase 10-offline-conversion-pipeline]: gclid at clickConversion top level (not in userIdentifiers) — matches Google API schema; userIdentifiers is for Enhanced Conversions email/phone hashes only
@@ -96,5 +99,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 10-02-PLAN.md — Google Ads API upload module (uploadConversion() with OAuth2, gclid+email userIdentifiers, EEA consent signals). Phase 10 Plan 02 complete.
+Stopped at: Completed 10-01-PLAN.md (retroactive SUMMARY + commits) — CRM webhook endpoint, HMAC-SHA256 validation, lead matching, idempotent conversion creation, queue helper for Google Ads.
 Resume file: None
