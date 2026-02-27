@@ -3,54 +3,46 @@ phase: 12-monitoring-observability
 plan: "02"
 subsystem: database
 tags: [postgres, supabase, sql, views, metrics, google-ads, gclid]
-
-# Dependency graph
-requires:
-  - phase: 07-database-foundation
-    provides: visitors table (gclid column), leads table
-  - phase: 08-visitor-utm-capture
-    provides: leads.visitor_id FK linking leads to visitors
-  - phase: 09-enhanced-conversions
-    provides: leads.gclid column (direct gclid on leads)
-  - phase: 10-offline-conversion-pipeline
-    provides: conversion_queue table with status values (pending/uploaded/failed/dead_letter)
-provides:
-  - conversion_metrics SQL view returning gclid_capture_rate and upload_success_rate as decimals
-  - Queryable single-row metric snapshot via SELECT * FROM conversion_metrics (no joins needed)
-  - Raw counts alongside rates for transparency (leads_with_gclid, total_leads, uploads_successful, total_queued)
-  - Queue status breakdown (queue_pending, queue_failed, queue_dead_letter)
-affects: [monitoring dashboards, operator queries, future analytics phases]
-
-# Tech tracking
-tech-stack:
+dependency_graph:
+  requires:
+    - phase: 07-database-foundation
+      provides: visitors table (gclid column), leads table
+    - phase: 08-visitor-utm-capture
+      provides: leads.visitor_id FK linking leads to visitors
+    - phase: 09-enhanced-conversions
+      provides: leads.gclid column (direct gclid on leads)
+    - phase: 10-offline-conversion-pipeline
+      provides: conversion_queue table with status values (pending/uploaded/failed/dead_letter)
+  provides:
+    - conversion_metrics SQL view returning gclid_capture_rate and upload_success_rate as decimals
+    - Queryable single-row metric snapshot via SELECT * FROM conversion_metrics (no joins needed)
+    - Raw counts alongside rates for transparency (leads_with_gclid, total_leads, uploads_successful, total_queued)
+    - Queue status breakdown (queue_pending, queue_failed, queue_dead_letter)
+  affects: [monitoring dashboards, operator queries, future analytics phases]
+tech_stack:
   added: []
   patterns:
     - "COALESCE(numerator / NULLIF(denominator, 0), 0) for safe decimal rate computation with empty-table guard"
     - "FILTER (WHERE ...) for conditional aggregation in Postgres (cleaner than CASE WHEN)"
     - "CREATE OR REPLACE VIEW for idempotent SQL views (safe to re-run)"
     - "Subquery per table for cross-table aggregates in a single-FROM view (avoids cartesian product)"
-
-key-files:
+key_files:
   created:
     - supabase/migrations/007_conversion_metrics_view.sql
   modified: []
-
-key-decisions:
+decisions:
   - "Regular view (not materialized) — B2B volume means tables are small; real-time accuracy preferred over caching"
   - "Subquery approach for conversion_queue metrics — avoids cartesian product from joining two unrelated aggregate tables"
   - "COALESCE with NULLIF pattern — returns 0 rate (not NULL) when tables are empty, preventing division-by-zero"
   - "LEFT JOIN from leads to visitors — leads without visitor_id still count in total_leads"
   - "Dual gclid source check (leads.gclid OR visitors.gclid) via COALESCE — captures both direct URL param and middleware-set gclid"
-
-patterns-established:
+patterns_established:
   - "View-based metrics: encapsulate join logic in SQL views so operators can SELECT * without SQL expertise"
   - "Safe rate formula: COALESCE(CAST(numerator FILTER ...) / NULLIF(total, 0), 0)"
-
 requirements-completed: [MON-02]
-
-# Metrics
-duration: 1min
-completed: "2026-02-27"
+metrics:
+  duration: "1 min"
+  completed: "2026-02-27"
 ---
 
 # Phase 12 Plan 02: Conversion Metrics View Summary
@@ -79,7 +71,7 @@ Each task was committed atomically:
 
 1. **Task 1: Create conversion_metrics SQL view migration** - `8dc30fa` (feat)
 
-**Plan metadata:** (docs commit follows)
+**Plan metadata:** `d14787f` (docs: complete conversion_metrics view plan)
 
 ## Files Created/Modified
 - `supabase/migrations/007_conversion_metrics_view.sql` - Postgres view encapsulating gclid capture rate and upload success rate metrics for operator-friendly querying
@@ -104,8 +96,15 @@ None - no external service configuration required. The view is applied via `supa
 
 ## Next Phase Readiness
 - conversion_metrics view SQL is complete and ready to apply via supabase db push
-- Phase 12 Plan 01 (Sentry) and Plan 02 (this view) can be applied independently
+- Phase 12 Plan 01 (health endpoint) and Plan 02 (this view) can be applied independently
 - Operators can query SELECT * FROM conversion_metrics after migrations are applied
+
+## Self-Check: PASSED
+
+- FOUND: `supabase/migrations/007_conversion_metrics_view.sql`
+- FOUND: `.planning/phases/12-monitoring-observability/12-02-SUMMARY.md`
+- FOUND: commit `8dc30fa` (feat: migration file)
+- FOUND: commit `d14787f` (docs: plan metadata)
 
 ---
 *Phase: 12-monitoring-observability*
