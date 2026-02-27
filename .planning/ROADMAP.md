@@ -129,6 +129,6 @@ Plans:
 | 7. Database Foundation | v1.1 | 2/2 | Complete | 2026-02-26 |
 | 8. Visitor & UTM Capture | v1.1 | 3/3 | Complete | 2026-02-26 |
 | 9. Enhanced Conversions | 2/3 | Complete    | 2026-02-26 | - |
-| 10. Offline Conversion Pipeline | 3/3 | Complete   | 2026-02-27 | - |
+| 10. Offline Conversion Pipeline | 3/3 | Complete    | 2026-02-27 | - |
 | 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
 | 12. Monitoring & Observability | v1.1 | 0/? | Not started | - |
