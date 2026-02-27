@@ -36,9 +36,9 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 - [x] **OFL-02**: Webhook matches incoming deal to Supabase lead by email and retrieves stored gclid automatically
 - [x] **OFL-03**: Conversion record created with idempotency key (`{crm_deal_id}:{conversion_type}`) to prevent duplicate uploads
 - [x] **OFL-04**: Queue entry created for Google Ads platform when a conversion has attribution data (gclid or email_hash)
-- [ ] **OFL-05**: Queue processor runs every 15 minutes via Supabase cron/Edge Function, picks up pending and retry-ready items
+- [x] **OFL-05**: Queue processor runs every 15 minutes via Supabase cron/Edge Function, picks up pending and retry-ready items
 - [x] **OFL-06**: Processor uploads conversions to Google Ads API via REST with OAuth2 token refresh
-- [ ] **OFL-07**: Failed uploads retry with exponential backoff (15min → 1h → 4h → 16h → dead_letter after 5 attempts)
+- [x] **OFL-07**: Failed uploads retry with exponential backoff (15min → 1h → 4h → 16h → dead_letter after 5 attempts)
 - [x] **OFL-08**: Upload payload includes both gclid and hashed email as userIdentifiers for maximum match rate
 - [x] **OFL-09**: Upload includes consent signals (`ad_user_data: GRANTED`, `ad_personalization: GRANTED`) as required for EEA users
 
@@ -113,9 +113,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OFL-02 | Phase 10 | Complete |
 | OFL-03 | Phase 10 | Complete |
 | OFL-04 | Phase 10 | Complete |
-| OFL-05 | Phase 10 | Pending |
+| OFL-05 | Phase 10 | Complete |
 | OFL-06 | Phase 10 | Complete |
-| OFL-07 | Phase 10 | Pending |
+| OFL-07 | Phase 10 | Complete |
 | OFL-08 | Phase 10 | Complete |
 | OFL-09 | Phase 10 | Complete |
 | SSP-01 | Phase 11 | Pending |
