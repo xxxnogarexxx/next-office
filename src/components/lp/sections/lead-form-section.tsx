@@ -17,32 +17,75 @@ declare global {
 }
 
 /**
+ * Fire a server-side GA4 event via the /api/track/event proxy.
+ * Non-blocking, fire-and-forget — must not delay form submission flow.
+ *
+ * SSP-02: Ensures events reach GA4 even when gtag.js is blocked by ad blockers
+ * because this is a same-origin fetch to our own API.
+ */
+function fireServerEvent(
+  eventName: string,
+  params: Record<string, string | number>,
+  clientId?: string
+) {
+  fetch("/api/track/event", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      event_name: eventName,
+      params,
+      client_id: clientId,
+    }),
+  }).catch((err) => {
+    console.error("[lp-tracking] server event proxy failed:", err);
+  });
+}
+
+/**
  * Fire Google Ads conversion tag and GA4 custom event on successful form submission.
  *
- * Guards against gtag not being loaded (Plan 06 loads gtag.js; this code runs safely
- * even before that plan is executed). Uses crypto.randomUUID() as a dedup key.
+ * Enhanced Conversions (EC-02): Sets user_data with raw email BEFORE the conversion
+ * event fires, enabling cross-device and Safari-compatible conversion attribution.
  *
+ * Transaction ID (EC-04): Uses a shared transaction_id that is also sent to the
+ * lead API — enables deduplication between online gtag event and offline conversion upload.
+ *
+ * SSP-02: event_id is added to GA4 event params so GA4 can deduplicate the client
+ * gtag hit against the server Measurement Protocol hit (same event_id value).
+ *
+ * @param email - User's raw email for Enhanced Conversions user_data
+ * @param transactionId - Shared UUID for deduplication (same value sent to API)
  * @param gclid - Google click ID for attribution (null if not present)
  */
-function fireConversionEvent(gclid: string | null) {
+function fireConversionEvent(email: string, transactionId: string, gclid: string | null) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") {
     return;
   }
 
+  // EC-02: Set user_data with raw email BEFORE conversion event.
+  // Google normalizes and hashes the email internally.
+  // This MUST fire before any conversion event for Enhanced Conversions to work.
+  window.gtag("set", "user_data", {
+    email: email.trim().toLowerCase(),
+  });
+
   // Google Ads conversion tag — Conversion ID/Label configured in Google Ads dashboard
-  // Real values must be set via environment variables in production (see Plan 06)
+  // EC-04: Uses shared transactionId (same value sent to API) for dedup
   window.gtag("event", "conversion", {
     send_to: "AW-XXXXXXXXXX/XXXXXXXXXX", // placeholder — replace with real AW-CONVERSION_ID/LABEL
     value: 1.0,
     currency: "EUR",
-    transaction_id: crypto.randomUUID(), // dedup key to prevent duplicate conversions
+    transaction_id: transactionId,
   });
 
   // GA4 custom event for funnel analysis and cross-channel reporting
+  // SSP-02: event_id added for GA4 deduplication against server MP hit
   window.gtag("event", "lp_form_submit", {
     event_category: "conversion",
     event_label: "lp_lead_form",
     gclid: gclid ?? undefined,
+    transaction_id: transactionId,
+    event_id: transactionId,
   });
 }
 
@@ -132,6 +175,15 @@ export function LeadFormSection({
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
+
+  // Fetch CSRF token on mount — non-blocking, form is immediately interactive
+  useEffect(() => {
+    fetch("/api/csrf", { credentials: "same-origin" })
+      .then((res) => res.json())
+      .then((data) => setCsrfToken(data.csrfToken))
+      .catch(() => {}); // Silent fail — CSRF validated server-side
+  }, []);
 
   // Remove any elements/attributes injected by password manager extensions
   // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
@@ -219,9 +271,16 @@ export function LeadFormSection({
     setSubmitting(true);
 
     try {
+      // EC-04: Generate shared transaction_id for dedup between gtag and API
+      const transactionId = crypto.randomUUID();
+
       const res = await fetch("/api/lp-leads", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
+        },
+        credentials: "same-origin",
         body: JSON.stringify({
           // Core fields
           name: values.name,
@@ -245,6 +304,8 @@ export function LeadFormSection({
           // Page context
           landing_page: typeof window !== "undefined" ? window.location.href : null,
           referrer: typeof document !== "undefined" ? document.referrer || null : null,
+          // EC-04: Shared transaction_id for dedup between gtag and offline conversion upload
+          transaction_id: transactionId,
         }),
       });
 
@@ -256,7 +317,28 @@ export function LeadFormSection({
 
       // Fire Google Ads conversion tag + GA4 event before redirecting.
       // gclid read from searchParams — middleware cookies act as server-side fallback (see /api/lp-leads).
-      fireConversionEvent(searchParams.gclid ?? null);
+      fireConversionEvent(values.email, transactionId, searchParams.gclid ?? null);
+
+      // Fire server-side proxy event (reaches GA4 even when gtag is blocked by ad blockers).
+      // Same-origin fetch to /api/track/event — fire-and-forget, must not block redirect.
+      // SSP-02: Uses same transactionId as event_id for GA4 deduplication against client gtag hit.
+      fireServerEvent("lp_form_submit", {
+        event_category: "conversion",
+        event_label: "lp_lead_form",
+        event_id: transactionId,
+        transaction_id: transactionId,
+        ...(searchParams.gclid ? { gclid: searchParams.gclid } : {}),
+      });
+
+      // Persist transaction_id for danke page ConversionTracker (EC-04)
+      try {
+        const stored = sessionStorage.getItem("_no_lp_tracking");
+        const tracking = stored ? JSON.parse(stored) : {};
+        tracking.transaction_id = transactionId;
+        sessionStorage.setItem("_no_lp_tracking", JSON.stringify(tracking));
+      } catch {
+        // sessionStorage unavailable — danke page will generate its own ID
+      }
 
       // Redirect to thank-you page — use values.city (could differ from city prop)
       router.push(`/lp/${values.city}/danke`);
