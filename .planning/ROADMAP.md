@@ -30,7 +30,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 - [x] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution (1/3 plans complete) (completed 2026-02-26)
 - [x] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry (completed 2026-02-27)
 - [ ] **Phase 11: Server-Side Event Proxy** - GA4 Measurement Protocol fallback for ad blocker resilience
-- [ ] **Phase 12: Monitoring & Observability** - Health endpoint and conversion metrics for pipeline visibility
+- [x] **Phase 12: Monitoring & Observability** - Health endpoint and conversion metrics for pipeline visibility (completed 2026-02-27)
 
 ## Phase Details
 
@@ -131,4 +131,4 @@ Plans:
 | 9. Enhanced Conversions | 2/3 | Complete    | 2026-02-26 | - |
 | 10. Offline Conversion Pipeline | 3/3 | Complete    | 2026-02-27 | - |
 | 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
-| 12. Monitoring & Observability | v1.1 | 0/? | Not started | - |
+| 12. Monitoring & Observability | 2/2 | Complete   | 2026-02-27 | - |

@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
-status: unknown
-last_updated: "2026-02-27T01:26:43.085Z"
+status: in_progress
+last_updated: "2026-02-27T02:24:43Z"
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 12
+  completed_plans: 12
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 10 — Offline Conversion Pipeline
+**Current focus:** Phase 12 — Monitoring & Observability
 
 ## Current Position
 
-Phase: 10 of 12 (Offline Conversion Pipeline) — COMPLETE
-Plan: 3 of 3 in current phase — complete
-Status: Phase 10 complete — Conversion queue processor Edge Function deployed
-Last activity: 2026-02-27 — Phase 10 Plan 03 complete (OFL-05/07: Deno Edge Function, exponential backoff 15min→1h→4h→16h, dead letter after 5 failures)
+Phase: 12 of 12 (Monitoring & Observability) — IN PROGRESS
+Plan: 2 of 2 in current phase — complete
+Status: Phase 12 Plan 02 complete — conversion_metrics SQL view for gclid capture rate and upload success rate
+Last activity: 2026-02-27 — Phase 12 Plan 02 complete (MON-02: conversion_metrics Postgres view with COALESCE/NULLIF rate formula, LEFT JOIN leads to visitors, subquery for queue metrics)
 
-Progress: [█████████░] 82%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -44,6 +44,7 @@ Progress: [█████████░] 82%
 | 08-visitor-utm-capture | 3 | 7 min | 2.3 min |
 | 09-enhanced-conversions | 3/3 | 4 min | 1.3 min |
 | 10-offline-conversion-pipeline | 3/3 | 6 min | 2 min |
+| 12-monitoring-observability | 2/2 | 2 min | 1 min |
 
 *Updated after each plan completion*
 
@@ -88,6 +89,8 @@ Progress: [█████████░] 82%
 - [Phase 10-03 queue processor]: Sequential queue processing (not parallel) — avoids Google Ads API rate limits at B2B volume
 - [Phase 10-03 queue processor]: Upload logic duplicated from google-ads.ts for Deno Edge Function — cannot import from Next.js app, two modules must stay in sync
 - [Phase 10-03 queue processor]: Missing conversion record → immediate dead_letter (unrecoverable, no data to upload)
+- [Phase 12-01 health tracking]: Four parallel count queries (not GROUP BY) — ensures all four status keys always present in response even when count is 0
+- [Phase 12-01 health tracking]: HTTP 200 always returned from health endpoints — JSON status field carries health signal
 
 ### Pending Todos
 
@@ -102,5 +105,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 10-03-PLAN.md — Deno Edge Function process-conversion-queue with exponential backoff retry (15min→1h→4h→16h) and dead letter handling after 5 failures.
+Stopped at: Completed 12-01-PLAN.md — GET /api/health/tracking endpoint returning conversion_queue status distribution (healthy/degraded/critical) using service role client.
 Resume file: None

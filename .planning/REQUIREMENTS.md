@@ -50,7 +50,7 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 
 ### Monitoring
 
-- [ ] **MON-01**: Health check endpoint (`/api/health/tracking`) reports conversion pipeline status (pending, uploaded, failed, dead letter counts)
+- [x] **MON-01**: Health check endpoint (`/api/health/tracking`) reports conversion pipeline status (pending, uploaded, failed, dead letter counts)
 - [ ] **MON-02**: Supabase view or query available for gclid capture rate and upload success rate metrics
 
 ## v2 Requirements
@@ -121,7 +121,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SSP-01 | Phase 11 | Pending |
 | SSP-02 | Phase 11 | Pending |
 | SSP-03 | Phase 11 | Pending |
-| MON-01 | Phase 12 | Pending |
+| MON-01 | Phase 12 | Complete |
 | MON-02 | Phase 12 | Pending |
 
 **Coverage:**
