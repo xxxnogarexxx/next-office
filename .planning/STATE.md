@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Ad Tracking & Offline Conversion Pipeline
 status: unknown
-last_updated: "2026-02-27T03:15:52.328Z"
+last_updated: "2026-02-27T04:58:47.756Z"
 progress:
   total_phases: 9
-  completed_phases: 6
-  total_plans: 15
-  completed_plans: 15
+  completed_phases: 7
+  total_plans: 17
+  completed_plans: 17
 ---
 
 # Project State
@@ -18,17 +18,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Lead capture must be secure, reliable, and observable — every submission persists and notifies the team.
-**Current focus:** Phase 12 — Monitoring & Observability
+**Current focus:** Phase 13 — Main-Site Visitor Tracking
 
 ## Current Position
 
 Phase: 11 of 12 (Server-Side Event Proxy) — COMPLETE (2/2 plans)
 Phase: 12 of 12 (Monitoring & Observability) — COMPLETE (2/2 plans)
-Plan: 2 of 2 in Phase 11 — complete (documentation frontmatter fixes)
-Status: Phase 11 Plan 02 complete — requirements-completed fields added to 09-01, 09-02, 10-01 SUMMARY files; 12-02-SUMMARY.md YAML frontmatter fixed and attribution corrected
-Last activity: 2026-02-27 — Phase 11 Plan 02 complete (SSP-01, SSP-02, SSP-03: 4 SUMMARY files patched for consistent GSD history-digest parsing)
+Phase: 13 of 13 (Main-Site Visitor Tracking) — IN PROGRESS (1/2 plans)
+Plan: 1 of 2 in Phase 13 — complete (add fire-and-forget visit tracking to main-site TrackingProvider)
+Status: Phase 13 Plan 01 complete — useEffect POST /api/track/visit added to TrackingProvider; main-site visitors now get Supabase visitors rows enabling visitor_id FK on leads and gclid attribution
+Last activity: 2026-02-27 — Phase 13 Plan 01 complete (main-site visitor tracking: TrackingProvider.tsx patched with fire-and-forget visit tracking on mount)
 
-Progress: [█████████░] 91%
+Progress: [█████████░] 94%
 
 ## Performance Metrics
 
@@ -49,6 +50,7 @@ Progress: [█████████░] 91%
 
 *Updated after each plan completion*
 | Phase 11-server-side-event-proxy P01 | 1 | 1 tasks | 1 files |
+| Phase 13-main-site-visitor-tracking P02 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -100,6 +102,8 @@ Progress: [█████████░] 91%
 - [Phase 11-server-side-event-proxy]: No source code written — this plan is verification-only, closing pre-existing SSP implementations against requirements
 - [Phase 11-02 doc fixes]: requirements-completed field is required for consistent GSD history-digest parsing across all SUMMARY files
 - [Phase 11-02 doc fixes]: YAML frontmatter must use proper keys (no # markdown headings inside --- block) — YAML treats # as comments, silently ignoring all nested content
+- [Phase 13-main-site-visitor-tracking]: google-ads.ts annotated as REFERENCE IMPLEMENTATION — kept (not deleted) as canonical reference for OAuth2 flow and uploadClickConversions payload, with warning that no runtime code imports it and instruction to sync with Deno Edge Function
+- [Phase 13-01 main-site visit tracking]: TrackingProvider fires visit tracking identically to LPTrackingProvider — single fire-and-forget pattern with credentials: same-origin and catch for non-fatal error logging
 
 ### Pending Todos
 
@@ -114,5 +118,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 11-02-PLAN.md — documentation frontmatter fixes: requirements-completed added to 09-01/09-02/10-01 SUMMARY files; 12-02-SUMMARY.md YAML structure fixed and Sentry attribution corrected to health endpoint.
+Stopped at: Completed 13-01-PLAN.md — fire-and-forget POST /api/track/visit useEffect added to main-site TrackingProvider; main-site visitors now create Supabase visitors rows enabling gclid attribution for leads.
 Resume file: None

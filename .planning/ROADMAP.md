@@ -31,7 +31,7 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 - [x] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry (completed 2026-02-27)
 - [x] **Phase 11: Server-Side Event Proxy** - Retroactive verification of existing SSP implementation + documentation cleanup (gap closure) (completed 2026-02-27)
 - [x] **Phase 12: Monitoring & Observability** - Health endpoint and conversion metrics for pipeline visibility (completed 2026-02-27)
-- [ ] **Phase 13: Main-Site Visitor Tracking** - Extend visit tracking to main-site pages so all leads carry visitor attribution (gap closure)
+- [x] **Phase 13: Main-Site Visitor Tracking** - Extend visit tracking to main-site pages so all leads carry visitor attribution (gap closure) (completed 2026-02-27)
 
 ## Phase Details
 
@@ -152,4 +152,4 @@ Plans:
 | 10. Offline Conversion Pipeline | 3/3 | Complete    | 2026-02-27 | - |
 | 11. Server-Side Event Proxy | 2/2 | Complete    | 2026-02-27 | - |
 | 12. Monitoring & Observability | v1.1 | 2/2 | Complete | 2026-02-27 |
-| 13. Main-Site Visitor Tracking | v1.1 | 0/2 | Gap closure | - |
+| 13. Main-Site Visitor Tracking | 2/2 | Complete   | 2026-02-27 | - |
