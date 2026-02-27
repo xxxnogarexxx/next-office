@@ -24,12 +24,12 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 Phase: 11 of 12 (Server-Side Event Proxy) — COMPLETE (2/2 plans)
 Phase: 12 of 12 (Monitoring & Observability) — COMPLETE (2/2 plans)
-Phase: 13 of 13 (Main-Site Visitor Tracking) — IN PROGRESS (1/2 plans)
-Plan: 1 of 2 in Phase 13 — complete (add fire-and-forget visit tracking to main-site TrackingProvider)
-Status: Phase 13 Plan 01 complete — useEffect POST /api/track/visit added to TrackingProvider; main-site visitors now get Supabase visitors rows enabling visitor_id FK on leads and gclid attribution
-Last activity: 2026-02-27 — Phase 13 Plan 01 complete (main-site visitor tracking: TrackingProvider.tsx patched with fire-and-forget visit tracking on mount)
+Phase: 13 of 13 (Main-Site Visitor Tracking) — COMPLETE (2/2 plans)
+Plan: 2 of 2 in Phase 13 — complete (google-ads.ts dead code documentation)
+Status: Phase 13 Plan 02 complete — google-ads.ts annotated as REFERENCE IMPLEMENTATION; no runtime code imports it; cross-reference to Deno Edge Function queue processor added
+Last activity: 2026-02-27 — Phase 13 Plan 02 complete (CAP-03, CAP-04: google-ads.ts dead code annotated as reference implementation)
 
-Progress: [█████████░] 94%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -118,5 +118,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 13-01-PLAN.md — fire-and-forget POST /api/track/visit useEffect added to main-site TrackingProvider; main-site visitors now create Supabase visitors rows enabling gclid attribution for leads.
+Stopped at: Completed 13-02-PLAN.md — google-ads.ts annotated as REFERENCE IMPLEMENTATION with prominent warning that no runtime code imports it and cross-reference to Deno Edge Function; Phase 13 COMPLETE.
 Resume file: None
