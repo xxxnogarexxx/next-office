@@ -44,9 +44,9 @@ Requirements for Ad Tracking & Offline Conversion Pipeline milestone.
 
 ### Server-Side Event Proxy
 
-- [ ] **SSP-01**: `/api/track/event` endpoint accepts event data from client (event name, params, user data)
-- [ ] **SSP-02**: Endpoint forwards events to GA4 Measurement Protocol server-side
-- [ ] **SSP-03**: Client fires events both via gtag (may be blocked by ad blockers) and via server proxy with shared event_id for deduplication
+- [x] **SSP-01**: `/api/track/event` endpoint accepts event data from client (event name, params, user data)
+- [x] **SSP-02**: Endpoint forwards events to GA4 Measurement Protocol server-side
+- [x] **SSP-03**: Client fires events both via gtag (may be blocked by ad blockers) and via server proxy with shared event_id for deduplication
 
 ### Monitoring
 
@@ -118,9 +118,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OFL-07 | Phase 10 | Complete |
 | OFL-08 | Phase 10 | Complete |
 | OFL-09 | Phase 10 | Complete |
-| SSP-01 | Phase 11 | Pending |
-| SSP-02 | Phase 11 | Pending |
-| SSP-03 | Phase 11 | Pending |
+| SSP-01 | Phase 11 | Complete |
+| SSP-02 | Phase 11 | Complete |
+| SSP-03 | Phase 11 | Complete |
 | MON-01 | Phase 12 | Complete |
 | MON-02 | Phase 12 | Complete |
 
@@ -128,8 +128,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 - v1.1 requirements: 28 total
 - Mapped to phases: 28
 - Unmapped: 0 ✓
-- Satisfied: 23/28 (DB-01–05, CAP-01–02, CAP-05, EC-01–04, OFL-01–09, MON-01–02)
-- Pending: 5/28 (SSP-01–03 Phase 11, CAP-03–04 Phase 13)
+- Satisfied: 26/28 (DB-01–05, CAP-01–02, CAP-05, EC-01–04, OFL-01–09, SSP-01–03, MON-01–02)
+- Pending: 2/28 (CAP-03, CAP-04 Phase 13)
 
 ---
 *Requirements defined: 2026-02-26*
