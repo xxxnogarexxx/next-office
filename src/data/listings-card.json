@@ -113,7 +113,7 @@
   {
     "id": "6hzwgLxftjV4q9wVcDrE47",
     "name": "Mindspace Berlin Münzstraße",
-    "slug": "mindspace-berlin-muenzstraße",
+    "slug": "mindspace-berlin-muenzstrasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Münzstraße 12",
@@ -202,7 +202,7 @@
   {
     "id": "5xJIHK6UrJfArL0g8f2m8a",
     "name": "Mindspace Berlin Zimmerstraße",
-    "slug": "mindspace-zimmerstraße",
+    "slug": "mindspace-zimmerstrasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Zimmerstraße 78",
@@ -463,7 +463,7 @@
   {
     "id": "4npwN23ziLXNAwCa4GCT4W",
     "name": "Scaling Spaces Berlin Gerichtstraße ",
-    "slug": "scaling-spaces-berlin-gerichtstraße",
+    "slug": "scaling-spaces-berlin-gerichtstrasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Gerichtstraße 51",
@@ -768,7 +768,7 @@
   {
     "id": "4YKrOyiGHnE9zFLu343evg",
     "name": "WeWork Berlin Dircksenstraße",
-    "slug": "wework-berlin-dircksenstraße",
+    "slug": "wework-berlin-dircksenstrasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Dircksenstraße  3",
@@ -876,7 +876,7 @@
   {
     "id": "6sUSHglEpxD2CwwFIGpr9f",
     "name": "beyond Berlin Chausseestraße",
-    "slug": "beyond-chausseestraße-berlin",
+    "slug": "beyond-chausseestrasse-berlin",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Chausseestraße 29",
@@ -1349,7 +1349,7 @@
   {
     "id": "1IVHPvifLpCbsryjbsoWDT",
     "name": "beyond Quartier Heidestraße",
-    "slug": "beyond-berlin-heidestraße",
+    "slug": "beyond-berlin-heidestrasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Heidestraße 34",
@@ -1917,7 +1917,7 @@
   {
     "id": "37RliS83YFhUCk57NzfdGL",
     "name": "WeWork Berlin Rosenthaler Straße",
-    "slug": "wework-berlin-rosenthaler-straße",
+    "slug": "wework-berlin-rosenthaler-strasse",
     "city": "Berlin",
     "citySlug": "berlin",
     "address": "Rosenthaler Straße 43-45",
@@ -2877,7 +2877,7 @@
   {
     "id": "3t3pHtBpSRicsycJHWpggf",
     "name": "betahaus Hamburg Gänsemarkt",
-    "slug": "betahaus-hamburg-gänsemarkt",
+    "slug": "betahaus-hamburg-gaensemarkt",
     "city": "Hamburg",
     "citySlug": "hamburg",
     "address": "Gänsemarkt 43",
@@ -5195,7 +5195,7 @@
   {
     "id": "2qPJ7n3xOaOE8uOaFQpctQ",
     "name": "Spaces Köln Breite Straße",
-    "slug": "spaces-koeln-breite-straße",
+    "slug": "spaces-koeln-breite-strasse",
     "city": "Köln",
     "citySlug": "koeln",
     "address": "Gertrudenstraße 30-36",
@@ -5217,7 +5217,7 @@
   {
     "id": "7ifCFtngagclDCUTCH2ngw",
     "name": "Scaling Spaces Köln Venloer Straße",
-    "slug": "Scaling-Space- Köln-Venloer-Straße",
+    "slug": "scaling-space-koeln-venloer-strasse",
     "city": "Köln",
     "citySlug": "koeln",
     "address": "Venloer Straße 310-316",
@@ -5751,7 +5751,7 @@
   {
     "id": "7FxEfJE7uZ3ByKhtRePYEJ",
     "name": "Spaces Düsseldorf The Cradle",
-    "slug": "spaces-duesseldorf-the-cradleSpeditionstraße 2, 40221 Düsseldorf",
+    "slug": "spaces-duesseldorf-the-cradle",
     "city": "Düsseldorf",
     "citySlug": "duesseldorf",
     "address": "Speditionstraße 2",
