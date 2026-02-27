@@ -1,16 +1,21 @@
 /**
- * Google Ads API Offline Conversion Upload
+ * Google Ads API Offline Conversion Upload — REFERENCE IMPLEMENTATION
  *
- * Uploads offline conversions (qualified leads, closed deals) to Google Ads
- * via the REST uploadClickConversions endpoint. Uses OAuth2 with refresh token
- * for authentication.
+ * WARNING: THIS MODULE IS NOT IMPORTED BY ANY RUNTIME CODE.
  *
- * Supports both gclid-based click attribution and Enhanced Conversions for Leads
- * (sha256 email hash) as userIdentifiers for maximum match rate (OFL-08).
+ * The actual upload runs in a Supabase Edge Function (Deno) that duplicates
+ * this logic. The two modules must stay in sync. See:
+ * - Queue processor: supabase/functions/process-conversion-queue/index.ts
+ * - Decision: "Upload logic duplicated from google-ads.ts for Deno Edge Function
+ *   — cannot import from Next.js app, two modules must stay in sync"
+ *   (Phase 10-03, STATE.md)
  *
- * Includes EEA consent signals as required by Google (OFL-09).
+ * This file is kept as the canonical reference for:
+ * - OAuth2 token refresh flow
+ * - uploadClickConversions payload structure (gclid, userIdentifiers, consent)
+ * - Conversion action resource name mapping
  *
- * Reference: https://developers.google.com/google-ads/api/rest/reference/rest/v18/customers/uploadClickConversions
+ * If updating upload logic, update BOTH this file and the Edge Function.
  */
 
 // --- Configuration ---
