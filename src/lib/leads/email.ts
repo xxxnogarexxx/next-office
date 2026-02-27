@@ -1,13 +1,13 @@
 /**
- * Non-blocking email notification for lead submissions.
+ * Email notification for lead submissions.
  *
  * This module is the single source of truth for:
  *   - escapeHtml() — used to prevent XSS in all broker notification emails
- *   - sendLeadNotification() — fire-and-forget email sender (returns void)
+ *   - sendLeadNotification() — async email sender
  *
- * The function returns void and never awaits the Resend API call.
- * Email failures are logged to console.error but never propagate to the caller.
- * This ensures the API response is never delayed by email sending.
+ * The function awaits the Resend API call and catches errors internally.
+ * Callers run it inside next/server `after()` so it completes after the
+ * response is sent without being killed by serverless container shutdown.
  *
  * Both /api/leads (source: 'main') and /api/lp-leads (source: 'lp') use this
  * module. The source param controls subject prefix and heading text.
@@ -65,16 +65,18 @@ function extractCompanyFromEmail(email: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// sendLeadNotification — fire-and-forget email sender
+// sendLeadNotification — async email sender
 //
-// Returns void immediately. The Resend API call happens in the background.
-// Errors are logged to console.error (non-fatal).
+// Returns a Promise that resolves when the Resend API call completes.
+// Errors are logged to console.error (non-fatal) and never re-thrown.
+// Callers should use next/server `after()` to run this without blocking
+// the API response in serverless environments.
 // ---------------------------------------------------------------------------
 
-export function sendLeadNotification(
+export async function sendLeadNotification(
   data: ValidatedLeadData,
   source: "main" | "lp"
-): void {
+): Promise<void> {
   const resendKey = process.env.RESEND_API_KEY;
   const notificationEmail = process.env.NOTIFICATION_EMAIL;
 
@@ -159,15 +161,14 @@ export function sendLeadNotification(
     </div>
   `;
 
-  // Fire-and-forget — do NOT await, do NOT let errors propagate
-  resend.emails
-    .send({
+  try {
+    await resend.emails.send({
       from: "NextOffice <noreply@next-office.io>",
       to: notificationEmail,
       subject,
       html,
-    })
-    .catch((err) =>
-      console.error(`[leads/email] Resend error (source: ${source}):`, err)
-    );
+    });
+  } catch (err) {
+    console.error(`[leads/email] Resend error (source: ${source}):`, err);
+  }
 }

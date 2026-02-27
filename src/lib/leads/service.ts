@@ -15,14 +15,14 @@
  *   5c. Merge UTM values from cookies as authoritative source (CAP-05)
  *   6. Duplicate detection (phone + city, 24h window)
  *   7. Supabase insert (with visitorUuid and UTMs)
- *   8. Email notification (fire-and-forget)
+ *   8. Email notification (via after() — runs after response, kept alive by runtime)
  *   9. Return { success: true }
  *
  * handleCsrfToken() is a GET handler for the /api/csrf endpoint.
  * It generates a CSRF token pair, sets the cookie, and returns the token.
  */
 
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { cookies } from "next/headers";
 import { validateLeadPayload, validateCookieValue } from "./validation";
 import { generateCsrfToken, verifyCsrfToken, CSRF_COOKIE_NAME } from "./csrf";
@@ -209,28 +209,32 @@ export async function handleLeadSubmission(
     );
   }
 
-  // Step 7b: Fire server-side GA4 event as failsafe (SSP-02).
-  // This ensures the conversion reaches GA4 even if all client-side JS failed
-  // (not just gtag blocked, but the whole page JS crashed).
-  // Uses transaction_id as event_id for deduplication with client-side events.
-  // Fire-and-forget — must not delay the API response.
-  if (transactionId) {
-    sendGA4Event({
-      event_name: "lp_form_submit",
-      params: {
-        event_category: "conversion",
-        event_label: "server_failsafe",
-        event_id: transactionId,
-        transaction_id: transactionId,
-        source,
-      },
-    }).catch((err) => {
-      console.error("[leads] server-side GA4 event failed:", err);
-    });
-  }
+  // Step 7b + Step 8: Schedule post-response work via after().
+  // In Vercel serverless, the container can shut down as soon as the response
+  // is returned. after() keeps the function alive until these promises settle,
+  // without delaying the response to the client.
+  after(async () => {
+    // Server-side GA4 failsafe (SSP-02)
+    if (transactionId) {
+      try {
+        await sendGA4Event({
+          event_name: "lp_form_submit",
+          params: {
+            event_category: "conversion",
+            event_label: "server_failsafe",
+            event_id: transactionId,
+            transaction_id: transactionId,
+            source,
+          },
+        });
+      } catch (err) {
+        console.error("[leads] server-side GA4 event failed:", err);
+      }
+    }
 
-  // Step 8: Send notification email (fire-and-forget — does not block response)
-  sendLeadNotification(resolvedData, source);
+    // Email notification
+    await sendLeadNotification(resolvedData, source);
+  });
 
   // Step 9: Success
   return NextResponse.json({ success: true });
