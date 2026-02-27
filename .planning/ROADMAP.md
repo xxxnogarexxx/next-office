@@ -29,8 +29,9 @@ Full archive: `milestones/v1.0-ROADMAP.md`
 - [x] **Phase 8: Visitor & UTM Capture** - Middleware generates visitor_id, captures UTMs, links visitors to leads (completed 2026-02-26)
 - [x] **Phase 9: Enhanced Conversions** - SHA-256 email hashing and gtag user_data for cross-device attribution (1/3 plans complete) (completed 2026-02-26)
 - [x] **Phase 10: Offline Conversion Pipeline** - CRM webhook to Google Ads API upload with queue and retry (completed 2026-02-27)
-- [ ] **Phase 11: Server-Side Event Proxy** - GA4 Measurement Protocol fallback for ad blocker resilience
+- [ ] **Phase 11: Server-Side Event Proxy** - Retroactive verification of existing SSP implementation + documentation cleanup (gap closure)
 - [x] **Phase 12: Monitoring & Observability** - Health endpoint and conversion metrics for pipeline visibility (completed 2026-02-27)
+- [ ] **Phase 13: Main-Site Visitor Tracking** - Extend visit tracking to main-site pages so all leads carry visitor attribution (gap closure)
 
 ## Phase Details
 
@@ -97,15 +98,34 @@ Plans:
 - [ ] 10-02-PLAN.md -- Google Ads API upload module: OAuth2 token management, conversion payload with gclid + email userIdentifiers and consent signals (OFL-06, OFL-08, OFL-09)
 - [ ] 10-03-PLAN.md -- Queue processor Edge Function: Supabase cron, batch processing, exponential backoff retry, dead letter transition (OFL-05, OFL-07)
 
-### Phase 11: Server-Side Event Proxy
-**Goal**: Conversion events fired by the lead form reach GA4 via both the client-side gtag and a server-side Measurement Protocol call, so ad blockers do not silently drop conversion data
-**Depends on**: Phase 8
+### Phase 11: Server-Side Event Proxy (Retroactive Verification)
+**Goal**: Formally verify the SSP implementation that was built during Phases 8-10, update REQUIREMENTS.md, and clean up documentation gaps across the milestone
+**Depends on**: Phase 8, Phase 9, Phase 10
 **Requirements**: SSP-01, SSP-02, SSP-03
+**Gap Closure**: Closes SSP-01/02/03 (implemented-but-unverified) + tech debt (SUMMARY frontmatter gaps, documentation errors)
 **Success Criteria** (what must be TRUE):
-  1. A POST to `/api/track/event` with event name and params returns 200 and records the event
-  2. Submitting the lead form with gtag blocked (via browser extension) still results in an event appearing in GA4 DebugView within seconds
-  3. The same lead form submission produces two GA4 hits sharing the same event_id, which GA4 deduplicates to one conversion
-**Plans**: TBD
+  1. SSP-01/02/03 are formally verified with evidence pointing to existing code artifacts
+  2. REQUIREMENTS.md checkboxes for SSP-01/02/03 are checked
+  3. SUMMARY frontmatter gaps in 09-01, 09-02, 10-01 are fixed
+  4. Documentation errors in 12-02-SUMMARY.md are corrected
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md -- Retroactive SSP verification: verify /api/track/event, ga4-mp.ts, dual-fire implementation (SSP-01, SSP-02, SSP-03)
+- [ ] 11-02-PLAN.md -- Documentation cleanup: fix SUMMARY frontmatter in 09-01, 09-02, 10-01; fix 12-02-SUMMARY.md attribution error
+
+### Phase 13: Main-Site Visitor Tracking
+**Goal**: Main-site visitors (not just LP visitors) trigger `/api/track/visit` so all leads carry visitor_id FK and gclid attribution
+**Depends on**: Phase 8
+**Requirements**: CAP-03 (extended), CAP-04 (extended)
+**Gap Closure**: Closes CAP-03/04 partial gap, main-site integration gap, and main-site visitor journey flow gap from v1.1 audit
+**Success Criteria** (what must be TRUE):
+  1. A main-site page load fires `POST /api/track/visit` and creates a visitors row in Supabase
+  2. A lead submitted via the main-site form (`/api/leads`) has a non-null `visitor_id` FK pointing to the visitors row
+  3. The CRM webhook's `matchLeadByEmail()` JOIN retrieves gclid for main-site leads (when visitor had gclid)
+**Plans**: 2 plans
+Plans:
+- [ ] 13-01-PLAN.md -- Add visit tracking to main-site: create tracking provider or extend existing TrackingProvider to fire /api/track/visit on mount (CAP-03, CAP-04)
+- [ ] 13-02-PLAN.md -- Remove dead code: delete or document google-ads.ts uploadConversion() (tech debt cleanup)
 
 ### Phase 12: Monitoring & Observability
 **Goal**: The health of the offline conversion pipeline is visible at a glance via a health endpoint and queryable conversion metrics in Supabase
@@ -130,5 +150,6 @@ Plans:
 | 8. Visitor & UTM Capture | v1.1 | 3/3 | Complete | 2026-02-26 |
 | 9. Enhanced Conversions | 2/3 | Complete    | 2026-02-26 | - |
 | 10. Offline Conversion Pipeline | 3/3 | Complete    | 2026-02-27 | - |
-| 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
-| 12. Monitoring & Observability | 2/2 | Complete    | 2026-02-27 | - |
+| 11. Server-Side Event Proxy | v1.1 | 0/2 | Gap closure | - |
+| 12. Monitoring & Observability | v1.1 | 2/2 | Complete | 2026-02-27 |
+| 13. Main-Site Visitor Tracking | v1.1 | 0/2 | Gap closure | - |
