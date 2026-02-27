@@ -91,7 +91,11 @@ Plans:
   4. The conversion_queue shows a new Google Ads entry within seconds of a valid webhook; the Supabase cron function runs every 15 minutes and picks up pending items
   5. A successfully uploaded conversion shows status `uploaded` in the queue; a failed upload shows incremented retry count and next_retry_at timestamp
   6. After 5 failed attempts a queue entry transitions to `dead_letter` state and stops retrying
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 10-01-PLAN.md -- CRM webhook endpoint: signature validation, lead matching by email, idempotent conversion creation, queue entry (OFL-01, OFL-02, OFL-03, OFL-04)
+- [ ] 10-02-PLAN.md -- Google Ads API upload module: OAuth2 token management, conversion payload with gclid + email userIdentifiers and consent signals (OFL-06, OFL-08, OFL-09)
+- [ ] 10-03-PLAN.md -- Queue processor Edge Function: Supabase cron, batch processing, exponential backoff retry, dead letter transition (OFL-05, OFL-07)
 
 ### Phase 11: Server-Side Event Proxy
 **Goal**: Conversion events fired by the lead form reach GA4 via both the client-side gtag and a server-side Measurement Protocol call, so ad blockers do not silently drop conversion data
@@ -125,6 +129,6 @@ Plans:
 | 7. Database Foundation | v1.1 | 2/2 | Complete | 2026-02-26 |
 | 8. Visitor & UTM Capture | v1.1 | 3/3 | Complete | 2026-02-26 |
 | 9. Enhanced Conversions | 2/3 | Complete    | 2026-02-26 | - |
-| 10. Offline Conversion Pipeline | v1.1 | 0/? | Not started | - |
+| 10. Offline Conversion Pipeline | v1.1 | 0/3 | Planned | - |
 | 11. Server-Side Event Proxy | v1.1 | 0/? | Not started | - |
 | 12. Monitoring & Observability | v1.1 | 0/? | Not started | - |

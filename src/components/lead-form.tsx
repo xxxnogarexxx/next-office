@@ -1,12 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
 import { useTracking } from "@/components/tracking-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,8 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cities } from "@/lib/cities";
-import { Send, CheckCircle, Loader2 } from "lucide-react";
+import { cities } from "@/lib/listings";
+import { Send, CheckCircle } from "lucide-react";
 
 interface LeadFormProps {
   listingId?: string;
@@ -38,34 +32,12 @@ export function LeadForm({
   const tracking = useTracking();
   const [submitted, setSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const showCityField = !citySlug && !listingId;
 
   const formRef = useRef<HTMLFormElement>(null);
 
   // Render form only on client to prevent hydration mismatch
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
-
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(false);
-
-  // Reset form state when navigating between cities to prevent stale state (REL-02)
-  /* eslint-disable react-hooks/set-state-in-effect -- intentional reset on city change */
-  useEffect(() => {
-    setSubmitted(false);
-    setError(false);
-    setSubmitting(false);
-  }, [citySlug]);
-  /* eslint-enable react-hooks/set-state-in-effect */
-
-  // Fetch CSRF token on mount — non-blocking, form is immediately interactive
-  useEffect(() => {
-    fetch("/api/csrf", { credentials: "same-origin" })
-      .then((res) => res.json())
-      .then((data) => setCsrfToken(data.csrfToken))
-      .catch(() => {}); // Silent fail — CSRF validated server-side
-  }, []);
 
   // Remove any elements/attributes injected by password manager extensions
   // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
@@ -96,6 +68,9 @@ export function LeadForm({
     return () => observer.disconnect();
   }, [mounted]);
 
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
@@ -103,16 +78,9 @@ export function LeadForm({
 
     const form = new FormData(e.currentTarget);
 
-    // EC-04: Generate shared transaction_id for dedup between gtag and API
-    const transactionId = crypto.randomUUID();
-
     const res = await fetch("/api/leads", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
-      },
-      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: form.get("lead_fullname"),
         email: form.get("lead_mail"),
@@ -129,8 +97,6 @@ export function LeadForm({
         wbraid: tracking.wbraid,
         landing_page: tracking.landing_page,
         referrer: tracking.referrer,
-        // EC-04: Shared transaction_id for dedup between gtag and offline conversion upload
-        transaction_id: transactionId,
       }),
     });
 
@@ -142,22 +108,6 @@ export function LeadForm({
     }
 
     setSubmitted(true);
-
-    // Fire GA4 lead conversion event (SEO-07) with Enhanced Conversions (EC-02, EC-04)
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      // EC-02: Set user_data with raw email for Enhanced Conversions
-      window.gtag("set", "user_data", {
-        email: (form.get("lead_mail") as string).trim().toLowerCase(),
-      });
-
-      // GA4 lead event with shared transaction_id (EC-04)
-      window.gtag("event", "generate_lead", {
-        event_category: "lead",
-        event_label: citySlug || "general",
-        value: 1,
-        transaction_id: transactionId,
-      });
-    }
   }
 
   if (!mounted) {
@@ -171,11 +121,7 @@ export function LeadForm({
               : "mx-auto max-w-md rounded-lg border bg-white p-6"
         }`}
         style={{ minHeight: variant === "dialog" ? undefined : 380 }}
-        aria-busy="true"
-        role="status"
-      >
-        <span className="sr-only">Formular wird geladen...</span>
-      </div>
+      />
     );
   }
 
@@ -227,7 +173,7 @@ export function LeadForm({
           <Input
             id="lead_mail"
             name="lead_mail"
-            type="email"
+            type="text"
             inputMode="email"
             placeholder="max@firma.de"
             autoComplete="one-time-code"
@@ -306,7 +252,7 @@ export function LeadForm({
       )}
 
       <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-        {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+        <Send className="mr-2 h-4 w-4" />
         {submitting ? "Wird gesendet..." : "Anfrage senden"}
       </Button>
 

@@ -16,28 +16,6 @@ export const metadata: Metadata = {
   title: "Über uns – NextOffice",
   description:
     "Seit 2017 helfen wir Unternehmen in ganz Deutschland, das passende Büro zu finden. Kostenlos, persönlich und unverbindlich. Erfahren Sie mehr über NextOffice.",
-  openGraph: {
-    title: "Über uns – NextOffice",
-    description:
-      "Seit 2017 helfen wir Unternehmen in ganz Deutschland, das passende Büro zu finden.",
-    type: "website",
-    url: "https://next-office.io/ueber-uns",
-    images: [
-      {
-        url: "/hero-office.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NextOffice Team",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Über uns – NextOffice",
-    description:
-      "Seit 2017 helfen wir Unternehmen in ganz Deutschland, das passende Büro zu finden.",
-    images: ["/hero-office.jpg"],
-  },
   alternates: {
     canonical: "https://next-office.io/ueber-uns",
   },

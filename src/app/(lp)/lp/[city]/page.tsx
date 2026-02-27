@@ -31,10 +31,9 @@ export default async function CityLPPage({ params, searchParams }: PageProps) {
     ])
   );
 
-  const Variant = getVariantComponent("default");
-  // Assign to a local constant so React sees a stable component reference.
-  // eslint-disable-next-line react-hooks/static-components
-  return <Variant city={city} searchParams={flatSearchParams} />;
+  const VariantComponent = getVariantComponent("default");
+
+  return <VariantComponent city={city} searchParams={flatSearchParams} />;
 }
 
 /** Pre-render all 4 LP city pages at build time. */

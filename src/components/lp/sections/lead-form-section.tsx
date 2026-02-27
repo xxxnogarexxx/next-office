@@ -19,35 +19,23 @@ declare global {
 /**
  * Fire Google Ads conversion tag and GA4 custom event on successful form submission.
  *
- * Enhanced Conversions (EC-02): Sets user_data with raw email BEFORE the conversion
- * event fires, enabling cross-device and Safari-compatible conversion attribution.
+ * Guards against gtag not being loaded (Plan 06 loads gtag.js; this code runs safely
+ * even before that plan is executed). Uses crypto.randomUUID() as a dedup key.
  *
- * Transaction ID (EC-04): Uses a shared transaction_id that is also sent to the
- * lead API — enables deduplication between online gtag event and offline conversion upload.
- *
- * @param email - User's raw email for Enhanced Conversions user_data
- * @param transactionId - Shared UUID for deduplication (same value sent to API)
  * @param gclid - Google click ID for attribution (null if not present)
  */
-function fireConversionEvent(email: string, transactionId: string, gclid: string | null) {
+function fireConversionEvent(gclid: string | null) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") {
     return;
   }
 
-  // EC-02: Set user_data with raw email BEFORE conversion event.
-  // Google normalizes and hashes the email internally.
-  // This MUST fire before any conversion event for Enhanced Conversions to work.
-  window.gtag("set", "user_data", {
-    email: email.trim().toLowerCase(),
-  });
-
   // Google Ads conversion tag — Conversion ID/Label configured in Google Ads dashboard
-  // EC-04: Uses shared transactionId (same value sent to API) for dedup
+  // Real values must be set via environment variables in production (see Plan 06)
   window.gtag("event", "conversion", {
     send_to: "AW-XXXXXXXXXX/XXXXXXXXXX", // placeholder — replace with real AW-CONVERSION_ID/LABEL
     value: 1.0,
     currency: "EUR",
-    transaction_id: transactionId,
+    transaction_id: crypto.randomUUID(), // dedup key to prevent duplicate conversions
   });
 
   // GA4 custom event for funnel analysis and cross-channel reporting
@@ -55,7 +43,6 @@ function fireConversionEvent(email: string, transactionId: string, gclid: string
     event_category: "conversion",
     event_label: "lp_lead_form",
     gclid: gclid ?? undefined,
-    transaction_id: transactionId,
   });
 }
 
@@ -145,15 +132,6 @@ export function LeadFormSection({
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
-
-  // Fetch CSRF token on mount — non-blocking, form is immediately interactive
-  useEffect(() => {
-    fetch("/api/csrf", { credentials: "same-origin" })
-      .then((res) => res.json())
-      .then((data) => setCsrfToken(data.csrfToken))
-      .catch(() => {}); // Silent fail — CSRF validated server-side
-  }, []);
 
   // Remove any elements/attributes injected by password manager extensions
   // (NordPass, LastPass, 1Password, etc.) that cause layout shifts
@@ -241,16 +219,9 @@ export function LeadFormSection({
     setSubmitting(true);
 
     try {
-      // EC-04: Generate shared transaction_id for dedup between gtag and API
-      const transactionId = crypto.randomUUID();
-
       const res = await fetch("/api/lp-leads", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
-        },
-        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           // Core fields
           name: values.name,
@@ -274,8 +245,6 @@ export function LeadFormSection({
           // Page context
           landing_page: typeof window !== "undefined" ? window.location.href : null,
           referrer: typeof document !== "undefined" ? document.referrer || null : null,
-          // EC-04: Shared transaction_id for dedup between gtag and offline conversion upload
-          transaction_id: transactionId,
         }),
       });
 
@@ -287,17 +256,7 @@ export function LeadFormSection({
 
       // Fire Google Ads conversion tag + GA4 event before redirecting.
       // gclid read from searchParams — middleware cookies act as server-side fallback (see /api/lp-leads).
-      fireConversionEvent(values.email, transactionId, searchParams.gclid ?? null);
-
-      // Persist transaction_id for danke page ConversionTracker (EC-04)
-      try {
-        const stored = sessionStorage.getItem("_no_lp_tracking");
-        const tracking = stored ? JSON.parse(stored) : {};
-        tracking.transaction_id = transactionId;
-        sessionStorage.setItem("_no_lp_tracking", JSON.stringify(tracking));
-      } catch {
-        // sessionStorage unavailable — danke page will generate its own ID
-      }
+      fireConversionEvent(searchParams.gclid ?? null);
 
       // Redirect to thank-you page — use values.city (could differ from city prop)
       router.push(`/lp/${values.city}/danke`);

@@ -1,10 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { ListingCard } from "@/lib/types";
+import type { Listing } from "@/lib/types";
 
 interface SearchMapProps {
-  listings: ListingCard[];
+  listings: Listing[];
   hoveredId: string | null;
   center?: { lat: number; lng: number };
 }

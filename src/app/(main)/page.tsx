@@ -1,74 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Shield, Clock, TrendingUp, Phone, Mail } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { SearchBar } from "@/components/search-bar";
-import { cities } from "@/lib/cities";
+import { cities } from "@/lib/listings";
 import { testimonials } from "@/lib/testimonials";
-
-const SITE_URL = "https://next-office.io";
-
-export const metadata: Metadata = {
-  title: "Büro mieten – Flexible Office Spaces in Deutschland | NextOffice",
-  description:
-    "Finden Sie flexible Büros und Office Spaces in Berlin, München, Hamburg und Frankfurt. Kostenlose Beratung, beste Preise garantiert.",
-  openGraph: {
-    title: "Büro mieten – Flexible Office Spaces in Deutschland | NextOffice",
-    description:
-      "Finden Sie flexible Büros und Office Spaces in Berlin, München, Hamburg und Frankfurt. Kostenlose Beratung, beste Preise garantiert.",
-    type: "website",
-    url: SITE_URL,
-    images: [
-      {
-        url: "/hero-office.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NextOffice – Flexible Büros in Deutschland",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Büro mieten – Flexible Office Spaces in Deutschland | NextOffice",
-    description:
-      "Finden Sie flexible Büros und Office Spaces in Berlin, München, Hamburg und Frankfurt.",
-    images: ["/hero-office.jpg"],
-  },
-  alternates: {
-    canonical: SITE_URL,
-  },
-};
 
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "NextOffice",
-            url: "https://next-office.io",
-            logo: "https://next-office.io/next.svg",
-            description:
-              "Deutschlands Plattform für flexible Büros und Office Spaces. Kostenlose Beratung, beste Konditionen.",
-            address: {
-              "@type": "PostalAddress",
-              addressCountry: "DE",
-            },
-            contactPoint: {
-              "@type": "ContactPoint",
-              telephone: "+49-30-200042000",
-              contactType: "customer service",
-              email: "anfrage@next-office.io",
-              availableLanguage: "German",
-            },
-            sameAs: [],
-          }).replace(/</g, "\\u003c"),
-        }}
-      />
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 pt-6 pb-2 sm:px-6 lg:px-8">
         <div className="relative rounded-2xl bg-surface lg:rounded-3xl">

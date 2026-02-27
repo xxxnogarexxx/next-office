@@ -61,7 +61,6 @@ export default async function BlogPostPage({ params }: PageProps) {
     description: post.excerpt,
     image: post.coverImage,
     datePublished: post.date,
-    dateModified: post.dateModified || post.date,
     author: {
       "@type": "Organization",
       name: post.author,
@@ -77,36 +76,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Startseite",
-                item: "https://next-office.io",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Ratgeber",
-                item: "https://next-office.io/blog",
-              },
-              {
-                "@type": "ListItem",
-                position: 3,
-                name: post.title,
-                item: `https://next-office.io/blog/${slug}`,
-              },
-            ],
-          }).replace(/</g, "\\u003c"),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">

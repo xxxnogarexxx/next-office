@@ -7,6 +7,7 @@ import {
   BarChart3,
   Phone,
   Mail,
+  Clock,
   CheckCircle2,
 } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
@@ -15,28 +16,6 @@ export const metadata: Metadata = {
   title: "Für Anbieter – NextOffice",
   description:
     "Listen Sie Ihre Büroflächen kostenlos auf NextOffice. Erreichen Sie Unternehmen, die aktiv nach flexiblen Büros suchen — ohne Vorabkosten.",
-  openGraph: {
-    title: "Für Anbieter – NextOffice",
-    description:
-      "Listen Sie Ihre Büroflächen kostenlos auf NextOffice. Erreichen Sie Unternehmen, die aktiv nach flexiblen Büros suchen.",
-    type: "website",
-    url: "https://next-office.io/fuer-anbieter",
-    images: [
-      {
-        url: "/hero-office.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Büroflächen auf NextOffice listen",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Für Anbieter – NextOffice",
-    description:
-      "Listen Sie Ihre Büroflächen kostenlos auf NextOffice.",
-    images: ["/hero-office.jpg"],
-  },
   alternates: {
     canonical: "https://next-office.io/fuer-anbieter",
   },

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 interface ListingMapProps {
@@ -24,39 +23,5 @@ const ListingMapInner = dynamic(() => import("./listing-map-inner"), {
 });
 
 export function ListingMap(props: ListingMapProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect(); // Only need to trigger once
-        }
-      },
-      {
-        rootMargin: "200px", // Start loading 200px before entering viewport
-      }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={containerRef} style={{ minHeight: inView ? undefined : 560 }}>
-      {inView ? (
-        <ListingMapInner {...props} />
-      ) : (
-        <div className="relative flex items-center justify-center rounded-lg bg-slate-100" style={{ height: 560 }}>
-          <div className="absolute inset-0 rounded-lg opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-          <p className="z-10 text-sm text-muted-text">Karte wird beim Scrollen geladen…</p>
-        </div>
-      )}
-    </div>
-  );
+  return <ListingMapInner {...props} />;
 }

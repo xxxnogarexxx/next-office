@@ -5,7 +5,7 @@ import MapGL, { Marker, Popup, NavigationControl } from "react-map-gl/mapbox";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapRef } from "react-map-gl/mapbox";
-import type { ListingCard } from "@/lib/types";
+import type { Listing } from "@/lib/types";
 import {
   MAPBOX_TOKEN,
   MAP_STYLE,
@@ -16,7 +16,6 @@ import {
   PIN_COLOR_ACTIVE,
   PIN_BORDER_COLOR,
 } from "@/lib/map-config";
-import { contentfulImageUrl } from "@/lib/contentful-image";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -71,7 +70,7 @@ async function fetchTransitLines(lat: number, lng: number): Promise<GeoJSONFC> {
 }
 
 interface SearchMapInnerProps {
-  listings: ListingCard[];
+  listings: Listing[];
   hoveredId: string | null;
   center?: { lat: number; lng: number };
 }
@@ -94,15 +93,6 @@ function PinMarker({ isActive }: { isActive: boolean }) {
       }}
     />
   );
-}
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 // Helper to manage a single transit layer (ubahn or sbahn)
@@ -150,13 +140,12 @@ function setupTransitLayer(
     if (popupRef.current) popupRef.current.remove();
     const colour = feature.properties?.colour || "#888";
     const ref = feature.properties?.ref || "";
-    const safeColour = /^#[0-9a-fA-F]{3,8}$/.test(colour) ? colour : "#888888";
     popupRef.current = new mapboxgl.Popup({
       closeButton: false, closeOnClick: false,
       className: "transit-line-tooltip", offset: 12,
     })
       .setLngLat(e.lngLat)
-      .setHTML(`<span style="background:${escapeHtml(safeColour)};color:white;padding:2px 8px;border-radius:4px;font-weight:600;font-size:13px;">${escapeHtml(ref)}</span>`)
+      .setHTML(`<span style="background:${colour};color:white;padding:2px 8px;border-radius:4px;font-weight:600;font-size:13px;">${ref}</span>`)
       .addTo(map);
   };
 
@@ -197,18 +186,6 @@ export default function SearchMapInner({
     (l): l is typeof l & { latitude: number; longitude: number } =>
       l.latitude !== null && l.longitude !== null
   );
-
-  if (process.env.NODE_ENV === "development") {
-    const excluded = allListings.filter(
-      (l) => l.latitude === null || l.longitude === null
-    );
-    if (excluded.length > 0) {
-      console.warn(
-        `[SearchMap] ${excluded.length} listing(s) excluded from map (missing coordinates):`,
-        excluded.map((l) => l.id)
-      );
-    }
-  }
   const mapRef = useRef<MapRef>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const didFit = useRef(false);
@@ -230,7 +207,7 @@ export default function SearchMapInner({
     let cancelled = false;
     fetchTransitLines(center.lat, center.lng).then((d) => { if (!cancelled) setTransitLines(d); }).catch(() => {});
     return () => { cancelled = true; };
-  }, [center]);
+  }, [center?.lat, center?.lng]);
 
   // U-Bahn layer
   useEffect(() => {
@@ -275,7 +252,7 @@ export default function SearchMapInner({
     if (center && mapRef.current) {
       mapRef.current.flyTo({ center: [center.lng, center.lat], zoom: CITY_ZOOM, duration: 800 });
     }
-  }, [center]);
+  }, [center?.lat, center?.lng]);
 
   // Fit bounds (search page)
   const handleLoad = useCallback(() => {
@@ -302,8 +279,7 @@ export default function SearchMapInner({
     }
     setOverlayActive((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
   };
@@ -393,14 +369,9 @@ export default function SearchMapInner({
             style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 10, minWidth: 260 }}
           >
             {(activeListing.coverPhoto || activeListing.photos[0]) && (
-              /* eslint-disable-next-line @next/next/no-img-element */
               <img
-                src={contentfulImageUrl(
-                  activeListing.coverPhoto || activeListing.photos[0],
-                  { w: 180, h: 180 },
-                )}
+                src={activeListing.coverPhoto || activeListing.photos[0]}
                 alt={activeListing.name}
-                loading="lazy"
                 style={{
                   width: 90,
                   height: 90,
