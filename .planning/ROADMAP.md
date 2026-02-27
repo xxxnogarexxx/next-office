@@ -150,6 +150,6 @@ Plans:
 | 8. Visitor & UTM Capture | v1.1 | 3/3 | Complete | 2026-02-26 |
 | 9. Enhanced Conversions | 2/3 | Complete    | 2026-02-26 | - |
 | 10. Offline Conversion Pipeline | 3/3 | Complete    | 2026-02-27 | - |
-| 11. Server-Side Event Proxy | 2/2 | Complete   | 2026-02-27 | - |
+| 11. Server-Side Event Proxy | 2/2 | Complete    | 2026-02-27 | - |
 | 12. Monitoring & Observability | v1.1 | 2/2 | Complete | 2026-02-27 |
 | 13. Main-Site Visitor Tracking | v1.1 | 0/2 | Gap closure | - |
