@@ -2,14 +2,14 @@
  * CRM webhook handler for offline conversion pipeline.
  *
  * Receives webhook from NetHunt CRM when a deal status changes to
- * qualified or closed. Validates signature, matches lead by email,
+ * qualified or closed. Validates bearer token, matches lead by email,
  * creates idempotent conversion record, and queues for Google Ads upload.
  *
- * Flow: NetHunt webhook -> validate HMAC -> match lead by email -> insert conversion
+ * Flow: NetHunt webhook -> validate bearer token -> match lead by email -> insert conversion
  *       -> queue for upload -> return result
  */
 
-import { createHash, createHmac, timingSafeEqual } from "crypto";
+import { createHash } from "crypto";
 import { createClient } from "@supabase/supabase-js";
 import { createQueueEntry } from "./queue";
 
@@ -40,33 +40,17 @@ function createServiceClient() {
 }
 
 /**
- * Verify HMAC-SHA256 webhook signature (OFL-01).
+ * Verify bearer token from Authorization header (OFL-01).
  *
- * NetHunt sends the raw body signed with the shared secret.
- * The signature is expected in the X-Webhook-Signature header.
- *
- * Uses timing-safe comparison to prevent timing attacks.
+ * Expects: Authorization: Bearer <CRM_WEBHOOK_SECRET>
  */
-export function verifyWebhookSignature(
-  rawBody: string,
-  signature: string | null,
+export function verifyBearerToken(
+  authHeader: string | null,
   secret: string
 ): boolean {
-  if (!signature) return false;
-
-  const expected = createHmac("sha256", secret)
-    .update(rawBody)
-    .digest("hex");
-
-  // Ensure constant-time comparison
-  try {
-    const sigBuffer = Buffer.from(signature, "hex");
-    const expectedBuffer = Buffer.from(expected, "hex");
-    if (sigBuffer.length !== expectedBuffer.length) return false;
-    return timingSafeEqual(sigBuffer, expectedBuffer);
-  } catch {
-    return false;
-  }
+  if (!authHeader) return false;
+  const token = authHeader.replace(/^Bearer\s+/i, "");
+  return token === secret;
 }
 
 /**
@@ -228,17 +212,17 @@ async function updateLeadStatus(leadId: string, conversionType: "qualified" | "c
  */
 export async function handleCrmWebhook(
   rawBody: string,
-  signature: string | null
+  authHeader: string | null
 ): Promise<{ status: number; body: WebhookResult }> {
-  // Step 1: Validate signature (OFL-01)
+  // Step 1: Validate bearer token (OFL-01)
   const secret = process.env.CRM_WEBHOOK_SECRET;
   if (!secret) {
     console.error("[webhook] CRM_WEBHOOK_SECRET not configured");
     return { status: 500, body: { success: false, reason: "server_config_error" } };
   }
 
-  if (!verifyWebhookSignature(rawBody, signature, secret)) {
-    return { status: 401, body: { success: false, reason: "invalid_signature" } };
+  if (!verifyBearerToken(authHeader, secret)) {
+    return { status: 401, body: { success: false, reason: "invalid_token" } };
   }
 
   // Step 2: Parse payload
