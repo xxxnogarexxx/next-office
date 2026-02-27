@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,14 +12,59 @@ interface PhotoGalleryProps {
 
 export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
+  // Scroll lock: fix body position when gallery is open
   useEffect(() => {
     if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollY);
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+  }, [isOpen]);
+
+  // Focus trap: trap Tab and handle Escape inside gallery overlay
+  useEffect(() => {
+    if (!isOpen) return;
+    const overlay = galleryRef.current;
+    if (!overlay) return;
+
+    const focusableSelector =
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const capturedOverlay = overlay;
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusable = capturedOverlay.querySelectorAll(focusableSelector);
+      const first = focusable[0] as HTMLElement;
+      const last = focusable[focusable.length - 1] as HTMLElement;
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    // Focus the first focusable element on open
+    const focusable = capturedOverlay.querySelectorAll(focusableSelector);
+    if (focusable.length > 0) (focusable[0] as HTMLElement).focus();
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
   if (photos.length === 0) return null;
@@ -73,7 +118,13 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
 
       {/* Fullscreen gallery overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] overflow-y-auto bg-white">
+        <div
+          ref={galleryRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Fotogalerie: ${name}`}
+          className="fixed inset-0 z-[100] overflow-y-auto bg-white"
+        >
           {/* Header */}
           <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-4 py-3">
             <Button

@@ -4,7 +4,7 @@ import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"], // latin-ext adds German umlaut/eszett support (SEO-10)
 });
 
 const SITE_URL = "https://next-office.io";
@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     title: "Büro mieten – Flexible Office Spaces in Deutschland | NextOffice",
     description:
       "Finden Sie flexible Büros und Office Spaces in Berlin, München, Hamburg und Frankfurt. Kostenlose Beratung, beste Preise garantiert.",
+    images: [{ url: "/hero-office.jpg", width: 1200, height: 630, alt: "NextOffice – Flexible Büros in Deutschland" }],
   },
   twitter: {
     card: "summary_large_image",

@@ -64,6 +64,17 @@ export function useLPTracking(): LPTrackingData {
 export function LPTrackingProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<LPTrackingData>(empty);
 
+  // Fire visit tracking on page load — records visitor session in Supabase.
+  // Runs once per page load. Errors are non-fatal (tracking must not break UX).
+  useEffect(() => {
+    fetch("/api/track/visit", {
+      method: "POST",
+      credentials: "same-origin",
+    }).catch((err) => {
+      console.error("[lp-tracking] visit tracking failed:", err);
+    });
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
@@ -102,6 +113,7 @@ export function LPTrackingProvider({ children }: { children: ReactNode }) {
       } catch {
         // sessionStorage may be unavailable (private browsing restrictions)
       }
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reading browser state on mount
       setData(fresh);
     } else {
       // No URL params — try to restore from sessionStorage

@@ -76,9 +76,7 @@ async function fetchAllTransitPOIs(
   lng: number,
   lat: number
 ): Promise<Record<string, POI[]>> {
-  const overpassQuery = `[out:json][timeout:15];(node["station"="subway"](around:1500,${lat},${lng});node["railway"="station"]["station"="light_rail"](around:2000,${lat},${lng});node["highway"="bus_stop"](around:800,${lat},${lng}););out body;`;
-
-  const res = await fetch(`/api/transit?query=${encodeURIComponent(overpassQuery)}`);
+  const res = await fetch(`/api/transit?type=listing-pois&lat=${lat}&lng=${lng}`);
 
   if (!res.ok) {
     throw new Error(`Transit API returned ${res.status}`);

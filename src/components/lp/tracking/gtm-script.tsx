@@ -12,6 +12,11 @@ import Script from "next/script";
  * - NEXT_PUBLIC_GOOGLE_ADS_ID: Google Ads Account ID (e.g., "AW-XXXXXXXXXX")
  *
  * Renders nothing when env vars are not set (graceful degradation for dev/staging).
+ *
+ * Enhanced Conversions (EC-01): allow_enhanced_conversions is set to true on the
+ * Google Ads config call. This enables Google Ads to use hashed customer data
+ * (email hash stored in leads.email_hash) for cross-device attribution.
+ * The GA4 config does NOT get this flag — it is Google Ads-specific.
  */
 
 const gaId = process.env.NEXT_PUBLIC_GA4_ID;
@@ -30,20 +35,20 @@ export function GTMScript() {
       {/* Load gtag.js */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${activeId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
 
       {/* Configure gtag with GA4 and optionally Google Ads */}
       <Script
         id="gtag-init"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             ${gaId ? `gtag('config', '${gaId}');` : ""}
-            ${googleAdsId ? `gtag('config', '${googleAdsId}');` : ""}
+            ${googleAdsId ? `gtag('config', '${googleAdsId}', { allow_enhanced_conversions: true });` : ""}
           `,
         }}
       />

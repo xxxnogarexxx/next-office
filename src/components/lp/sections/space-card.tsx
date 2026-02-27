@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight, Users } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -33,31 +34,49 @@ interface PhotoCarouselProps {
 
 function PhotoCarousel({ photos, name, highlighted }: PhotoCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]))
   const hasMultiple = photos.length > 1
+
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(index)
+    setLoaded((prev) => {
+      if (prev.has(index)) return prev
+      const next = new Set(prev)
+      next.add(index)
+      return next
+    })
+  }, [])
 
   function prev(e: React.MouseEvent) {
     e.stopPropagation()
-    setCurrentIndex((i) => (i === 0 ? photos.length - 1 : i - 1))
+    goTo(currentIndex === 0 ? photos.length - 1 : currentIndex - 1)
   }
 
   function next(e: React.MouseEvent) {
     e.stopPropagation()
-    setCurrentIndex((i) => (i === photos.length - 1 ? 0 : i + 1))
+    goTo(currentIndex === photos.length - 1 ? 0 : currentIndex + 1)
   }
 
   return (
     <div className="relative aspect-[3/2] overflow-hidden bg-muted group/carousel">
-      {/* Photo */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={photos[currentIndex]}
-        alt={`${name} — Foto ${currentIndex + 1}`}
-        className="absolute inset-0 w-full h-full object-cover"
-        onError={(e) => {
-          // Graceful fallback: hide broken image, show muted background
-          ;(e.target as HTMLImageElement).style.display = "none"
-        }}
-      />
+      {/* Photos — only render visited ones */}
+      {photos.map((photo, i) => {
+        if (!loaded.has(i)) return null
+        return (
+          <Image
+            key={photo}
+            src={photo}
+            alt={`${name} — Foto ${i + 1}`}
+            fill
+            className={cn(
+              "object-cover transition-opacity duration-300",
+              i === currentIndex ? "opacity-100" : "opacity-0",
+            )}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={i === 0}
+          />
+        )
+      })}
 
       {/* Top-Empfehlung badge */}
       {highlighted && (
@@ -112,7 +131,7 @@ function PhotoCarousel({ photos, name, highlighted }: PhotoCarouselProps) {
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                setCurrentIndex(i)
+                goTo(i)
               }}
               aria-label={`Foto ${i + 1}`}
               className={cn(

@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Allgemeine Geschäftsbedingungen",
   robots: { index: false, follow: true },
+  alternates: {
+    canonical: "https://next-office.io/agb",
+  },
 };
 
 export default function AGBPage() {
@@ -17,9 +21,9 @@ export default function AGBPage() {
           </h2>
           <p className="mt-2">
             (1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die
-            Nutzung der Website next-office.io (nachfolgend „Plattform"), die
+            Nutzung der Website next-office.io (nachfolgend „Plattform“), die
             von der softurio UG (haftungsbeschränkt), Schopenstehl 13, 20095
-            Hamburg (nachfolgend „NextOffice" oder „wir") betrieben wird.
+            Hamburg (nachfolgend „NextOffice“ oder „wir“) betrieben wird.
           </p>
           <p className="mt-2">
             (2) NextOffice vermittelt Büroflächen und Office Spaces zwischen
@@ -123,9 +127,9 @@ export default function AGBPage() {
           </h2>
           <p className="mt-2">
             Die Verarbeitung personenbezogener Daten erfolgt gemäß unserer{" "}
-            <a href="/datenschutz" className="text-primary hover:underline">
+            <Link href="/datenschutz" className="text-primary hover:underline">
               Datenschutzerklärung
-            </a>
+            </Link>
             .
           </p>
         </section>

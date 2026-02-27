@@ -109,7 +109,6 @@ export function FormField({
   max,
   value,
   onChange,
-  ...rest
 }: FormFieldProps) {
   const inputId = name
   const errorId = error ? `${name}-error` : undefined

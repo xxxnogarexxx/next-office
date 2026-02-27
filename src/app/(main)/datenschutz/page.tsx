@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Datenschutzerklärung",
   robots: { index: false, follow: true },
+  alternates: {
+    canonical: "https://next-office.io/datenschutz",
+  },
 };
 
 export default function DatenschutzPage() {
@@ -90,7 +93,7 @@ export default function DatenschutzPage() {
             Unsere Website verwendet Cookies. Cookies sind kleine Textdateien,
             die im Internetbrowser bzw. vom Internetbrowser auf dem
             Computersystem eines Nutzers gespeichert werden. Die meisten der von
-            uns verwendeten Cookies sind sogenannte „Session-Cookies", die nach
+            uns verwendeten Cookies sind sogenannte „Session-Cookies“, die nach
             Ende Ihres Besuchs automatisch gelöscht werden. Andere Cookies
             bleiben auf Ihrem Endgerät gespeichert, bis Sie diese löschen.
           </p>
@@ -120,11 +123,11 @@ export default function DatenschutzPage() {
             6. Eingebundene Dienste Dritter
           </h2>
           <p className="mt-2">
-            Unsere Website nutzt Kartenmaterial von OpenStreetMap. Beim Aufrufen
+            Unsere Website nutzt Kartenmaterial von Mapbox. Beim Aufrufen
             einer Seite mit eingebetteter Karte wird eine Verbindung zu den
-            Servern von OpenStreetMap hergestellt. Dabei kann Ihre IP-Adresse
+            Servern von Mapbox hergestellt. Dabei kann Ihre IP-Adresse
             übertragen werden. Weitere Informationen finden Sie in der
-            Datenschutzerklärung von OpenStreetMap.
+            Datenschutzerklärung von Mapbox unter https://www.mapbox.com/legal/privacy.
           </p>
           <p className="mt-2">
             Wir verwenden Bilder von Unsplash. Beim Laden der Bilder wird eine

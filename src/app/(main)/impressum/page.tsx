@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Impressum",
   robots: { index: false, follow: true },
+  alternates: {
+    canonical: "https://next-office.io/impressum",
+  },
 };
 
 export default function ImpressumPage() {
