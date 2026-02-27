@@ -133,8 +133,8 @@ async function matchLeadByEmail(email: string) {
     return null;
   }
 
-  // Extract gclid from joined visitor row
-  const visitor = data.visitors as { gclid: string | null } | null;
+  // Extract gclid from joined visitor row (Supabase returns object for FK join)
+  const visitor = data.visitors as unknown as { gclid: string | null } | null;
   const gclid = visitor?.gclid ?? null;
 
   return {
