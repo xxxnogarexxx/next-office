@@ -43,5 +43,17 @@ export async function POST(request: Request) {
   const authHeader = request.headers.get("authorization");
   const result = await handleCrmWebhook(rawBody, authHeader);
 
+  // Temporary debug: include request details on failure to diagnose NetHunt integration
+  if (!result.body.success) {
+    return Response.json({
+      ...result.body,
+      _debug: {
+        query: Object.fromEntries(params.entries()),
+        body_preview: rawBody.slice(0, 500),
+        url: url.pathname + url.search,
+      },
+    }, { status: result.status });
+  }
+
   return Response.json(result.body, { status: result.status });
 }
