@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     return Response.json({
       ...result.body,
       _debug: {
-        query: Object.fromEntries(params.entries()),
+        query: Object.fromEntries(cleaned.entries()),
         body_preview: rawBody.slice(0, 500),
         url: url.pathname + url.search,
       },
