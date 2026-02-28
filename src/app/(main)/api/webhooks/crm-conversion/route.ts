@@ -22,19 +22,27 @@ import { handleCrmWebhook } from "@/lib/conversions/webhook";
 
 export async function POST(request: Request) {
   const url = new URL(request.url);
-  const params = url.searchParams;
+
+  // NetHunt inserts literal newlines (%0A) in URL fields when text wraps.
+  // Normalize param keys/values by stripping whitespace and newlines.
+  const cleaned = new Map<string, string>();
+  for (const [key, value] of url.searchParams.entries()) {
+    const cleanKey = key.replace(/\s+/g, "");
+    const cleanVal = value.replace(/\s+/g, "");
+    if (cleanKey) cleaned.set(cleanKey, cleanVal);
+  }
 
   // Prefer query params (NetHunt macros work in URL), fall back to JSON body
   let rawBody: string;
-  if (params.get("email") && params.get("conversion_type")) {
+  if (cleaned.get("email") && cleaned.get("conversion_type")) {
     rawBody = JSON.stringify({
-      crm_deal_id: params.get("crm_deal_id") ?? "",
-      email: params.get("email"),
-      conversion_type: params.get("conversion_type"),
-      conversion_value: params.has("conversion_value")
-        ? Number(params.get("conversion_value"))
+      crm_deal_id: cleaned.get("crm_deal_id") ?? "",
+      email: cleaned.get("email"),
+      conversion_type: cleaned.get("conversion_type"),
+      conversion_value: cleaned.has("conversion_value")
+        ? Number(cleaned.get("conversion_value"))
         : undefined,
-      conversion_currency: params.get("conversion_currency") ?? undefined,
+      conversion_currency: cleaned.get("conversion_currency") ?? undefined,
     });
   } else {
     rawBody = await request.text();
