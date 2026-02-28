@@ -1,12 +1,16 @@
 /**
  * CRM webhook handler for offline conversion pipeline.
  *
- * Receives webhook from NetHunt CRM when a deal status changes to
- * qualified or closed. Validates bearer token, matches lead by email,
+ * Receives webhook from NetHunt CRM (via n8n) when a deal status changes
+ * to Tour or Closed - Yes. Validates bearer token, matches lead by email,
  * creates idempotent conversion record, and queues for Google Ads upload.
  *
- * Flow: NetHunt webhook -> validate bearer token -> match lead by email -> insert conversion
- *       -> queue for upload -> return result
+ * Conversion types:
+ *   "tour"   → NetHunt "Tour" stage (micro-conversion for bidding optimization)
+ *   "closed" → NetHunt "Closed - Yes" stage (final conversion: signed lease)
+ *
+ * Flow: NetHunt → n8n webhook → validate bearer token → match lead by email
+ *       → insert conversion → queue for upload → return result
  */
 
 import { createHash } from "crypto";
@@ -18,7 +22,7 @@ import { createQueueEntry } from "./queue";
 interface WebhookPayload {
   crm_deal_id: string;
   email: string;
-  conversion_type: "qualified" | "closed";
+  conversion_type: "brokered" | "tour" | "closed";
   conversion_value?: number;
   conversion_currency?: string;
 }
@@ -66,7 +70,7 @@ function parsePayload(body: unknown): WebhookPayload | null {
 
   if (typeof b.crm_deal_id !== "string" || !b.crm_deal_id) return null;
   if (typeof b.email !== "string" || !b.email) return null;
-  if (b.conversion_type !== "qualified" && b.conversion_type !== "closed") return null;
+  if (b.conversion_type !== "brokered" && b.conversion_type !== "tour" && b.conversion_type !== "closed") return null;
 
   return {
     crm_deal_id: b.crm_deal_id,
@@ -189,9 +193,9 @@ async function createConversion(
 /**
  * Update the lead's conversion_status to match the incoming conversion type (OFL-02).
  *
- * Maps: qualified -> 'qualified', closed -> 'closed'
+ * Maps: brokered -> 'brokered', tour -> 'tour', closed -> 'closed'
  */
-async function updateLeadStatus(leadId: string, conversionType: "qualified" | "closed") {
+async function updateLeadStatus(leadId: string, conversionType: "brokered" | "tour" | "closed") {
   const supabase = createServiceClient();
 
   const { error } = await supabase

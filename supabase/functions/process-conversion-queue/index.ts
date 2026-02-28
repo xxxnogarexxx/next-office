@@ -146,9 +146,13 @@ async function uploadToGoogleAds(
   }
 
   // Determine conversion action from env vars
-  const actionEnvKey = conversion.conversion_type === "qualified"
-    ? "GOOGLE_ADS_CONVERSION_ACTION_QUALIFIED"
-    : "GOOGLE_ADS_CONVERSION_ACTION_CLOSED";
+  // Mapping: brokered → qualified lead, tour → space visit, closed → signed lease
+  const ENV_KEY_MAP: Record<string, string> = {
+    brokered: "GOOGLE_ADS_CONVERSION_ACTION_BROKERED",
+    tour: "GOOGLE_ADS_CONVERSION_ACTION_TOUR",
+    closed: "GOOGLE_ADS_CONVERSION_ACTION_CLOSED",
+  };
+  const actionEnvKey = ENV_KEY_MAP[conversion.conversion_type] ?? "GOOGLE_ADS_CONVERSION_ACTION_CLOSED";
   const actionId = Deno.env.get(actionEnvKey);
   if (!actionId) {
     return { success: false, error: `${actionEnvKey} not configured` };

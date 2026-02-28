@@ -34,8 +34,8 @@ interface ConversionData {
   gclid: string | null;
   /** SHA-256 hex hash of the normalized email (lowercase, trimmed) */
   email_hash: string | null;
-  /** Type of conversion: qualified or closed */
-  conversion_type: "qualified" | "closed";
+  /** Type of conversion: brokered (qualified), tour (mid-funnel), or closed (signed lease) */
+  conversion_type: "brokered" | "tour" | "closed";
   /** Monetary value of the conversion (nullable) */
   conversion_value: number | null;
   /** Currency code (defaults to EUR) */
@@ -117,17 +117,24 @@ async function getAccessToken(): Promise<string> {
  * Conversion actions must be created in the Google Ads dashboard first,
  * then their IDs configured in env vars.
  *
+ * Mapping:
+ *   "brokered" → GOOGLE_ADS_CONVERSION_ACTION_BROKERED (lead qualified by broker)
+ *   "tour"     → GOOGLE_ADS_CONVERSION_ACTION_TOUR     (prospect visits space)
+ *   "closed"   → GOOGLE_ADS_CONVERSION_ACTION_CLOSED    (signed lease)
+ *
  * Format: customers/{customer_id}/conversionActions/{action_id}
  */
 function getConversionActionName(
   customerId: string,
-  conversionType: "qualified" | "closed"
+  conversionType: "brokered" | "tour" | "closed"
 ): string {
-  const envKey =
-    conversionType === "qualified"
-      ? "GOOGLE_ADS_CONVERSION_ACTION_QUALIFIED"
-      : "GOOGLE_ADS_CONVERSION_ACTION_CLOSED";
+  const ENV_KEY_MAP: Record<string, string> = {
+    brokered: "GOOGLE_ADS_CONVERSION_ACTION_BROKERED",
+    tour: "GOOGLE_ADS_CONVERSION_ACTION_TOUR",
+    closed: "GOOGLE_ADS_CONVERSION_ACTION_CLOSED",
+  };
 
+  const envKey = ENV_KEY_MAP[conversionType];
   const actionId = process.env[envKey];
   if (!actionId) {
     throw new Error(`${envKey} not configured`);
